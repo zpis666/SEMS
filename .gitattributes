@@ -1,0 +1,41 @@
+# 文本文件由 Git 自动识别，提交时统一规范化为 LF，检出时按平台处理。
+# 注意：不使用全局 eol=lf，避免在 Windows 上检出时改写既有中文文档的换行符。
+* text=auto
+
+# Windows 脚本必须保持 CRLF，否则 cmd 会执行失败
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+*.sh  text eol=lf
+
+# ===== 正式提交目录按“字节原样”保管 =====
+# 该目录是提交给导师/学校的最终材料，禁止被 Git 做任何换行或编码转换；
+# 标记为 -text 后 Git 只做字节级比对（仍能检测出被改动），但绝不改写文件内容。
+正式提交/** -text
+
+# 二进制文件不做换行/差异转换
+*.doc  binary
+*.docx binary
+*.pdf  binary
+*.xls  binary
+*.xlsx binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.ico  binary
+*.gif  binary
+*.zip  binary
+*.jar  binary
+*.woff binary
+*.woff2 binary
+*.ttf  binary
+
+# 文本类型显式声明（改善差异展示）
+*.md   text diff=markdown
+*.sql  text
+*.java text
+*.vue  text
+*.ts   text
+*.js   text
+*.yml  text
+*.json text

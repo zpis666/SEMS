@@ -1,0 +1,64 @@
+# ===== 依赖与构建产物 =====
+node_modules/
+dist/
+dist-ssr/
+target/
+build/
+out/
+*.class
+*.jar
+!**/maven-wrapper.jar
+*.war
+.pnpm-store/
+coverage/
+allure-results/
+allure-report/
+
+# ===== 日志与临时文件 =====
+*.log
+logs/
+*.tmp
+*.bak
+*.orig
+*.rej
+*.swp
+*~
+~$*
+
+# ===== IDE / 编辑器 =====
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/*
+!.vscode/extensions.json
+.settings/
+.project
+.classpath
+.factorypath
+
+# ===== 环境与密钥（严禁提交）=====
+.env
+.env.*
+!.env.example
+application-local.yml
+application-*-local.yml
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+secrets/
+
+# ===== 数据与运行期目录 =====
+/data/
+/upload/
+/backup/
+*.sql.gz
+*.dump
+
+# ===== 操作系统 =====
+Thumbs.db
+desktop.ini
+.DS_Store
+$RECYCLE.BIN/
