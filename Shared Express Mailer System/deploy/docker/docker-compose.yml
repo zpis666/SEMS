@@ -1,0 +1,74 @@
+# 本地开发中间件：MySQL 8.0 + Redis 7
+# ------------------------------------------------------------------
+# 用途：仅用于本地开发，镜像版本与云服务器生产环境保持一致
+#       （MySQL 8.0 / Redis 7），避免“本地能跑、线上报错”。
+# 用法：scripts\db-up.cmd 启动 / scripts\db-down.cmd 停止 /
+#       scripts\db-reset.cmd 清空数据重建。详见 ../README.md。
+# 口令：默认值仅供本地开发，生产环境一律由环境变量注入，禁止沿用。
+# ------------------------------------------------------------------
+name: sems-local
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: sems-mysql
+    restart: unless-stopped
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+      - --default-time-zone=+08:00
+      - --lower_case_table_names=0
+      - --max-connections=300
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_dev_pwd}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-sems}
+      MYSQL_USER: ${MYSQL_USER:-sems}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-sems_dev_pwd}
+      TZ: Asia/Shanghai
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      # 建表脚本放 deploy/sql/，容器“首次”初始化时按文件名顺序自动导入；
+      # 已初始化过的库不会重跑，脚本变更请用 db-reset.cmd 重建。
+      - ../sql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-root_dev_pwd}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 45s
+
+  redis:
+    image: redis:7
+    container_name: sems-redis
+    restart: unless-stopped
+    command:
+      - redis-server
+      - --requirepass
+      - ${REDIS_PASSWORD:-redis_dev_pwd}
+      - --appendonly
+      - "yes"
+      - --appendfsync
+      - everysec
+      - --maxmemory
+      - 512mb
+      - --maxmemory-policy
+      - volatile-lru
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redis_dev_pwd}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql-data:
+    name: sems-local-mysql-data
+  redis-data:
+    name: sems-local-redis-data

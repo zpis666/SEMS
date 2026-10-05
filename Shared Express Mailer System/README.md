@@ -49,6 +49,25 @@
 | 2027-04-04 | 测试报告、用户使用手册、论文初稿 |
 | 2027-04-18 | 定稿并提交全部代码与文档 |
 
+## 快速开始：本地中间件（MySQL 8.0 + Redis 7）
+
+本机**不安装** MySQL / Redis，两者由 Docker 容器提供，镜像版本与云服务器保持一致。
+
+```bat
+scripts\db-up.cmd      启动（拉起 sems-mysql / sems-redis）
+scripts\db-down.cmd    停止（保留数据卷）
+scripts\db-reset.cmd   清空数据卷重建（会删除本地数据，需输入 yes 确认）
+scripts\check-env.cmd  打印本机 JDK / Node / Git / Docker 版本，用于换机后自检
+```
+
+| 服务 | 地址 | 库与账号 |
+| --- | --- | --- |
+| MySQL 8.0 | `localhost:3306` | 库 `sems`，用户 `sems` / `root`，口令见 `deploy/docker/.env.example` |
+| Redis 7 | `localhost:6379` | 已开启 `requirepass`，口令同上 |
+
+- 建表脚本放 `deploy/sql/`，容器**首次**初始化时按文件名顺序自动导入；脚本更新后用 `db-reset.cmd` 重建。
+- 前置条件：启动 Docker Desktop（本机已安装，守护进程需处于 Running）。
+
 ## 约定
 
 - 所有交付物、界面文案、代码注释使用**中文**。
