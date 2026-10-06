@@ -47,6 +47,7 @@
 | Git | 2.54.0，`E:\tools-env\git-2.54.0.windows.1` | 仓库已初始化，分支 `main`，提交身份 `zp <1931662166@qq.com>` |
 | Docker | CLI 29.4.3 + Compose v5.1.3（Docker Desktop 已安装） | 本地 MySQL 8.0 与 Redis 7 用容器运行，见 `Shared Express Mailer System/deploy/docker/`；使用前需启动 Docker Desktop |
 | Maven | **本机没有，也不需要装** | 后端使用 Maven Wrapper（`mvnw`），随工程提交 |
+| Maven 依赖源 | 已配阿里云公共仓库：`C:\Users\Admin1\.m2\settings.xml` | 本机全局配置，**不在仓库内、不参与交付**；2026-10-06 实测 340 次下载全部走 `aliyunmaven` |
 | MySQL / Redis | **本机没有** | 由 `deploy/docker/docker-compose.yml` 提供，镜像版本与云服务器一致；禁用第三方 Redis Windows 移植版 |
 | WSL2 | 有 Ubuntu 发行版（已停止） | 不使用，避免维护两套工具链 |
 | JMeter | 未安装 | 2027-01 并发测试阶段再装 |
@@ -56,3 +57,8 @@
 - 仓库根目录有 `.zcodeignore`（仅影响 ZCode 文件搜索，不等同于 .gitignore）；维护忽略规则时以 `.gitignore` 为准。
 - `.gitattributes` 已统一换行策略：源码/文档入库为 LF；`*.cmd`/`*.bat` 为 CRLF；`正式提交/**` 为 `-text`（字节原样）。
 - 新建批处理脚本后需确保为 CRLF 换行，否则 cmd.exe 可能解析异常。
+- **后端工程生成后**，把 `.mvn/wrapper/maven-wrapper.properties` 里的 `distributionUrl` 换成阿里云地址
+  `https://maven.aliyun.com/repository/public/org/apache/maven/apache-maven/{版本}/apache-maven-{版本}-bin.zip`。
+  该地址 2026-10-06 实测可用（3.9.9 / 3.9.11 均返回 zip）。不改的话，首次 `mvnw` 会去 Apache 官方站下 Maven 本体，国内很慢；
+  `settings.xml` 的镜像只作用于依赖，管不到 Wrapper 下载 Maven 本体这一步。
+- 写 XML 时注意：**注释里不能出现连续两个减号**，否则 Maven 直接拒绝加载 `settings.xml`（分隔线请用等号）。
