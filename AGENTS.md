@@ -48,6 +48,7 @@
 | Docker | CLI 29.4.3 + Compose v5.1.3（Docker Desktop 已安装） | 本地 MySQL 8.0 与 Redis 7 用容器运行，见 `Shared Express Mailer System/deploy/docker/`；使用前需启动 Docker Desktop |
 | Maven | **本机没有，也不需要装** | 后端使用 Maven Wrapper（`mvnw`），随工程提交 |
 | Maven 依赖源 | 已配阿里云公共仓库：`C:\Users\Admin1\.m2\settings.xml` | 本机全局配置，**不在仓库内、不参与交付**；2026-10-06 实测 340 次下载全部走 `aliyunmaven` |
+| npm 依赖源 | 已配 npmmirror：`Shared Express Mailer System/frontend/.npmrc` | **只作用于本工程**（随仓库提交）；本机全局 registry 未改动，其它 Node 项目不受影响 |
 | MySQL / Redis | **本机没有** | 由 `deploy/docker/docker-compose.yml` 提供，镜像版本与云服务器一致；禁用第三方 Redis Windows 移植版 |
 | WSL2 | 有 Ubuntu 发行版（已停止） | 不使用，避免维护两套工具链 |
 | JMeter | 未安装 | 2027-01 并发测试阶段再装 |

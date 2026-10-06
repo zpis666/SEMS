@@ -29,6 +29,7 @@
 | Docker | 29.4.3 + Compose v5.1.3 | 本地 MySQL / Redis 以容器运行；需先启动 Docker Desktop |
 | Maven | 未安装（无需安装） | 后端使用随工程提交的 Maven Wrapper（`mvnw` / `mvnw.cmd`） |
 | Maven 依赖源 | 阿里云公共仓库（`~/.m2/settings.xml`，本机全局） | 首次构建免于直连中央仓库；该文件不在仓库内 |
+| npm 依赖源 | npmmirror（`frontend/.npmrc`，随工程提交） | 只影响本工程，全局 registry 未改动 |
 | MySQL / Redis | 未安装（无需安装） | 由 `deploy/docker/` 提供，版本与云服务器一致（MySQL 8.0 / Redis 7） |
 
 ## 技术栈（任务书固定，不得替换）
