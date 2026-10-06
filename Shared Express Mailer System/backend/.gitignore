@@ -1,0 +1,24 @@
+# 构建产物
+target/
+!.mvn/wrapper/maven-wrapper.properties
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+
+# 日志与本地运行残留
+logs/
+*.log
+hs_err_pid*
+replay_pid*
+
+# 生产密钥严禁入库（见《系统设计说明书》11.2/11.3）：
+# application-prod.yml 只写环境变量占位、不含明文，故随工程提交；
+# 下面这个仅供本机个人覆盖的文件不参与提交。
+src/main/resources/application-local.yml

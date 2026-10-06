@@ -1,0 +1,40 @@
+# 本地开发环境：配合 ../deploy/docker 的 MySQL 8.0 + Redis 7 容器（scripts\db-up.cmd 启动）
+#
+# 口令默认值与 deploy/docker/.env.example 一致，仅用于本地开发；
+# 若本机 .env 改过口令，请设置环境变量 MYSQL_PASSWORD / REDIS_PASSWORD 覆盖（生产一律走环境变量）。
+#
+# 【端口】生产与 Nginx 反向代理按 8080 对接（见设计书 11.1 与 deploy/nginx/nginx.conf.example）；
+# 但本机 **8080 已被 Burp Suite 的代理监听占用**，故本地开发改走 8090，避免每次启动都撞端口。
+# 如本机 8090 也被占用，用 `./mvnw spring-boot:run -Dspring-boot.run.arguments=--server.port=xxxx` 临时覆盖。
+server:
+  port: ${SEMS_DEV_PORT:8090}
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/sems?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USER:sems}
+    password: ${MYSQL_PASSWORD:sems_dev_pwd}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:redis_dev_pwd}
+
+sems:
+  # 仅供本地开发使用；生产必须由环境变量 SEMS_JWT_SECRET 注入 ≥32 字节 CSPRNG 随机值（见设计书 11.3）
+  jwt:
+    secret: ${SEMS_JWT_SECRET:dev-only-secret-change-me-0123456789abcdef}
+  # 前端 dev server 地址，用于生成袋码二维码（见设计书 7.4）
+  qrcode:
+    domain: "http://localhost:5173"
+
+# 开发期开放接口文档，生产关闭（见设计书 6.5）
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+logging:
+  level:
+    com.sems: debug

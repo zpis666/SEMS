@@ -1,0 +1,128 @@
+/**
+ * 设计令牌（Design Tokens）— 全站唯一出处
+ *
+ * 权威定义见《系统设计说明书》10.5「视觉规范（实现约束）」。
+ * 本文件是全站唯一定义颜色/字号/间距/圆角/阴影的地方；
+ * 页面与组件中禁止写死十六进制色值（评审可直接全局搜索 # 核验），一律引用 var(--sems-*)。
+ *
+ * 修改本文件必须同步修改设计书 10.5 的令牌表与变量映射表。
+ */
+
+:root {
+  /* 禁止整站深色模式（10.5 禁止事项 8）；深色仅用于平台端侧边栏 */
+  color-scheme: light;
+
+  /* ---------- 语义色 ---------- */
+  --sems-color-primary: #2563eb; /* 承载白字对比度 5.2:1，达 WCAG AA */
+  --sems-color-success: #15803d;
+  --sems-color-warning: #b45309;
+  --sems-color-danger: #dc2626;
+  --sems-color-info: #475569;
+
+  /* 状态标签的浅底（实心浅底样式用），由语义色与白底混合而来，避免另立色值表 */
+  --sems-color-primary-bg: color-mix(in srgb, var(--sems-color-primary) 10%, #fff);
+  --sems-color-success-bg: color-mix(in srgb, var(--sems-color-success) 10%, #fff);
+  --sems-color-warning-bg: color-mix(in srgb, var(--sems-color-warning) 10%, #fff);
+  --sems-color-danger-bg: color-mix(in srgb, var(--sems-color-danger) 10%, #fff);
+  --sems-color-info-bg: color-mix(in srgb, var(--sems-color-info) 10%, #fff);
+
+  /* ---------- 底色 ---------- */
+  /* 白色基准：状态标签的浅底、语义色亮阶等混色都以它为底，
+     集中定义后组件里就不必再出现任何字面色值（设计书 10.5 禁止事项 1） */
+  --sems-color-white: #ffffff;
+
+  --sems-bg-page: #f5f7fa;
+  --sems-bg-card: #ffffff;
+  --sems-bg-hover: #f1f5f9; /* 表格行悬停 */
+  --sems-bg-sidebar: #1e293b; /* 平台端侧边栏（全站唯一的深色区） */
+
+  /* ---------- 文字 ---------- */
+  --sems-text-primary: #1e293b;
+  --sems-text-regular: #334155;
+  --sems-text-secondary: #64748b;
+  --sems-text-inverse: #ffffff; /* 深色底上的文字 */
+
+  /* ---------- 描边 ---------- */
+  --sems-border: #e2e8f0; /* 边框、表格线、分隔线同值 */
+
+  /* ---------- 字号（仅此六档） ---------- */
+  --sems-font-aux: 12px; /* 辅助 */
+  --sems-font-table: 13px; /* 表格 */
+  --sems-font-body: 14px; /* 正文 */
+  --sems-font-subtitle: 16px; /* 小标题 */
+  --sems-font-title: 20px; /* 页标题 */
+  --sems-font-kpi: 28px; /* KPI 数字 */
+
+  /* ---------- 字号语义别名 ---------- */
+  --sems-font-size-xs: var(--sems-font-aux);
+  --sems-font-size-sm: var(--sems-font-table);
+  --sems-font-size-base: var(--sems-font-body);
+  --sems-font-size-lg: var(--sems-font-subtitle);
+  --sems-font-size-xl: var(--sems-font-title);
+  --sems-font-size-kpi: var(--sems-font-kpi);
+
+  /* ---------- 字重 ---------- */
+  --sems-font-weight-medium: 500;
+  --sems-font-weight-bold: 600;
+
+  /* ---------- 间距（仅此六档） ---------- */
+  --sems-space-1: 4px;
+  --sems-space-2: 8px;
+  --sems-space-3: 12px;
+  --sems-space-4: 16px;
+  --sems-space-5: 24px;
+  --sems-space-6: 32px;
+
+  /* ---------- 圆角（仅此三档） ---------- */
+  --sems-radius-card: 12px;
+  --sems-radius-base: 8px; /* 按钮与输入框 */
+  --sems-radius-tag: 4px;
+
+  /* ---------- 阴影（仅两档） ---------- */
+  --sems-shadow-card: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --sems-shadow-popup: 0 8px 24px rgba(15, 23, 42, 0.1);
+
+  /* ---------- 图表色板（与语义色分离，饼图 ≤3 类） ---------- */
+  --sems-chart-1: #2563eb;
+  --sems-chart-2: #0d9488;
+  --sems-chart-3: #7c3aed;
+  --sems-chart-4: #d97706;
+  --sems-chart-5: #db2777;
+
+  /* ---------- 快递袋状态色（全量 11 态，与设计书 3.1 一一对应） ----------
+   * 颜色相同者靠「描边/实心」区分；标签一律「色 + 文案」，不允许靠颜色单独承载语义。 */
+  --sems-bag-inactive: #64748b; /* 未激活  中性灰描边 */
+  --sems-bag-idle: #2563eb; /* 空闲    主色描边 */
+  --sems-bag-allocated: #2563eb; /* 已分配  主色实心浅底 */
+  --sems-bag-in-use: #0d9488; /* 使用中  青色实心浅底 */
+  --sems-bag-returning: #475569; /* 回收在途 info 实心浅底 */
+  --sems-bag-transferring: #475569; /* 调拨在途 info 描边 */
+  --sems-bag-to-disinfect: #b45309; /* 待消毒  warning 实心浅底 */
+  --sems-bag-reusable: #15803d; /* 可复用  success 实心浅底 */
+  --sems-bag-repairing: #7c3aed; /* 维修中  紫色（刻意不用橙，避免与待消毒混淆） */
+  --sems-bag-scrapped: #dc2626; /* 报废    danger 实心浅底 */
+  --sems-bag-lost: #991b1b; /* 已遗失  深红描边 */
+
+  /* ---------- 订单状态色（6 态 + 1 标记，与设计书 3.6 对应） ---------- */
+  --sems-order-pending-send: var(--sems-color-primary);
+  --sems-order-in-use: #0d9488;
+  --sems-order-pending-confirm: var(--sems-color-info);
+  --sems-order-finished: var(--sems-color-success);
+  --sems-order-cancelled: var(--sems-text-secondary);
+  --sems-order-lost: #991b1b;
+  --sems-order-timeout: var(--sems-color-warning); /* 超时是标记不是状态，叠加在「使用中」上 */
+
+  /* ---------- 布局尺寸 ---------- */
+  --sems-sidebar-width: 240px;
+  --sems-sidebar-width-collapsed: 64px;
+  --sems-h5-max-width: 480px; /* >768px 时用户端居中为 480px 窄栏 */
+  --sems-h5-gutter: 16px; /* H5 页边距 */
+  --sems-row-height: 48px; /* 站点端/平台端表格行高 */
+  --sems-touch-target: 44px; /* 移动端最小热区 */
+  --sems-btn-height-touch: 48px; /* 移动端主操作按钮高度 */
+  --sems-header-height: 56px;
+
+  /* ---------- 动效 ---------- */
+  --sems-duration-fast: 0.15s;
+  --sems-duration-base: 0.25s;
+}

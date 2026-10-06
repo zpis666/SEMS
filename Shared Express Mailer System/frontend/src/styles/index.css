@@ -1,0 +1,90 @@
+/**
+ * 全局样式入口 —— 只做三件事：引令牌、引 Element Plus 覆盖、定义极少量全局基线。
+ * 页面级样式一律写在各自 <style scoped> 里，不要在全局文件里堆页面规则。
+ */
+
+@import './tokens.css';
+@import './element-override.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--sems-bg-page);
+  color: var(--sems-text-regular);
+  font-size: var(--sems-font-size-base);
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 页面标题：全站统一一档，避免各页自己定字号 */
+.sems-page-title {
+  margin: 0;
+  font-size: var(--sems-font-size-xl);
+  font-weight: var(--sems-font-weight-bold);
+  color: var(--sems-text-primary);
+}
+
+/* 卡片区块标题 */
+.sems-section-title {
+  margin: 0;
+  font-size: var(--sems-font-size-lg);
+  font-weight: var(--sems-font-weight-bold);
+  color: var(--sems-text-primary);
+}
+
+/* 次要说明文字 */
+.sems-text-muted {
+  color: var(--sems-text-secondary);
+  font-size: var(--sems-font-size-sm);
+}
+
+/* 等宽字体：袋码展示与复制用（设计书 10.5「袋码用等宽字体展示」） */
+.sems-mono {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+/* 滚动条：避免各页系统默认样式不一致 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--sems-border);
+  border-radius: var(--sems-radius-tag);
+}
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/**
+ * 响应式：<768px 全站单列，表格一律转为卡片列表（设计书 10.5 明确禁止横向滚动）。
+ * 页面用 .sems-table-cards 包裹表格，并在移动端用 .sems-card-only 展示卡片版。
+ */
+@media (max-width: 767px) {
+  .sems-desktop-only {
+    display: none !important;
+  }
+  .sems-page-title {
+    font-size: var(--sems-font-size-lg);
+  }
+}
+@media (min-width: 768px) {
+  .sems-mobile-only {
+    display: none !important;
+  }
+}

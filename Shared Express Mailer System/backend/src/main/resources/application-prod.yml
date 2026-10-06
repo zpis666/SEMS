@@ -1,0 +1,37 @@
+# 生产环境（云服务器：Nginx 反向代理 + 本服务 + MySQL 8.0 + Redis 7，见设计书第 11 章）
+#
+# 【密钥纪律】本文件不含任何口令明文：数据库口令、Redis 口令、JWT 密钥
+# 一律由 systemd 环境变量或启动参数注入（见设计书 11.2/11.3），禁止写入本文件。
+spring:
+  datasource:
+    url: ${SEMS_DB_URL}
+    username: ${SEMS_DB_USER}
+    password: ${SEMS_DB_PASSWORD}
+  data:
+    redis:
+      host: ${SEMS_REDIS_HOST}
+      port: ${SEMS_REDIS_PORT:6379}
+      password: ${SEMS_REDIS_PASSWORD}
+
+sems:
+  jwt:
+    # ≥32 字节 CSPRNG 随机值；双密钥轮换与泄露应急见设计书 11.3
+    secret: ${SEMS_JWT_SECRET}
+  qrcode:
+    domain: ${SEMS_QRCODE_DOMAIN}
+  security:
+    # 收件人手机号 HMAC 密钥：与 JWT 密钥同等对待，纳入密钥清单（见设计书 11.3）
+    recipient-hmac-key: ${SEMS_RECIPIENT_HMAC_KEY}
+    recipient-hmac-key-version: ${SEMS_RECIPIENT_HMAC_KEY_VERSION:v1}
+
+# 生产关闭接口文档暴露（见设计书 6.5）
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+logging:
+  level:
+    root: info
+    com.sems: info

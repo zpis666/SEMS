@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.5.16</version>
+    <relativePath/>
+  </parent>
+
+  <groupId>com.sems</groupId>
+  <artifactId>sems-backend</artifactId>
+  <version>0.1.0</version>
+  <name>sems-backend</name>
+  <description>共享快递袋系统（Shared Express Mailer System，SEMS）后端服务</description>
+
+  <!--
+    版本基线：见《系统设计说明书》2.4 技术选型与依赖坐标表。
+    偏离基线须在该文档「修订历史」中登记原因。
+    2026-10-06 经阿里云仓库核对：Spring Boot 3.5.x 末版为 3.5.16。
+  -->
+  <properties>
+    <java.version>21</java.version>
+    <maven.compiler.release>21</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <mybatis-plus.version>3.5.17</mybatis-plus.version>
+    <jjwt.version>0.13.0</jjwt.version>
+    <zxing.version>3.5.4</zxing.version>
+    <springdoc.version>2.9.1</springdoc.version>
+    <lombok.version>1.18.48</lombok.version>
+  </properties>
+
+  <dependencies>
+    <!-- Web / JSON -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <!-- 参数校验（JSR-303，见设计书 6.6 / 10.4 前后端校验分工） -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+
+    <!-- WebSocket 实时推送（见设计书 7.3） -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-websocket</artifactId>
+    </dependency>
+
+    <!--
+      AOP：操作审计切面（@AuditLog，见设计书 7.6）依赖 aspectjweaver。
+      spring-boot-starter-aop 会自动带上 aspectjweaver 并把 @EnableAspectJAutoProxy 生效；
+      不引入则 org.aspectj.lang 全部找不到，AuditAspect 无法编译。
+    -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-aop</artifactId>
+    </dependency>
+
+    <!-- Redis（默认 Lettuce），承载 7.2 的库存原子扣减与各类计数 -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+
+    <!-- ORM：MyBatis-Plus（Boot 3 专用 starter） -->
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+      <version>${mybatis-plus.version}</version>
+    </dependency>
+
+    <!--
+      分页插件所属模块：MyBatis-Plus 3.5.9 起把依赖 JSqlParser 的能力
+      （PaginationInnerInterceptor 等）从核心包拆到了本 artifact，不引入则分页拦截器无法解析。
+      乐观锁 OptimisticLockerInnerInterceptor 不依赖它，属核心包。
+    -->
+    <dependency>
+      <groupId>com.baomidou</groupId>
+      <artifactId>mybatis-plus-jsqlparser</artifactId>
+      <version>${mybatis-plus.version}</version>
+    </dependency>
+
+    <!-- 数据库驱动 -->
+    <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- JWT 三件套：api 编译期，impl/jackson 运行期（见设计书 7.1） -->
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-api</artifactId>
+      <version>${jjwt.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-impl</artifactId>
+      <version>${jjwt.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-jackson</artifactId>
+      <version>${jjwt.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- 仅取 BCryptPasswordEncoder，不引入完整 Security 过滤链（见设计书 2.4 与 7.1） -->
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-crypto</artifactId>
+    </dependency>
+
+    <!-- 接口文档：自动生成 OpenAPI（生产关闭暴露，见设计书 6.5） -->
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>${springdoc.version}</version>
+    </dependency>
+
+    <!-- 二维码生成：袋码 PNG 批量打印（见设计书 7.4） -->
+    <dependency>
+      <groupId>com.google.zxing</groupId>
+      <artifactId>core</artifactId>
+      <version>${zxing.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.zxing</groupId>
+      <artifactId>javase</artifactId>
+      <version>${zxing.version}</version>
+    </dependency>
+
+    <!-- 样板代码：仅实体/DTO/配置类使用，Controller/Service/状态机核心类手写（见设计书 2.4） -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+      <optional>true</optional>
+    </dependency>
+
+    <!-- 测试 -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <!-- 命令行构建与 IDE 注解处理保持一致（见设计书 2.4 Lombok 取舍） -->
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${lombok.version}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+      <!--
+        必须显式把 JaCoCo 的 argLine 交给 Surefire。
+        JaCoCo 的 prepare-agent 只是把 `-javaagent:...jacoco...` 写进 argLine 属性，
+        真正把它传给测试 JVM 的必须是 Surefire 自己；不写这一段时 argLine 无人引用，
+        测试照样通过、看似一切正常，但 target/jacoco.exec 根本不会生成，
+        随后的 report 与 check 都会**静默跳过**（日志只说 "Skipping JaCoCo execution due to missing execution data file"），
+        门禁形同虚设——2026-10-06 实测踩过一次。
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <!-- 用 @{...} 而不是 ${...}：前者是 Maven 的**延迟求值**语法，在目标真正执行时才替换。
+               写成 ${argLine} 时，属性在模型插值阶段就被求值，而 jacoco:prepare-agent 要等到
+               initialize 阶段才设置它，于是这里被替换成空串——测试照跑、却没有 javaagent，
+               jacoco.exec 不会生成，report/check 双双静默跳过（已实测）。 -->
+          <argLine>@{argLine}</argLine>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+            </exclude>
+          </excludes>
+          <!--
+            mvnw spring-boot:run 默认激活 dev：这只是本地开发的便利，
+            让「clone 下来直接跑」不需要记额外参数。
+
+            为什么不配置在 application.yml 里：配在 yml 里会让打包出的 jar 也默认 dev，
+            生产一旦忘记显式切 profile 就会拿 application-dev.yml 中提交在库的固定 JWT 密钥对外服务
+            （公开密钥可伪造任意身份令牌，违背设计书 7.1/11.2）。放在这里则作用域仅限 run 目标，
+            java -jar 启动时仍会因缺少数据源与密钥直接失败（fail-closed），
+            必须显式给出 spring.profiles.active=prod 启动参数与全部环境变量。
+          -->
+          <profiles>
+            <profile>dev</profile>
+          </profiles>
+        </configuration>
+      </plugin>
+
+      <!--
+        覆盖率门禁（见《系统设计说明书》12.2：JaCoCo 接入 Maven 构建并设门禁，
+        核心类行覆盖 ≥70%、状态机分支覆盖 100%，未达标构建失败）。
+
+        门禁绑定在 verify 阶段（check 目标的默认绑定），因此日常的 test / package / spring-boot:run
+        不会因覆盖率不达标而中断；出《测试报告》时用 `./mvnw verify` 跑门禁，这是单元测试行的通过标准。
+        excludes：DTO/VO/实体/配置类属样板代码，不计入覆盖率分母，否则会把核心逻辑的覆盖率稀释掉。
+      -->
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.13</version>
+        <configuration>
+          <!--
+            【参数名必须写成 destFile（大写 F）】
+            JaCoCo 这个参数的正式名是 destFile。写成全小写的 destfile 时，Maven 只把它当作**未知参数**
+            静默忽略——普通构建完全看不出来，只有 -X 日志里有一行
+            "Parameter 'destfile' is unknown for plugin 'jacoco-maven-plugin:...:prepare-agent'"。
+            2026-10-06 实测踩过，后果是：prepare-agent 退回默认值（=${project.build.directory}/jacoco.exec），
+            而本工程目录含中文，该路径经 Surefire 转交 cmd.exe 时按 ANSI 代码页编码被毁，
+            于是 jacoco.exec 被写进工程上级目录下一个由乱码命名的影子目录里，
+            report 与 check 在正确的 target/ 下找不到数据文件，双双"静默跳过"，
+            而整个构建一直是 BUILD SUCCESS —— 门禁形同虚设，这比没有门禁更危险。
+
+            【为什么落在系统临时目录】
+            即便参数名写对，只要 destfile 落在含中文的项目路径下，javaagent 参数仍会在命令行上被转乱。
+            因此这里指向 java.io.tmpdir（纯 ASCII），从根上避开非 ASCII 字符。
+            dataFile 是 report/check 的对应参数（同样驼峰），由 Maven 进程在本进程内读取、不经命令行。
+          -->
+          <destFile>${java.io.tmpdir}/sems-jacoco.exec</destFile>
+          <dataFile>${java.io.tmpdir}/sems-jacoco.exec</dataFile>
+          <excludes>
+            <exclude>com/sems/**/dto/**</exclude>
+            <exclude>com/sems/**/entity/**</exclude>
+            <exclude>com/sems/**/*Vo.class</exclude>
+            <exclude>com/sems/**/*Dto.class</exclude>
+            <exclude>com/sems/**/*Query.class</exclude>
+            <exclude>com/sems/config/**</exclude>
+            <exclude>com/sems/SemsApplication.class</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>check-coverage</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>0.70</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+                <rule>
+                  <element>CLASS</element>
+                  <includes>
+                    <include>com.sems.module.statemachine.*</include>
+                  </includes>
+                  <limits>
+                    <limit>
+                      <counter>BRANCH</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>1.00</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <!--
+      供应链依赖安全扫描（见《系统设计说明书》9.7 与 NFR-SEC-10：Maven 侧接入 OWASP Dependency-Check，
+      发现 CVSS ≥9 的高危依赖须评估升级/替换并记录处置结论）。
+
+      为什么放在独立 profile 而不是默认 build：
+        ① 扫描要联网更新 NVD 漏洞库，首次运行需数分钟，不能拖慢日常的 build/test/package；
+        ② failBuildOnCVSS=9 会在命中高危依赖时让构建失败——这是有意的门禁（NFR-SEC-10），
+           只应出现在专门的扫描流程里，不能拦住日常开发与单元测试。
+      用法（在 backend 目录，check 目标默认绑定 verify 阶段）：
+        ./mvnw -Psecurity-scan verify
+            → 扫描并出报告：target/dependency-check-report.html（人工阅读）与 .json（留档）；
+              存在 CVSS ≥9 的依赖时构建失败，须评估升级/替换并在《测试报告》记录结论。
+        ./mvnw -Psecurity-scan -Ddependency-check.skip=true verify   # 临时跳过扫描
+        ./mvnw -Psecurity-scan -DfailBuildOnCVSS=11 verify           # 只出报告不设门禁（11 为默认值=不失败）
+      可选：设置环境变量 NVD_API_KEY（NVD 官方 API Key）可显著加快漏洞库更新；
+        未设置时走匿名限速下载，首次运行较慢，属预期行为。
+      版本 13.0.0 为 2026-10-06 经阿里云公共仓库核对的最新稳定版。
+      注意：9.7 的前端侧 npm audit 不在本文件范围，需另行接入。
+    -->
+    <profile>
+      <id>security-scan</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.owasp</groupId>
+            <artifactId>dependency-check-maven</artifactId>
+            <version>13.0.0</version>
+            <configuration>
+              <!-- NFR-SEC-10：CVSS ≥9 视为高危，构建失败以强制评估处置 -->
+              <failBuildOnCVSS>9</failBuildOnCVSS>
+              <formats>
+                <format>HTML</format>
+                <format>JSON</format>
+              </formats>
+              <!-- 只从环境变量取 API Key，避免命令行明文进构建日志 -->
+              <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
+            </configuration>
+            <executions>
+              <execution>
+                <id>dependency-check</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>

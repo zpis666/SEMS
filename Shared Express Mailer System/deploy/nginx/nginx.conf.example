@@ -1,0 +1,127 @@
+# ============================================================
+# 共享快递袋系统（Shared Express Mailer System）Nginx 示例配置
+# 本文件为示例：生产部署时请按实际域名与证书路径替换后再使用。
+# 对应《系统设计说明书》11.1 部署拓扑、11.2 配置管理与安全响应头、9.1 双层限流。
+# 职责：TLS 终结 · 静态资源托管（Vue dist）· /api 反向代理 · /ws 升级代理 ·
+#       gzip · 安全响应头 · 限流兜底（登录/申领/扫码三桶）。
+# 限流口径：超限一律由 Nginx 直接返回 429（不带业务错误码，前端按 429 统一提示）；
+#           应用层限流仍由后端返回既有业务码（5101/4109/4104 等），两者不混用。
+# ============================================================
+
+worker_processes  auto;
+
+events {
+    worker_connections  10240;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile      on;
+    keepalive_timeout  65;
+
+    gzip  on;
+    gzip_min_length  1k;
+    gzip_vary  on;
+    gzip_types  text/plain text/css application/javascript application/json image/svg+xml;
+
+    # ---------- 限流三桶（数值与《系统设计说明书》11.2 口径一致） ----------
+    # 登录 10r/m（突发 5）· 申领 30r/m（突发 10）· 扫码信息查询 120r/m（突发 30）；
+    # 熔断降级期由本三桶按 IP 兜底（见设计书 7.2 降级矩阵）。
+    limit_req_zone $binary_remote_addr zone=login_zone:10m  rate=10r/m;
+    limit_req_zone $binary_remote_addr zone=borrow_zone:10m rate=30r/m;
+    limit_req_zone $binary_remote_addr zone=scan_zone:10m   rate=120r/m;
+    # 超限一律 429（Nginx 默认 503，必须显式指定）
+    limit_req_status 429;
+
+    # 后端 Spring Boot 服务（systemd 托管，仅监听 127.0.0.1:8080，见 11.1）
+    upstream sems_backend {
+        server 127.0.0.1:8080;
+    }
+
+    # 80 端口强制跳转 443
+    server {
+        listen       80;
+        server_name  sems.example.com;   # 示例域名，按实际替换
+        return 301 https://$host$request_uri;
+    }
+
+    server {
+        # 如需启用 HTTP/2：Nginx ≥ 1.25.1 用「http2 on;」，更早版本用「listen 443 ssl http2;」
+        listen       443 ssl;
+        server_name  sems.example.com;   # 示例域名，按实际替换
+
+        # 证书路径按实际替换
+        ssl_certificate      /etc/nginx/ssl/sems.example.com.crt;
+        ssl_certificate_key  /etc/nginx/ssl/sems.example.com.key;
+        ssl_protocols        TLSv1.2 TLSv1.3;
+
+        # ---------- 安全响应头（见设计书 11.2） ----------
+        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-Frame-Options "DENY" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+        add_header Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; connect-src 'self' wss:; form-action 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'" always;
+
+        # ---------- 静态资源：Vue 构建产物（SPA history 回退） ----------
+        root   /usr/share/nginx/html;
+        index  index.html;
+
+        location / {
+            try_files $uri $uri/ /index.html;
+        }
+
+        # ---------- 限流接口一：登录（10r/m，突发 5） ----------
+        location = /api/v1/auth/login {
+            limit_req zone=login_zone burst=5 nodelay;
+            proxy_pass http://sems_backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        # ---------- 限流接口二：申领取袋（30r/m，突发 10） ----------
+        location = /api/v1/borrows {
+            limit_req zone=borrow_zone burst=10 nodelay;
+            proxy_pass http://sems_backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        # ---------- 限流接口三：扫码信息查询（120r/m，突发 30） ----------
+        location ~ ^/api/v1/bags/[^/]+/info$ {
+            limit_req zone=scan_zone burst=30 nodelay;
+            proxy_pass http://sems_backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        # ---------- 其余 API 反向代理 ----------
+        location /api/ {
+            proxy_pass http://sems_backend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        # ---------- WebSocket（首帧 auth 帧鉴权，见设计书 7.3） ----------
+        location /ws {
+            proxy_pass http://sems_backend;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_read_timeout 300s;
+            proxy_buffering off;
+        }
+    }
+}

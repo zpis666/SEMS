@@ -1,0 +1,157 @@
+/**
+ * Element Plus 变量覆盖 — 全站唯一出处
+ *
+ * 权威定义见《系统设计说明书》10.5 的「Element Plus 变量映射」表。
+ * 这里把 Element Plus 的 --el-* 变量重绑到本工程的 --sems-* 令牌上，
+ * 使组件库不引入第二套颜色体系（设计书禁止事项 5：禁止绕过变量直接使用原生冷灰与默认亮阶）。
+ *
+ * 【必须全量覆盖亮阶】只改 --el-color-primary 而不改 light-3/5/7/8/9，
+ * 会导致按钮 hover/disabled、tag 浅底等状态回退成 Element Plus 默认蓝，页面上出现「两套蓝」。
+ * 亮阶一律用 color-mix 由令牌算得，不另立十六进制值——保证换主色时全站一致跟随。
+ *
+ * 亮阶语义（与 Element Plus 数值定义一致）：light-N = 令牌色与白色按 (100-N)% : N% 混合。
+ */
+
+:root {
+  /* ---------- 主色及其亮阶 ---------- */
+  --el-color-primary: var(--sems-color-primary);
+  --el-color-primary-light-3: color-mix(in srgb, var(--sems-color-primary) 70%, #fff);
+  --el-color-primary-light-5: color-mix(in srgb, var(--sems-color-primary) 50%, #fff);
+  --el-color-primary-light-7: color-mix(in srgb, var(--sems-color-primary) 30%, #fff);
+  --el-color-primary-light-8: color-mix(in srgb, var(--sems-color-primary) 20%, #fff);
+  --el-color-primary-light-9: color-mix(in srgb, var(--sems-color-primary) 10%, #fff);
+  --el-color-primary-dark-2: color-mix(in srgb, var(--sems-color-primary) 80%, #000);
+
+  /* ---------- 语义色及其亮阶 ---------- */
+  --el-color-success: var(--sems-color-success);
+  --el-color-success-light-3: color-mix(in srgb, var(--sems-color-success) 70%, #fff);
+  --el-color-success-light-5: color-mix(in srgb, var(--sems-color-success) 50%, #fff);
+  --el-color-success-light-7: color-mix(in srgb, var(--sems-color-success) 30%, #fff);
+  --el-color-success-light-8: color-mix(in srgb, var(--sems-color-success) 20%, #fff);
+  --el-color-success-light-9: color-mix(in srgb, var(--sems-color-success) 10%, #fff);
+  --el-color-success-dark-2: color-mix(in srgb, var(--sems-color-success) 80%, #000);
+
+  --el-color-warning: var(--sems-color-warning);
+  --el-color-warning-light-3: color-mix(in srgb, var(--sems-color-warning) 70%, #fff);
+  --el-color-warning-light-5: color-mix(in srgb, var(--sems-color-warning) 50%, #fff);
+  --el-color-warning-light-7: color-mix(in srgb, var(--sems-color-warning) 30%, #fff);
+  --el-color-warning-light-8: color-mix(in srgb, var(--sems-color-warning) 20%, #fff);
+  --el-color-warning-light-9: color-mix(in srgb, var(--sems-color-warning) 10%, #fff);
+  --el-color-warning-dark-2: color-mix(in srgb, var(--sems-color-warning) 80%, #000);
+
+  --el-color-danger: var(--sems-color-danger);
+  --el-color-danger-light-3: color-mix(in srgb, var(--sems-color-danger) 70%, #fff);
+  --el-color-danger-light-5: color-mix(in srgb, var(--sems-color-danger) 50%, #fff);
+  --el-color-danger-light-7: color-mix(in srgb, var(--sems-color-danger) 30%, #fff);
+  --el-color-danger-light-8: color-mix(in srgb, var(--sems-color-danger) 20%, #fff);
+  --el-color-danger-light-9: color-mix(in srgb, var(--sems-color-danger) 10%, #fff);
+  --el-color-danger-dark-2: color-mix(in srgb, var(--sems-color-danger) 80%, #000);
+
+  /* Element Plus 内部错误态读 --el-color-error，必须与 danger 同值，否则表单校验红字与危险按钮不同色 */
+  --el-color-error: var(--sems-color-danger);
+  --el-color-error-light-3: var(--el-color-danger-light-3);
+  --el-color-error-light-5: var(--el-color-danger-light-5);
+  --el-color-error-light-7: var(--el-color-danger-light-7);
+  --el-color-error-light-8: var(--el-color-danger-light-8);
+  --el-color-error-light-9: var(--el-color-danger-light-9);
+  --el-color-error-dark-2: var(--el-color-danger-dark-2);
+
+  --el-color-info: var(--sems-color-info);
+  --el-color-info-light-3: color-mix(in srgb, var(--sems-color-info) 70%, #fff);
+  --el-color-info-light-5: color-mix(in srgb, var(--sems-color-info) 50%, #fff);
+  --el-color-info-light-7: color-mix(in srgb, var(--sems-color-info) 30%, #fff);
+  --el-color-info-light-8: color-mix(in srgb, var(--sems-color-info) 20%, #fff);
+  --el-color-info-light-9: color-mix(in srgb, var(--sems-color-info) 10%, #fff);
+  --el-color-info-dark-2: color-mix(in srgb, var(--sems-color-info) 80%, #000);
+
+  /* ---------- 文字 ---------- */
+  --el-text-color-primary: var(--sems-text-primary);
+  --el-text-color-regular: var(--sems-text-regular);
+  --el-text-color-secondary: var(--sems-text-secondary);
+  --el-text-color-placeholder: var(--sems-text-secondary);
+  --el-text-color-disabled: color-mix(in srgb, var(--sems-text-secondary) 55%, #fff);
+  --el-text-color-primary-on-dark: var(--sems-text-inverse);
+
+  /* ---------- 描边 ---------- */
+  --el-border-color: var(--sems-border);
+  --el-border-color-light: var(--sems-border);
+  --el-border-color-lighter: var(--sems-border);
+  --el-border-color-extra-light: var(--sems-border);
+  --el-border-color-dark: color-mix(in srgb, var(--sems-border) 85%, #000);
+  --el-border-color-darker: color-mix(in srgb, var(--sems-border) 75%, #000);
+  --el-border-color-hover: var(--sems-text-secondary);
+  --el-border-color-disabled: var(--sems-border);
+
+  /* ---------- 填充与底色 ---------- */
+  --el-bg-color: var(--sems-bg-card);
+  --el-bg-color-page: var(--sems-bg-page);
+  --el-bg-color-overlay: var(--sems-bg-card);
+  --el-fill-color: var(--sems-bg-hover);
+  --el-fill-color-light: var(--sems-bg-hover);
+  --el-fill-color-lighter: var(--sems-bg-page);
+  --el-fill-color-extra-light: var(--sems-bg-page);
+  --el-fill-color-blank: var(--sems-bg-card);
+  --el-fill-color-dark: color-mix(in srgb, var(--sems-bg-hover) 92%, #000);
+  --el-fill-color-darker: color-mix(in srgb, var(--sems-bg-hover) 85%, #000);
+  --el-mask-color: rgba(255, 255, 255, 0.9);
+
+  /* ---------- 圆角：仅三档（设计书 10.5） ---------- */
+  --el-border-radius-base: var(--sems-radius-base);
+  --el-border-radius-small: var(--sems-radius-tag);
+  --el-border-radius-round: 20px;
+  --el-border-radius-circle: 100%;
+
+  /* ---------- 字号 ---------- */
+  --el-font-size-base: var(--sems-font-size-base);
+  --el-font-size-small: var(--sems-font-size-sm);
+  --el-font-size-extra-small: var(--sems-font-size-xs);
+  --el-font-size-medium: var(--sems-font-size-lg);
+  --el-font-size-large: var(--sems-font-size-lg);
+
+  /* ---------- 阴影：仅两档（设计书 10.5） ---------- */
+  --el-box-shadow: var(--sems-shadow-popup);
+  --el-box-shadow-light: var(--sems-shadow-card);
+  --el-box-shadow-lighter: var(--sems-shadow-card);
+  --el-box-shadow-dark: var(--sems-shadow-popup);
+}
+
+/* ============================================================
+ * 少量结构性覆盖：Element Plus 的默认视觉与本项目规范冲突之处。
+ * 原则是「组件自身样式能用变量解决的就不用这里」，此处只放变量解决不了的。
+ * ============================================================ */
+
+/* 表格行高统一 48px（设计书 10.5 站点端/平台端），并用令牌的表格字号 13px。
+ * 注意：Element Plus **没有** --el-table-row-height 这个变量（写过也不生效），
+ * 行高由单元格的 padding 撑出来，所以这里直接给单元格设 height（表格布局下等价于最小行高）。 */
+.el-table {
+  font-size: var(--sems-font-table);
+  color: var(--sems-text-regular);
+}
+.el-table .el-table__cell {
+  height: var(--sems-row-height);
+  padding: var(--sems-space-2) var(--sems-space-3);
+}
+.el-table th.el-table__cell {
+  background-color: var(--sems-bg-page);
+  color: var(--sems-text-secondary);
+  font-weight: var(--sems-font-weight-medium);
+}
+
+/* 卡片统一用令牌阴影与圆角，避免各页各自设置 */
+.el-card {
+  border-radius: var(--sems-radius-card);
+  border-color: var(--sems-border);
+  box-shadow: var(--sems-shadow-card);
+}
+
+/* 按钮圆角与字重统一 */
+.el-button {
+  border-radius: var(--sems-radius-base);
+  font-weight: var(--sems-font-weight-medium);
+}
+
+/* 数字类展示统一等宽数字，避免表格与看板数字跳动（设计书 10.5「数字用 tabular-nums 对齐」） */
+.sems-num,
+.el-table td .sems-num {
+  font-variant-numeric: tabular-nums;
+}

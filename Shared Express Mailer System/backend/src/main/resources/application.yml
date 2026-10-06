@@ -1,0 +1,104 @@
+# 公共配置（配置键清单与来源见《系统设计说明书》11.2）
+# 分环境覆盖：application-dev.yml（本地容器）/ application-prod.yml（云服务器，密钥走环境变量）
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
+spring:
+  application:
+    name: sems-backend
+  # 【为什么不默认激活 dev】曾经此处写死 `profiles.active: dev`：生产一旦忘记显式切换 profile，
+  # 就会以 application-dev.yml 中提交在库的固定 JWT 密钥对外服务——公开密钥可被用于伪造
+  # 任意身份令牌，违背设计书 7.1/11.2「密钥从环境变量注入，不入库不入码」。
+  # 现在不设默认 profile：未显式指定时，应用会因缺少数据源与 JWT 密钥而直接启动失败（fail-closed），
+  # 绝不会静默用开发配置运行。启动方式：
+  #   · 本地开发：./mvnw spring-boot:run -Dspring-boot.run.profiles=dev（或设 SPRING_PROFILES_ACTIVE=dev）
+  #   · 生产部署：启动参数/环境变量显式指定 prod（密钥注入见 11.2/11.3）
+  # profiles.active: dev   ← 不再启用
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    default-property-inclusion: non_null
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+  data:
+    redis:
+      timeout: 3s
+      lettuce:
+        pool:
+          max-active: 16
+          max-idle: 8
+          min-idle: 2
+
+mybatis-plus:
+  mapper-locations: classpath*:mapper/**/*.xml
+  # 【别名范围只给实体包，不要写成 com.sems.module】
+  # MyBatis 的类型别名按「简单类名」注册，写大了会踩同名冲突：M1 与 M4 各有一个语义不同的
+  # UpdateStationDto（编辑站点 / 给用户绑定站点），别名注册时直接抛
+  # "The alias 'XXX' is already mapped to the value ..." 导致 SqlSessionFactory 建不出来、应用起不来。
+  # 别名本是给 XML 映射文件的结果类型用的，而本项目全部用 MyBatis-Plus 注解式 Mapper（无 XML），
+  # 因此这里只需覆盖实体包，既满足将来可能新增的 XML，又彻底避开 DTO 同名这一类问题。
+  type-aliases-package: >-
+    com.sems.module.user.entity,
+    com.sems.module.bag.entity,
+    com.sems.module.station.entity,
+    com.sems.module.order.entity,
+    com.sems.module.stats.entity,
+    com.sems.module.audit.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    # 全程预编译 #{}、禁用 ${}（见设计书 9.4 注入防护）
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+      # 本系统不使用逻辑删除（见设计书 8.2 与《数据库设计说明书》2.3）
+
+# 业务参数：口径唯一出处为《系统设计说明书》3.5「关键时限与计数口径表」，
+# 此处只做「可配置化」落地，默认值必须与 3.5 保持逐字一致，改动须同步 3.5 与本文档。
+sems:
+  jwt:
+    access-ttl: 2h
+    renew-threshold: 30m
+  qrcode:
+    domain: ""            # 按部署域名配置（见设计书 7.4），dev 见 application-dev.yml
+  borrow:
+    open-limit: 3         # 在持袋数上限
+    daily-limit: 10       # 取袋日频次
+  auth:
+    lock-max-fails: 5
+    lock-minutes: 15
+  hold:
+    ttl: 25h              # 预扣凭据 TTL
+  batch:
+    max-size: 500         # 批量接口默认上限
+    disinfect-max: 200    # 消毒登记特例
+  lost:
+    confirm-days: 14      # 遗失认定：寄件后 N 天
+  alloc:
+    timeout-hours: 48     # 调拨在途超时
+  security:
+    # 收件人手机号 HMAC-SHA256 密钥（见设计书 8.2/9.5）：仅作留存证据，不提供比对入口。
+    # 生产必须由环境变量注入并纳入密钥清单（11.3）；轮换时对存量哈希做版本标记。
+    recipient-hmac-key: ${SEMS_RECIPIENT_HMAC_KEY:dev-only-hmac-key-change-me}
+    recipient-hmac-key-version: v1
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    root: info
+    com.sems: debug
+  file:
+    name: logs/sems-backend.log

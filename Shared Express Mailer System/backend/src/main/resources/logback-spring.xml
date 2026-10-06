@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  应用日志配置（见《系统设计说明书》11.2「日志 Logback 按天滚动、保留 30 天」与 NFR-MNT-03）。
+
+  为什么需要本文件：仅靠 application.yml 的 logging.file.name 只能得到单个不滚动文件——
+  无法按天检索、文件大小无上限；此处显式声明「按天 + 按大小」滚动与 30 天保留策略。
+  日志文件路径仍以 application.yml 的 logging.file.name 为准（本文件只提供同值兜底，
+  避免两处配置漂移）；日志级别仍由 application.yml 的 logging.level.* 控制
+  （Spring Boot 载入本文件后会叠加级别配置），此处不重复声明，保持「配置键唯一出处」。
+  审计日志的 ≥180 天保留为数据库侧策略（7.6/11.2），不属本文件职责。
+-->
+<configuration>
+
+    <!-- 复用 Spring Boot 标准日志格式与颜色转换（含 PID、应用名、%clr/%wEx 等转换规则） -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <!-- 日志文件路径：取 application.yml 的 logging.file.name（默认 logs/sems-backend.log，与 11.2 一致） -->
+    <springProperty scope="context" name="LOG_FILE" source="logging.file.name"
+                    defaultValue="logs/sems-backend.log"/>
+
+    <!-- 应用日志文件：按天滚动（%d{yyyy-MM-dd}）+ 单文件 100MB 上限，最多保留 30 天（11.2） -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- %i 为同一天内的分卷序号；gz 压缩归档，控制磁盘占用 -->
+            <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <!-- 保留 30 个自然日（设计书 11.2「保留 30 天」） -->
+            <maxHistory>30</maxHistory>
+            <!-- 总量兜底：防止单日日志洪峰把磁盘写满（11.2 生产环境要求可管可控） -->
+            <totalSizeCap>3GB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 级别由 application.yml 的 logging.level.*（含 profile 覆盖）在加载后叠加，这里只声明根级别缺省值 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>
