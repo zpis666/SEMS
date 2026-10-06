@@ -11,7 +11,7 @@ SET NAMES utf8mb4;
 
 -- ---------- sys_user：用户账号表（三角色共用） ----------
 CREATE TABLE IF NOT EXISTS `sys_user` (
-  `id` bigint unsigned NOT NULL COMMENT '用户ID（自增主键）',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID（自增主键）',
   `phone` varchar(11) NOT NULL COMMENT '登录手机号，出参脱敏',
   `password` varchar(60) NOT NULL COMMENT '密码BCrypt摘要（cost≥10）',
   `nickname` varchar(32) NOT NULL COMMENT '昵称（注册必填）',
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `sys_user` (
 
 -- ---------- sys_role：角色表（三行预置，权限点走注解） ----------
 CREATE TABLE IF NOT EXISTS `sys_role` (
-  `id` bigint unsigned NOT NULL COMMENT '角色ID（自增主键）',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '角色ID（自增主键）',
   `role_code` varchar(20) NOT NULL COMMENT '角色码，预置三类固定值',
   `role_name` varchar(32) NOT NULL COMMENT '角色名称（普通用户/站点管理员/平台管理员）',
   `description` varchar(255) COMMENT '角色说明',
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `sys_role` (
 
 -- ---------- sys_user_role：用户与角色关联表 ----------
 CREATE TABLE IF NOT EXISTS `sys_user_role` (
-  `id` bigint unsigned NOT NULL COMMENT '关联ID（自增主键）',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '关联ID（自增主键）',
   `user_id` bigint unsigned NOT NULL COMMENT '用户ID',
   `role_id` bigint unsigned NOT NULL COMMENT '角色ID',
   `created_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '授予时间',
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `sys_user_role` (
 
 -- ---------- station：共享站点（袋收发与回收服务点） ----------
 CREATE TABLE IF NOT EXISTS `station` (
-  `id` bigint unsigned NOT NULL COMMENT '站点ID，自增主键',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '站点ID，自增主键',
   `name` varchar(50) NOT NULL COMMENT '站点名称，全平台唯一',
   `address` varchar(200) NOT NULL COMMENT '站点地址（展示与就近引导）',
   `open_time` varchar(50) COMMENT '开放时段展示文本，不做硬校验',
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `station` (
 
 -- ---------- stock_record：站点出入库流水（只插入） ----------
 CREATE TABLE IF NOT EXISTS `stock_record` (
-  `id` bigint unsigned NOT NULL COMMENT '流水ID，自增主键',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '流水ID，自增主键',
   `station_id` bigint unsigned NOT NULL COMMENT '发生出入库的站点ID',
   `bag_code` varchar(20) NOT NULL COMMENT '快递袋编码，关联 bag.bag_code',
   `type` varchar(20) NOT NULL COMMENT '类型：IN入库/OUT出库/SCRAP_OUT报废出库',
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `stock_record` (
 
 -- ---------- bag：快递袋档案（全生命周期底账） ----------
 CREATE TABLE IF NOT EXISTS `bag` (
-  `id` bigint unsigned NOT NULL COMMENT '主键ID（自增）',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID（自增）',
   `bag_code` varchar(20) NOT NULL COMMENT '袋编码：SJB-规格-年月-流水-校验',
   `spec` varchar(20) NOT NULL COMMENT '规格（1位码值嵌入袋码，如 L）',
   `color` varchar(20) NOT NULL COMMENT '颜色（如 黄色）',
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `bag` (
 
 -- ---------- bag_transfer_log：快递袋状态流转日志（全程追溯） ----------
 CREATE TABLE IF NOT EXISTS `bag_transfer_log` (
-  `id` bigint unsigned NOT NULL COMMENT '主键ID（自增，写入有序）',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID（自增，写入有序）',
   `bag_code` varchar(20) NOT NULL COMMENT '快递袋编码（追溯关联，不设外键）',
   `from_status` varchar(20) NOT NULL COMMENT '流转前状态（11 态枚举码）',
   `to_status` varchar(20) NOT NULL COMMENT '流转后状态（11 态枚举码）',
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `bag_transfer_log` (
 
 -- ---------- bag_order：快递订单（取用闭环主记录） ----------
 CREATE TABLE IF NOT EXISTS `bag_order` (
-  `id` bigint unsigned NOT NULL COMMENT '主键ID（自增）',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID（自增）',
   `order_no` varchar(32) NOT NULL COMMENT '业务订单号（对外唯一，系统生成）',
   `client_request_id` varchar(64) NOT NULL COMMENT '客户端幂等ID（申领落库防重）',
   `user_id` bigint unsigned NOT NULL COMMENT '申领用户ID（订单归属人）',
@@ -160,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `bag_order` (
 
 -- ---------- liability_record：责任记录（遗失/在途遗失/超时） ----------
 CREATE TABLE IF NOT EXISTS `liability_record` (
-  `id` bigint unsigned NOT NULL COMMENT '主键ID（自增）',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID（自增）',
   `biz_type` varchar(20) NOT NULL COMMENT '业务类型（ORDER订单/ALLOCATION调拨）',
   `biz_no` varchar(32) NOT NULL COMMENT '业务单号（订单号或调拨单号）',
   `type` varchar(20) NOT NULL COMMENT '责任类型（遗失/在途遗失/超时）',
@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS `liability_record` (
 
 -- ---------- stock_compensation_log：库存补偿日志（库存回补流水） ----------
 CREATE TABLE IF NOT EXISTS `stock_compensation_log` (
-  `id` bigint unsigned NOT NULL COMMENT '主键ID（自增）',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID（自增）',
   `client_request_id` varchar(64) NOT NULL COMMENT '申领请求幂等ID（防重复补偿）',
   `order_no` varchar(32) NOT NULL COMMENT '申领订单号（事务失败时未落库）',
   `station_id` bigint unsigned NOT NULL COMMENT '库存回补的站点ID',
@@ -262,7 +262,7 @@ CREATE TABLE IF NOT EXISTS `scrap_record` (
 
 -- ---------- inventory_check：库存盘点单 ----------
 CREATE TABLE IF NOT EXISTS `inventory_check` (
-  `id` bigint unsigned NOT NULL COMMENT '主键ID',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `check_no` varchar(32) NOT NULL COMMENT '盘点单号（全局唯一）',
   `station_id` bigint unsigned NOT NULL COMMENT '盘点站点ID',
   `check_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '实盘执行时间（业务时间）',
@@ -287,7 +287,7 @@ CREATE TABLE IF NOT EXISTS `inventory_check` (
 
 -- ---------- allocation_order：站点间调拨单 ----------
 CREATE TABLE IF NOT EXISTS `allocation_order` (
-  `id` bigint unsigned NOT NULL COMMENT '主键ID',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `allocation_no` varchar(32) NOT NULL COMMENT '调拨单号（业务唯一编号）',
   `from_station_id` bigint unsigned NOT NULL COMMENT '源站点ID（调出方）',
   `to_station_id` bigint unsigned NOT NULL COMMENT '目标站点ID（调入方）',
@@ -312,7 +312,7 @@ CREATE TABLE IF NOT EXISTS `allocation_order` (
 
 -- ---------- allocation_detail：调拨单袋级明细 ----------
 CREATE TABLE IF NOT EXISTS `allocation_detail` (
-  `id` bigint unsigned NOT NULL COMMENT '主键ID',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `allocation_id` bigint unsigned NOT NULL COMMENT '所属调拨单ID',
   `bag_code` varchar(20) NOT NULL COMMENT '快递袋编码',
   `status` varchar(20) NOT NULL DEFAULT 'PENDING_DISPATCH' COMMENT '状态：待出库/已出库/已核收/已剔除/已遗失',
@@ -329,7 +329,7 @@ CREATE TABLE IF NOT EXISTS `allocation_detail` (
 
 -- ---------- audit_log：操作审计日志 ----------
 CREATE TABLE IF NOT EXISTS `audit_log` (
-  `id` bigint unsigned NOT NULL COMMENT '主键ID',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `operator_id` bigint unsigned NOT NULL DEFAULT 0 COMMENT '操作人ID(0=匿名或未知)',
   `operator_role` varchar(20) NOT NULL DEFAULT '' COMMENT '操作人角色快照(空=匿名)',
   `ip` varchar(45) NOT NULL DEFAULT '' COMMENT '客户端IP(IPv4/IPv6)',
@@ -342,6 +342,7 @@ CREATE TABLE IF NOT EXISTS `audit_log` (
   `error_code` int unsigned NOT NULL DEFAULT 0 COMMENT '错误码(0=成功,见6.4)',
   `cost_ms` int unsigned NOT NULL DEFAULT 0 COMMENT '处理耗时(毫秒)',
   `created_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '记录写入时间',
+  PRIMARY KEY (`id`),
   KEY `idx_audit_created_at` (`created_at`),
   KEY `idx_audit_operator_created` (`operator_id`, `created_at`),
   KEY `idx_audit_module_created` (`module`, `created_at`)
@@ -349,7 +350,7 @@ CREATE TABLE IF NOT EXISTS `audit_log` (
 
 -- ---------- login_log：登录日志(成功/失败与原因) ----------
 CREATE TABLE IF NOT EXISTS `login_log` (
-  `id` bigint unsigned NOT NULL COMMENT '主键ID',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `user_id` bigint unsigned NOT NULL DEFAULT 0 COMMENT '用户ID(0=账号不存在)',
   `phone_mask` varchar(20) NOT NULL DEFAULT '' COMMENT '手机号掩码(如138****1234)',
   `result` tinyint unsigned NOT NULL DEFAULT 0 COMMENT '登录结果:1成功/0失败',
@@ -357,6 +358,7 @@ CREATE TABLE IF NOT EXISTS `login_log` (
   `ip` varchar(45) NOT NULL DEFAULT '' COMMENT '客户端IP(IPv4/IPv6)',
   `ua` varchar(255) NOT NULL DEFAULT '' COMMENT '客户端User-Agent(超长截断)',
   `created_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '登录时间',
+  PRIMARY KEY (`id`),
   KEY `idx_login_created_at` (`created_at`),
   KEY `idx_login_user_created` (`user_id`, `created_at`),
   KEY `idx_login_result_created` (`result`, `created_at`)
@@ -364,7 +366,7 @@ CREATE TABLE IF NOT EXISTS `login_log` (
 
 -- ---------- stats_daily：日统计汇总(可选优化) ----------
 CREATE TABLE IF NOT EXISTS `stats_daily` (
-  `id` bigint unsigned NOT NULL COMMENT '主键ID',
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `date` date NOT NULL COMMENT '统计日期',
   `station_id` bigint unsigned NOT NULL DEFAULT 0 COMMENT '站点ID(0=全平台汇总)',
   `orders_borrow` int unsigned NOT NULL DEFAULT 0 COMMENT '当日取袋(申领)订单数',
@@ -373,6 +375,7 @@ CREATE TABLE IF NOT EXISTS `stats_daily` (
   `stock_json` json NOT NULL COMMENT '库存分布快照(各状态袋数)',
   `created_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '汇总生成时间',
   `updated_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '重算更新时间',
+  PRIMARY KEY (`id`),
   UNIQUE KEY `uk_stats_date_station` (`date`, `station_id`),
   KEY `idx_stats_station_date` (`station_id`, `date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='日统计汇总(可选优化)';
