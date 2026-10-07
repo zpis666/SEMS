@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * 字段级定义见《数据库设计说明书》V1.1 第 4 章，与 {@code deploy/sql/V1__init_schema.sql} 逐列一致）。
  *
  * <p>只插入不更新不删除：每次流转由状态机入口统一写一条，保证全程可追溯、可审计（见设计书 3.3）。
- * {@code ref_check_no} 仅 #21 状态修正必填，关联盘点差异单号；{@code proxy_flag} 记录平台管理员代操作（见设计书 3.2）。
+ * {@code ref_check_no} 为历史兼容字段，当前 #21 状态修正不再写入；{@code proxy_flag} 记录平台管理员代操作（见设计书 3.2）。
  *
  * <p>状态字段用 {@code String} 而非枚举：与 DDL 的 {@code varchar} 码值一致，业务层用 {@code BagStatus}/{@code BagEvent}
  * 转换（{@code BagStatus.of()}、{@code BagEvent.of()}），避免 ORM 枚举映射与码值两份口径。
@@ -28,10 +28,10 @@ public class BagTransferLog {
     /** 快递袋编码（追溯关联，不设外键） */
     private String bagCode;
 
-    /** 流转前状态（11 态枚举码） */
+    /** 流转前状态（8 态枚举码） */
     private String fromStatus;
 
-    /** 流转后状态（11 态枚举码） */
+    /** 流转后状态（8 态枚举码） */
     private String toStatus;
 
     /** 触发事件（BagEvent 码，与设计书 3.2 的 21 条转移一一对应） */
@@ -46,7 +46,7 @@ public class BagTransferLog {
     /** 平台管理员代操作：0 否 / 1 是 */
     private Integer proxyFlag;
 
-    /** 盘点差异单号（#21 状态修正必填） */
+    /** 盘点差异单号（历史兼容值；当前状态修正不写入） */
     private String refCheckNo;
 
     /** 备注（修正原因/找回说明等） */

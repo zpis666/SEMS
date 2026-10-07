@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * 回收箱待确认清单，袋列表，含「未标记但状态为使用中」的袋）。
  *
  * <p>两类来源（FR-M3-07 处理要点）：
- * ① 已标记投放本站的回收在途袋（订单 {@code return_station_id}=本站 且订单为待回收确认），{@code marked=true}；
+ * ① 已标记投放本站且订单为待回收确认的使用中袋（订单 {@code return_station_id}=本站），{@code marked=true}；
  * ② 未标记但状态为使用中、袋台账在本站的袋（用户未标记即投放的候选清单），{@code marked=false}。
  * 清单仅作清点辅助，扫码确认接口不要求袋先出现在清单中（跨站未标记直投同样可确认，见 4.4 第④条）。
  */
@@ -19,13 +19,13 @@ public class RecycleBinVo {
     /** 袋编码 */
     private String bagCode;
 
-    /** 袋状态码（回收在途 / 使用中） */
+    /** 袋状态码（已分配 / 使用中；待回收确认由订单状态表示） */
     private String status;
 
     /** 袋状态中文名 */
     private String statusName;
 
-    /** 是否已标记归还（true=已标记投放本站的回收在途袋；false=未标记的使用中袋） */
+    /** 是否已标记归还（true=订单待回收确认；false=未标记的使用中袋） */
     private Boolean marked;
 
     /** 绑定订单号（按 created_at 倒序的最新一笔，可能为空） */

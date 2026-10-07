@@ -3,7 +3,7 @@
  * 平台端 · 袋详情与流转追溯（见《系统设计说明书》4.4「平台端」、5.4，FR-M4-06/15/16）。
  *
  * 1) 基本信息：用 listBags({ keyword: 袋码 }) 取台账记录后按袋码精确匹配——
- *    比 getBagInfo 的最小必要集更全（含站点、复用次数、创建时间），且未激活/报废/遗失袋也能查看；
+ *    比 getBagInfo 的最小必要集更全（含站点、复用次数、创建时间），且空闲/报废/遗失袋也能查看；
  * 2) 二维码：getBagQrcode 返回 PNG blob，用 URL.createObjectURL 展示，切换/卸载时 revoke；
  * 3) 完整流转日志：getBagTrace + <BagTimeline>，逐节点展示「取—用—还—洗—调」闭环；
  * 4) 页内入口：状态修正（#21，审计重点核查项）、遗失找回（#20，仅「已遗失」可用），
@@ -190,7 +190,6 @@ const correctVisible = ref(false)
 const correctSubmitting = ref(false)
 const correctFormRef = ref(null)
 const correctForm = reactive({
-  refCheckNo: '',
   reason: '',
   targetStatus: '',
   crossing: false,
@@ -198,10 +197,6 @@ const correctForm = reactive({
 })
 
 const correctRules = computed(() => ({
-  refCheckNo: [
-    { required: true, message: '请输入盘点差异单号', trigger: 'blur' },
-    { max: 50, message: '盘点差异单号不超过 50 个字符', trigger: 'blur' },
-  ],
   reason: [
     { required: true, message: '请输入修正原因', trigger: 'blur' },
     { max: 255, message: '修正原因不超过 255 个字符', trigger: 'blur' },
@@ -213,7 +208,6 @@ const correctRules = computed(() => ({
 }))
 
 function openCorrect() {
-  correctForm.refCheckNo = ''
   correctForm.reason = ''
   correctForm.targetStatus = ''
   correctForm.crossing = false
@@ -239,8 +233,7 @@ async function submitCorrect() {
   correctSubmitting.value = true
   try {
     const payload = {
-      refCheckNo: correctForm.refCheckNo.trim(),
-      reason: correctForm.reason.trim(),
+      remark: correctForm.reason.trim(),
       targetStatus: correctForm.targetStatus,
     }
     // 仅跨站修正时才带目标站点（同站修正不得改归属）
@@ -461,13 +454,6 @@ onMounted(() => {
       袋码：<span class="sems-mono">{{ bagCode }}</span>
     </p>
     <el-form ref="correctFormRef" :model="correctForm" :rules="correctRules" label-width="100px">
-      <el-form-item label="盘点差异单号" prop="refCheckNo">
-        <el-input
-          v-model="correctForm.refCheckNo"
-          maxlength="50"
-          placeholder="盘点单号（必填，关联盘点差异）"
-        />
-      </el-form-item>
       <el-form-item label="修正原因" prop="reason">
         <el-input
           v-model="correctForm.reason"

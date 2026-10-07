@@ -10,6 +10,8 @@ import com.sems.common.util.JsonUtils;
 import com.sems.common.util.MaskUtils;
 import com.sems.config.SemsProperties;
 import com.sems.infra.IdempotentService;
+import com.sems.infra.StockService;
+import com.sems.push.PushService;
 import com.sems.infra.RateLimitService;
 import com.sems.module.audit.entity.AuditLogEntity;
 import com.sems.module.audit.service.AuditLogService;
@@ -141,7 +143,7 @@ public class BagService {
 
     /** 出库一律拒绝的在循环状态（需求 FR-M4-10：「对维修中或正常在用袋调用出库被拒」）。 */
     private static final Set<BagStatus> CIRCULATING_STATES =
-            EnumSet.of(BagStatus.ALLOCATED, BagStatus.IN_USE, BagStatus.RETURNING, BagStatus.TRANSFERRING);
+            EnumSet.of(BagStatus.ALLOCATED, BagStatus.IN_USE, BagStatus.TRANSFERRING);
 
     /** 审计模块名（与 Controller 上的 @AuditLog module 一致）。 */
     private static final String AUDIT_MODULE = "快递袋管理";
@@ -161,6 +163,8 @@ public class BagService {
     private final SemsProperties properties;
     private final BagCodeGenerator bagCodeGenerator;
     private final QrCodeService qrCodeService;
+    private final StockService stockService;
+    private final PushService pushService;
 
     public BagService(BagMapper bagMapper,
                       BagTransferLogMapper transferLogMapper,
@@ -176,7 +180,7 @@ public class BagService {
                       AuditLogService auditLogService,
                       SemsProperties properties,
                       BagCodeGenerator bagCodeGenerator,
-                      QrCodeService qrCodeService) {
+                      QrCodeService qrCodeService, StockService stockService, PushService pushService) {
         this.bagMapper = bagMapper;
         this.transferLogMapper = transferLogMapper;
         this.stockRecordMapper = stockRecordMapper;
@@ -192,6 +196,8 @@ public class BagService {
         this.properties = properties;
         this.bagCodeGenerator = bagCodeGenerator;
         this.qrCodeService = qrCodeService;
+        this.stockService = stockService;
+        this.pushService = pushService;
     }
 
     // ==================== 查询 ====================
@@ -250,7 +256,7 @@ public class BagService {
     /**
      * 扫码查询袋信息（5.2：登录用户；7.4 信息最小化与防枚举）。
      *
-     * <p>不可用状态（未激活/已遗失/已报废）抛 4107 并按状态区分文案；与查询者有归属关系
+     * <p>不可用状态（已遗失/已报废）抛 4107 并按状态区分文案；与查询者有归属关系
      * （本人持该袋进行中订单、本站站点管理员、平台管理员）时返回扩展字段，否则只回最小必要集。
      * 同一用户 1 分钟内查询失败达 {@value #SCAN_FAIL_LIMIT} 次触发 5101 限额并补记风控审计。
      */
@@ -262,7 +268,7 @@ public class BagService {
             throw new BizException(ErrorCode.BAG_NOT_FOUND, "袋码不存在，请核对后重试");
         }
         BagStatus status = BagStatus.of(bag.getStatus());
-        if (status == BagStatus.INACTIVE || status == BagStatus.LOST || status == BagStatus.SCRAPPED) {
+        if (status == BagStatus.LOST || status == BagStatus.SCRAPPED) {
             recordScanFailure(user);
             throw new BizException(ErrorCode.BAG_UNAVAILABLE, unavailableMessage(status));
         }
@@ -318,7 +324,7 @@ public class BagService {
 
     // ==================== 建档与批量生成 ====================
 
-    /** 新建袋档案（5.4：平台管理员；编码自动生成、初始状态=未激活、写登记站点）。 */
+    /** 新建袋档案（5.4：平台管理员；编码自动生成、初始状态=空闲、写登记站点）。 */
     @Transactional(rollbackFor = Exception.class)
     public BagDetailVo create(CreateBagDto dto, String clientRequestId) {
         return executeIdempotent(API_CREATE, clientRequestId,
@@ -328,6 +334,8 @@ public class BagService {
                     String bagCode = bagCodeGenerator.next(dto.getSpec());
                     Bag bag = newBag(bagCode, dto.getSpec(), dto.getColor(), dto.getCapacity(), station.getId());
                     bagMapper.insert(bag);
+                    recordCreatedBag(bag);
+                    registerCreatedStockPush(station.getId(), 1);
                     // 回读一次：createdAt/updatedAt 由库端默认值填充，直接在响应里回显完整档案
                     Bag saved = bagMapper.selectById(bag.getId());
                     return toDetailVo(saved, station.getName());
@@ -367,9 +375,11 @@ public class BagService {
             for (String code : codes) {
                 Bag bag = newBag(code, dto.getSpec(), dto.getColor(), dto.getCapacity(), station.getId());
                 bagMapper.insert(bag);
+                recordCreatedBag(bag);
                 bags.add(bag);
             }
             byte[] zip = buildZip(bags);
+            registerCreatedStockPush(station.getId(), bags.size());
             idempotentService.markCompleted(API_BATCH_GENERATE, clientRequestId,
                     JsonUtils.toJson(new GeneratedBatch(codes)));
             return zip;
@@ -382,20 +392,10 @@ public class BagService {
 
     // ==================== 状态流转类写接口（单袋） ====================
 
-    /** 激活上架（5.4 / 3.2 #1）：袋归属站点=操作人站点且站点启用；重复激活由状态机拒绝（4102）。 */
+    /** 已弃用的兼容接口：新袋建档即空闲，拒绝额外激活。 */
     @Transactional(rollbackFor = Exception.class)
     public BagDetailVo activate(String bagCode, ActivateDto dto, String clientRequestId) {
-        return executeIdempotent(API_ACTIVATE, clientRequestId,
-                json -> JsonUtils.parse(json, BagDetailVo.class),
-                () -> {
-                    Bag bag = loadBagOrThrow(bagCode);
-                    assertStationAccess(bag.getStationId());
-                    assertStationEnabled(bag.getStationId(), "激活上架");
-                    bagTransitionService.fire(newCommand(bagCode, BagEvent.ACTIVATE, bag.getStationId(), isPlatformAdmin())
-                            .remark(dto == null ? null : dto.getRemark())
-                            .build());
-                    return detailOf(bagCode);
-                });
+        throw new BizException(ErrorCode.BAG_ILLEGAL_TRANSITION, "新袋建档即空闲，无需激活上架");
     }
 
     /**
@@ -440,7 +440,7 @@ public class BagService {
     }
 
     /**
-     * 维修完成（5.4 / 3.2 #13/#14）：结果=修复→可复用；结果=无法修复→报废；
+     * 维修完成（5.4 / 3.2 #13/#14）：结果=修复→待消毒；结果=无法修复→报废；
      * 已修复但 {@code use_count ≥ max_use_count} 时按需求 FR-M4-13 备选流 6a 强制走 #14 报废。
      *
      * <p>走 #14 时补记一条 action="报废" 的审计：本接口注解固定为「维修完成」，
@@ -511,7 +511,7 @@ public class BagService {
 
     /**
      * 状态修正（5.4 / 3.2 #21，平台管理员）：目标态白名单 {空闲, 维修中, 已遗失, 报废}；
-     * 差异单号与修正原因必填；袋被未出库调拨单引用时报 4110；未指定目标站点即视为同站修正。
+     * 修正原因必填，无需盘点单号；袋被未出库调拨单引用时报 4110；未指定目标站点即视为同站修正。
      *
      * <p>库存两站增减、订单闭环与业务记录（维修/报废/责任）写入由伴随动作按 #21 公式完成；
      * 流转日志的 station_id 记为操作站点（事件发生地）＝修正前的袋归属站点（设计书 8.2 该列
@@ -540,7 +540,6 @@ public class BagService {
                     // 目标落定地走 targetStationId（设计书 8.2 的列定义与 7.4 的追溯口径）
                     bagTransitionService.fire(newCommand(bagCode, BagEvent.STATUS_CORRECT, sourceStation, false)
                             .remark(dto.getRemark())
-                            .refCheckNo(dto.getRefCheckNo())
                             .targetStatus(target)
                             .targetStationId(targetStation)
                             .build());
@@ -550,43 +549,9 @@ public class BagService {
 
     // ==================== 批量写接口（逐袋部分成功） ====================
 
-    /**
-     * 上架入库（批量）（5.4 / 3.2 #11）：逐袋 可复用→空闲，库存 +1、写入库流水（动作内）；
-     * {@code use_count ≥ max_use_count} 的袋返回 4108、状态不变（需求 FR-M4-08）。
-     *
-     * <p>整批不加事务（见类注释）：每袋的原子性由状态机单袋事务保证；逐袋幂等由
-     * 状态机按 {@code clientRequestId + bagCode} 完成（契约模块版第 4 节）。
-     */
+    /** 已弃用的兼容接口：消毒合格自动入库，拒绝额外上架。 */
     public List<BatchItem> stockIn(StockInDto dto, String clientRequestId) {
-        assertBatchSize(dto.getBags(), "上架入库");
-        return executeIdempotent(API_STOCK_IN, clientRequestId,
-                json -> JsonUtils.parseList(json, BatchItem.class),
-                () -> {
-                    List<BatchItem> items = new ArrayList<>(dto.getBags().size());
-                    for (StockInDto.Item item : dto.getBags()) {
-                        String bagCode = item.getBagCode();
-                        try {
-                            Bag bag = loadBagOrThrow(bagCode);
-                            assertStationAccess(bag.getStationId());
-                            if (isUseCountExceeded(bag)) {
-                                throw new BizException(ErrorCode.USE_COUNT_EXCEEDED,
-                                        "复用次数已达上限（" + safeUseCount(bag) + "/" + safeMaxUseCount(bag)
-                                                + "），请转维修或报废");
-                            }
-                            BagTransitionResult result = bagTransitionService.fire(
-                                    newCommand(bagCode, BagEvent.SHELVE, bag.getStationId(), isPlatformAdmin())
-                                            .remark(item.getRemark())
-                                            .clientRequestId(clientRequestId)
-                                            .build());
-                            items.add(new BatchItem(bagCode, true, 0,
-                                    result.isReplayed() ? "幂等回放：该袋已处理" : "上架入库成功"));
-                        } catch (BizException e) {
-                            // 单只失败不影响其余：逐袋收集错误码与文案（契约模块版第 5 节）
-                            items.add(new BatchItem(bagCode, false, e.getErrorCode().getCode(), e.getMessage()));
-                        }
-                    }
-                    return items;
-                });
+        throw new BizException(ErrorCode.BAG_ILLEGAL_TRANSITION, "消毒合格自动入库，无需单独上架");
     }
 
     /**
@@ -594,7 +559,7 @@ public class BagService {
      * 只写 {@code stock_record} 流水、登记实物离站，不重复扣减库存（库存增减只由状态转移表的事件触发）。
      *
      * <p>逐袋白名单：报废袋→SCRAP_OUT；非报废袋须携带盘点差异单号→OUT（无单号 4105）；
-     * 维修中袋拒绝并引导走维修接口；在循环中的袋（已分配/使用中/回收在途/调拨在途）一律拒绝。
+     * 维修中袋拒绝并引导走维修接口；在循环中的袋（已分配/使用中/调拨在途）一律拒绝。
      * 本接口不经过状态机，逐袋幂等由 {@link IdempotentService#tryAcquireBag} 显式承担。
      */
     public List<BatchItem> stockOut(StockOutDto dto, String clientRequestId) {
@@ -615,7 +580,7 @@ public class BagService {
                             }
                             if (CIRCULATING_STATES.contains(status)) {
                                 throw new BizException(ErrorCode.ORDER_STATE_NOT_ALLOWED,
-                                        "在循环中的袋（已分配/使用中/回收在途/调拨在途）不得出库");
+                                        "在循环中的袋（已分配/使用中/调拨在途）不得出库");
                             }
                             boolean scrapped = status == BagStatus.SCRAPPED;
                             if (!scrapped && (item.getRefCheckNo() == null || item.getRefCheckNo().isBlank())) {
@@ -661,7 +626,7 @@ public class BagService {
         stockRecordMapper.insert(record);
     }
 
-    /** 组装流转命令骨架（操作人取自登录态）；调用方按事件语义补 remark/refCheckNo/targetStatus 等。 */
+    /** 组装流转命令骨架（操作人取自登录态）；调用方按事件语义补 remark/targetStatus 等。 */
     private TransitionCommand.TransitionCommandBuilder newCommand(String bagCode, BagEvent event,
                                                                   Long stationId, boolean proxy) {
         LoginUser user = AuthContext.require();
@@ -674,7 +639,7 @@ public class BagService {
                 .proxy(proxy);
     }
 
-    /** 新建袋实体（编码/规格/颜色/容量/登记站点 + 初始未激活 + 默认复用上限）。 */
+    /** 新建袋实体（编码/规格/颜色/容量/登记站点 + 初始空闲 + 默认复用上限）。 */
     private static Bag newBag(String bagCode, String spec, String color, String capacity, Long stationId) {
         Bag bag = new Bag();
         bag.setBagCode(bagCode);
@@ -682,10 +647,44 @@ public class BagService {
         bag.setColor(color);
         bag.setCapacity(capacity);
         bag.setStationId(stationId);
-        bag.setStatus(BagStatus.INACTIVE.code());
+        bag.setStatus(BagStatus.IDLE.code());
         bag.setUseCount(0);
         bag.setMaxUseCount(DEFAULT_MAX_USE_COUNT);
         return bag;
+    }
+
+    /** 建档与入库凭证同事务写入；提交后重建本站库存并推送，回滚不污染 Redis。 */
+    private void recordCreatedBag(Bag bag) {
+        StockRecord stock = new StockRecord();
+        stock.setStationId(bag.getStationId());
+        stock.setBagCode(bag.getBagCode());
+        stock.setType("IN");
+        stock.setOperatorId(AuthContext.userId());
+        stock.setRemark("建档入库");
+        stockRecordMapper.insert(stock);
+        BagTransferLog trace = new BagTransferLog();
+        trace.setBagCode(bag.getBagCode());
+        trace.setFromStatus(BagStatus.IDLE.code());
+        trace.setToStatus(BagStatus.IDLE.code());
+        trace.setEvent(BagEvent.CREATE.code());
+        trace.setOperatorId(AuthContext.userId());
+        trace.setStationId(bag.getStationId());
+        trace.setProxyFlag(0);
+        trace.setRemark("新袋建档即空闲");
+        transferLogMapper.insert(trace);
+    }
+
+    /** 每次建档请求只重建一次站点计数，批量生成不逐只查询库存。 */
+    private void registerCreatedStockPush(Long stationId, int count) {
+        pushService.afterCommit(() -> {
+            stockService.rebuildStationStock(stationId);
+            Map<String, Object> notice = new LinkedHashMap<>();
+            notice.put("event", BagEvent.CREATE.code());
+            notice.put("stationId", stationId);
+            notice.put("delta", count);
+            notice.put("availableCount", stockService.getAvailable(stationId));
+            pushService.pushStationStock(stationId, notice);
+        });
     }
 
     /** 回读袋并组装详情出参（写操作统一返回袋的当前完整档案）。 */
@@ -1083,7 +1082,12 @@ public class BagService {
     /** 状态码转中文名（历史日志码值异常时回显原码，不因展示问题打断追溯视图）。 */
     private static String statusName(String code) {
         try {
-            return BagStatus.of(code).displayName();
+            return switch (code) {
+                case "INACTIVE" -> "未激活（历史）";
+                case "RETURNING" -> "回收在途（历史）";
+                case "REUSABLE" -> "可复用（历史）";
+                default -> BagStatus.of(code).displayName();
+            };
         } catch (IllegalArgumentException e) {
             return code;
         }
@@ -1108,7 +1112,6 @@ public class BagService {
 
     private static String unavailableMessage(BagStatus status) {
         return switch (status) {
-            case INACTIVE -> "该袋尚未激活，暂不可使用（请联系站点管理员激活上架）";
             case LOST -> "该袋已登记遗失，不可使用";
             case SCRAPPED -> "该袋已报废，不可使用";
             default -> "该袋当前不可用";

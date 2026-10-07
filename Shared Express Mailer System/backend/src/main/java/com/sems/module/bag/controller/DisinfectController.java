@@ -52,7 +52,7 @@ public class DisinfectController {
         return Result.ok(disinfectService.page(query));
     }
 
-    /** 消毒批次登记（合格→可复用 #9，不合格→维修中 #10；返回统一批量信封：批次头 + items 逐袋结果）。 */
+    /** 消毒批次登记（合格→空闲 #9，不合格→维修中 #10；返回统一批量信封：批次头 + items 逐袋结果）。 */
     @PostMapping
     @AuditLog(module = "快递袋管理", action = "消毒登记")
     public Result<DisinfectCreateVo> create(@Valid @RequestBody CreateDisinfectDto dto,

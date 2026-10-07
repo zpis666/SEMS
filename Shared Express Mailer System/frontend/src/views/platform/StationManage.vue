@@ -542,7 +542,7 @@ onUnmounted(() => {
         :closable="false"
         show-icon
         title="停用前置条件：可用库存为 0，且非终态实物为 0 或已指定接收站"
-        description="非终态实物指待消毒/可复用/维修中/未激活的袋；可用库存不为 0 时请先调拨移交。"
+        description="非终态实物指待消毒/可复用/维修中/空闲的袋；可用库存不为 0 时请先调拨移交。"
       />
       <p class="station-manage__dialog-desc">待停用站点：{{ disableTarget?.name || '—' }}</p>
       <el-form label-width="88px" @submit.prevent>

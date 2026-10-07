@@ -77,10 +77,10 @@ function formatTime(value) {
 
         <div class="bag-timeline__transition">
           <template v-if="record.fromStatus">
-            <StatusTag kind="bag" :value="record.fromStatus" size="small" />
+            <StatusTag kind="bag" :value="record.fromStatus" :label="record.fromStatusName" size="small" />
             <span class="bag-timeline__arrow">→</span>
           </template>
-          <StatusTag kind="bag" :value="record.toStatus" size="small" />
+          <StatusTag kind="bag" :value="record.toStatus" :label="record.toStatusName" size="small" />
         </div>
 
         <div class="bag-timeline__meta">

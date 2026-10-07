@@ -39,7 +39,7 @@ public class BagInfoVo {
     /** 容量（扩展） */
     private String capacity;
 
-    /** 状态码（扩展，11 态枚举码） */
+    /** 状态码（扩展，8 态枚举码） */
     private String status;
 
     /** 状态中文名（扩展，与设计书 3.1 状态表一致） */

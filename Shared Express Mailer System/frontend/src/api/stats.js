@@ -50,7 +50,7 @@ export function listLoginLogs(params) {
 
 /**
  * 异常与风控告警清单。七类：
- * ①订单取消满 48h 袋仍已分配 ②回收在途满 72h 未确认 ③调拨出库满 48h 未核收
+ * ①订单取消满 48h 袋仍已分配 ②订单待回收确认满 72h 未完成 ③调拨出库满 48h 未核收
  * ④寄件后满 7 天超时未归还 ⑤审计队列丢弃 ⑥库存对账差异 ⑦同类高频确认风控线索
  */
 export function listAlerts(params) {

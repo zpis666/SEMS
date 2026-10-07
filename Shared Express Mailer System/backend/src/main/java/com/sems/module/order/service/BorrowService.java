@@ -108,11 +108,11 @@ public class BorrowService {
     private static final String ALLOCATION_STATUS_IN_TRANSIT = "IN_TRANSIT";
 
     /**
-     * 在持袋数口径：袋处于三态（已分配/使用中/回收在途）的订单才计入（设计书 3.5）。
+     * 在持袋数口径：袋处于已分配/使用中两态的订单才计入（设计书 3.5）。
      * 降级路径用袋状态判定；正常路径由 Lua 计数保证。
      */
     private static final Set<String> THREE_STATE_BAG_CODES = Set.of(
-            BagStatus.ALLOCATED.code(), BagStatus.IN_USE.code(), BagStatus.RETURNING.code());
+            BagStatus.ALLOCATED.code(), BagStatus.IN_USE.code());
 
     private final BagMapper bagMapper;
     private final StationMapper stationMapper;
@@ -218,9 +218,6 @@ public class BorrowService {
 
         // 4) 袋状态校验：不可用状态报 4107（文案区分未激活/已遗失/已报废），非空闲报 4102
         BagStatus status = BagStatus.of(bag.getStatus());
-        if (status == BagStatus.INACTIVE) {
-            throw new BizException(ErrorCode.BAG_UNAVAILABLE, "该快递袋尚未激活，暂不可申领");
-        }
         if (status == BagStatus.LOST) {
             throw new BizException(ErrorCode.BAG_UNAVAILABLE, "该快递袋已遗失，暂不可申领");
         }
@@ -368,7 +365,7 @@ public class BorrowService {
         log.warn("降级期申领（DB 行级路径）：uid={}, orderNo={}, bagCode={}, stationId={}",
                 uid, orderNo, bag.getBagCode(), station.getId());
         BorrowVo vo = transactionTemplate.execute(status -> {
-            // 锁定该用户可能仍持有袋的订单行：待寄件/使用中/待回收确认对应袋三态（设计书 3.6 联动表），
+            // 锁定该用户可能仍持有袋的订单行：待寄件/使用中/待回收确认订单对应的袋仍处于已分配/使用中（设计书 3.6 联动表），
             // 已取消同样锁定——撤回（R1）/24h 超时取消（R2）不释放在持袋数额度（3.5），袋仍在其手上
             List<BagOrder> holdingCandidates = bagOrderMapper.selectList(new LambdaQueryWrapper<BagOrder>()
                     .eq(BagOrder::getUserId, uid)
@@ -419,14 +416,14 @@ public class BorrowService {
     }
 
     /**
-     * 在持袋数（降级口径，设计书 3.5；7.2 降级矩阵「COUNT 袋处于三态的订单数」）：
-     * 统计该用户当前真正持有的袋——袋处于 {已分配, 使用中, 回收在途}，且订单是该袋的<b>当前持有订单</b>
+     * 在持袋数（降级口径，设计书 3.5；7.2 降级矩阵「COUNT 袋处于已分配/使用中两态的订单数」）：
+     * 统计该用户当前真正持有的袋——袋处于 {已分配, 使用中}，且订单是该袋的<b>当前持有订单</b>
      * （同袋 id 最大的订单）。
      *
      * <p>两个方向的校正：① 不能按订单状态过滤——撤回（R1）/超时取消（R2）不释放额度（3.5），
      * 其订单已为已取消但袋仍是已分配，必须计入；② 不能把同一袋的历史订单重复计入——袋归还后
-     * 再次流转（或已被他人借出）时旧订单仍指向该袋码，而 3.5 的账是「申领 +1、袋离开三态才 −1」，
-     * 旧订单已随袋离开三态抵扣过，不能随袋重新进入三态再次计入。
+     * 再次流转（或已被他人借出）时旧订单仍指向该袋码，而 3.5 的账是「申领 +1、袋离开已分配/使用中才 −1」，
+     * 旧订单已随袋离开这两种状态抵扣过，不能随袋重新进入时再次计入。
      */
     private long countHeldBags(Long uid, List<BagOrder> holdingCandidates) {
         if (holdingCandidates.isEmpty()) {

@@ -450,7 +450,7 @@ onUnmounted(() => window.removeEventListener('resize', syncMobile))
     </PageCard>
 
     <!-- 下方：盘点单列表 -->
-    <PageCard title="盘点单" subtitle="盘点单不可删除，仅可作废重盘；展开行查看袋级差异清单">
+    <PageCard title="盘点单" subtitle="盘点单不可删除，仅可作废重盘；展开行查看差异候选，须核对实物后处置">
       <div class="inventory-filters">
         <el-select
           v-model="query.status"
@@ -542,7 +542,7 @@ onUnmounted(() => window.removeEventListener('resize', syncMobile))
               <StatusTag kind="inventoryCheck" :value="scope.row.status" size="small" />
             </template>
           </el-table-column>
-          <el-table-column label="差异袋数" width="104">
+          <el-table-column label="差异候选数" width="104">
             <template v-slot:default="scope">
               <span
                 class="sems-num"

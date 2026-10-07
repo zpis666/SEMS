@@ -5,7 +5,7 @@ import request from '@/utils/request'
 /**
  * 扫码后查询袋信息（登录用户）。
  * 后端按最小必要集返回：规格、是否可领用、所在站点名称；与操作人无归属关系的袋不返回更多（7.4 防枚举）。
- * 未激活/报废/遗失返回 4107，袋码不存在返回 4106。
+ * 空闲/报废/遗失返回 4107，袋码不存在返回 4106。
  */
 export function getBagInfo(bagCode) {
   return request.get(`/bags/${bagCode}/info`)
@@ -26,7 +26,7 @@ export function getBagQrcode(bagCode) {
   return request.download(`/bags/${bagCode}/qrcode`)
 }
 
-/** 新建袋档案（编码自动生成，登记站点；初始状态=未激活） */
+/** 新建袋档案（编码自动生成，登记站点；初始状态=空闲） */
 export function createBag(data) {
   return request.post('/bags', data)
 }
@@ -36,7 +36,7 @@ export function batchGenerate(data) {
   return request.download('/bags/batch-generate', null, { data, method: 'post' })
 }
 
-/** 激活上架（未激活→空闲，转移 #1；按袋的登记站点校验归属） */
+/** 历史接口，已弃用：建档即空闲，后端返回 4102 */
 export function activateBag(bagCode) {
   return request.post(`/bags/${bagCode}/activate`)
 }
@@ -76,7 +76,7 @@ export function lostRecovery(bagCode, data) {
   return request.post(`/bags/${bagCode}/lost-recovery`, data)
 }
 
-/** 状态修正（转移 #21；必填盘点差异单号与原因；目标态白名单 {空闲,维修中,已遗失,报废}；跨站须指定站点） */
+/** 状态修正（转移 #21；必填修正原因，盘点单号不作为入参；目标态白名单 {空闲,维修中,已遗失,报废}；跨站须指定站点） */
 export function statusCorrect(bagCode, data) {
   return request.post(`/bags/${bagCode}/status-correct`, data)
 }

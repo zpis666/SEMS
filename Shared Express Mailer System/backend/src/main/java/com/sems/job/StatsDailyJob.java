@@ -43,7 +43,7 @@ import java.util.Map;
  *   <li>周转率 = 当日完成归还确认订单数 ÷ 在循环袋数。分母以任务执行时点的在循环袋数
  *       （非报废非遗失，3.5）近似当日均值——与 {@code StatsService.bagTurnover} 的近似口径一致，
  *       校园规模下站点袋量小、日间波动有限；分母为 0 即数据不足，写 0 而不是跳过该行；</li>
- *   <li>库存分布快照按 11 态全集补 0 后落 {@code stock_json}（与看板的键集合口径一致，
+ *   <li>库存分布快照按 8 态全集补 0 后落 {@code stock_json}（与看板的键集合口径一致，
  *       无袋状态补 0、未知状态码如实保留）；</li>
  *   <li>归还订单按<b>取袋站点</b>归属（复用 {@code BagOrderMapper#countFinishedByStation}，
  *       与看板周转率分子同口径）；8.2 未定义站点维度的归还地归属，跨站归还的归还地细分留待后续；</li>
@@ -194,7 +194,7 @@ public class StatsDailyJob {
         statsDailyMapper.updateById(row);
     }
 
-    /** 库存分布快照：11 态全集补 0 后序列化；未知状态码也如实保留（数据异常应当可见）。 */
+    /** 库存分布快照：8 态全集补 0 后序列化；未知状态码也如实保留（数据异常应当可见）。 */
     private static String buildStatusJson(Map<String, Long> counts) {
         Map<String, Long> ordered = new LinkedHashMap<>();
         for (BagStatus status : BagStatus.values()) {

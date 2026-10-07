@@ -50,7 +50,7 @@ public class BagTraceVo {
     /** 是否平台管理员代操作（1=代操作） */
     private Integer proxyFlag;
 
-    /** 盘点差异单号（仅 #21 状态修正必填） */
+    /** 盘点差异单号（历史流转记录兼容字段；当前 #21 状态修正不写入） */
     private String refCheckNo;
 
     /** 备注（修正原因/找回说明等） */

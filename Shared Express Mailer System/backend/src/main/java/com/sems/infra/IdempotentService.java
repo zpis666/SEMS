@@ -1,6 +1,8 @@
 package com.sems.infra;
 
 import com.sems.common.Constants;
+import com.sems.common.BizException;
+import com.sems.common.ErrorCode;
 import com.sems.common.util.JsonUtils;
 import com.sems.security.AuthContext;
 import com.sems.security.LoginUser;
@@ -8,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -17,8 +21,8 @@ import java.util.Map;
 /**
  * 写接口幂等服务（见《系统设计说明书》9.6「幂等设计」与 8.3 键空间）。
  *
- * <p>记录状态机（9.6）：请求进入先以 SETNX 写「处理中」占位 → 成功后改写为「已完成」并记首次结果
- * → 任何失败（业务校验失败、对账中 -2 等）由调用方立即 {@link #clear} 删除占位，
+ * <p>记录状态机（9.6）：请求进入先以 SETNX 写「处理中」占位 → 成功后在数据库事务提交后改写为「已完成」并记首次结果
+ * → 任何失败（业务校验失败、对账中 -2 等）由调用方立即 {@link #clear} 删除占位，事务回滚也会清理占位，
  * 保证客户端重试不会被自己的占位挡死；记录清理只依赖 TTL，无需定时任务。
  *
  * <p>记录值为 JSON：{@code {"status":"PROCESSING"}} 与 {@code {"status":"COMPLETED","result":...}}。
@@ -95,19 +99,23 @@ public class IdempotentService {
         return null;
     }
 
-    /** 写「处理中」占位。SETNX 语义：已有记录（无论处理中或已完成）不覆盖。 */
+    /** 写「处理中」占位。SETNX 未确认成功时提示可重试，已有记录绝不覆盖；Redis 故障仍按降级策略放行。 */
     public void markProcessing(String api, String clientRequestId) {
         Map<String, Object> placeholder = new LinkedHashMap<>();
         placeholder.put(FIELD_STATUS, PROCESSING);
         try {
-            redis.opsForValue().setIfAbsent(key(api, clientRequestId), JsonUtils.toJson(placeholder), TTL);
+            Boolean acquired = redis.opsForValue().setIfAbsent(
+                    key(api, clientRequestId), JsonUtils.toJson(placeholder), TTL);
+            if (!Boolean.TRUE.equals(acquired)) {
+                throw new BizException(ErrorCode.STOCK_RECONCILING, "相同幂等请求正在处理，请稍后重试");
+            }
         } catch (DataAccessException e) {
             log.warn("幂等占位写入降级（Redis 不可用，跳过占位）：api={}, crid={}, reason={}",
                     api, clientRequestId, e.getMessage());
         }
     }
 
-    /** 把占位改写为「已完成」并记录首次结果；重写时顺带刷新 TTL，回放窗口从完成时刻起算。 */
+    /** 把占位改写为「已完成」并记录首次结果；事务内只在提交后写缓存，回放窗口从提交完成时起算。 */
     public void markCompleted(String api, String clientRequestId, Object result) {
         Map<String, Object> record = new LinkedHashMap<>();
         record.put(FIELD_STATUS, COMPLETED);
@@ -115,8 +123,36 @@ public class IdempotentService {
             // 调用方一般传入已序列化字符串；兼容直接传对象的情形，统一落为字符串，保证回放类型稳定
             record.put(FIELD_RESULT, result instanceof String text ? text : JsonUtils.toJson(result));
         }
+        String cacheKey = key(api, clientRequestId);
+        String completedValue = JsonUtils.toJson(record);
+        if (TransactionSynchronizationManager.isSynchronizationActive()
+                && TransactionSynchronizationManager.isActualTransactionActive()) {
+            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+                @Override
+                public void afterCommit() {
+                    writeCompleted(cacheKey, completedValue, api, clientRequestId);
+                }
+
+                @Override
+                public void afterCompletion(int status) {
+                    if (status != STATUS_COMMITTED) {
+                        clearKey(cacheKey, api, clientRequestId);
+                    }
+                }
+            });
+            return;
+        }
+        writeCompleted(cacheKey, completedValue, api, clientRequestId);
+    }
+
+    /** 失败即删占位：任何失败分支（含 5103 对账中）都必须调用，否则重试会被自己的「处理中」挡住。 */
+    public void clear(String api, String clientRequestId) {
+        clearKey(key(api, clientRequestId), api, clientRequestId);
+    }
+
+    private void writeCompleted(String cacheKey, String completedValue, String api, String clientRequestId) {
         try {
-            redis.opsForValue().set(key(api, clientRequestId), JsonUtils.toJson(record), TTL);
+            redis.opsForValue().set(cacheKey, completedValue, TTL);
         } catch (DataAccessException e) {
             // 业务已成功，写幂等结果失败不能反过来把成功请求报成失败
             log.warn("幂等结果写入降级（Redis 不可用，业务已成功）：api={}, crid={}, reason={}",
@@ -124,10 +160,9 @@ public class IdempotentService {
         }
     }
 
-    /** 失败即删占位：任何失败分支（含 5103 对账中）都必须调用，否则重试会被自己的「处理中」挡住。 */
-    public void clear(String api, String clientRequestId) {
+    private void clearKey(String cacheKey, String api, String clientRequestId) {
         try {
-            redis.delete(key(api, clientRequestId));
+            redis.delete(cacheKey);
         } catch (DataAccessException e) {
             // 删占位失败不能掩盖调用方正在抛出的原始业务异常
             log.warn("幂等占位删除降级（Redis 不可用）：api={}, crid={}, reason={}",

@@ -152,7 +152,7 @@ function handleScanInput(payload) {
 
 function bagInfoErrorMessage(error) {
   if (error?.code === 4106) return '没有找到这只袋，请确认袋码是否正确'
-  if (error?.code === 4107) return '这只袋当前不可用（未激活、已报废或已遗失）'
+  if (error?.code === 4107) return '这只袋当前不可用（已报废或已遗失）'
   return error?.message || '袋信息查询失败，请重试'
 }
 

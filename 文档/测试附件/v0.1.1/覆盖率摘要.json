@@ -1,0 +1,34 @@
+{
+  "版本": "v0.1.1",
+  "日期": "2026-10-07",
+  "修订人": "codex+gpt-6.1 sol",
+  "JaCoCo": {
+    "INSTRUCTION": {
+      "covered": 24194,
+      "missed": 10471
+    },
+    "BRANCH": {
+      "covered": 1798,
+      "missed": 1517
+    },
+    "LINE": {
+      "covered": 5459,
+      "missed": 2219
+    },
+    "COMPLEXITY": {
+      "covered": 1378,
+      "missed": 1380
+    },
+    "METHOD": {
+      "covered": 849,
+      "missed": 224
+    },
+    "CLASS": {
+      "covered": 86,
+      "missed": 20
+    }
+  },
+  "测试数量": 294,
+  "状态机分支覆盖率": "100%",
+  "统计口径": "沿用工程既有配置，不新增业务代码排除"
+}

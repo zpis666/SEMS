@@ -25,7 +25,7 @@ export function cancelBorrow(orderNo) {
   return request.delete(`/borrows/${orderNo}`)
 }
 
-/** 标记「已投放回收箱」（选择站点，记 return_station_id；袋→回收在途，订单→待回收确认） */
+/** 标记「已投放回收箱」（选择站点，记 return_station_id；袋保持使用中，订单→待回收确认） */
 export function markReturn(orderNo, data) {
   return request.post(`/orders/${orderNo}/return-mark`, data)
 }

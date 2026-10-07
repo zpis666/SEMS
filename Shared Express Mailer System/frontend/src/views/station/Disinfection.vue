@@ -310,7 +310,7 @@ onUnmounted(() => window.removeEventListener('resize', syncMobile))
   <div class="disinfect-page">
     <div class="disinfect-page__grid">
       <!-- 左栏：登记新批次 -->
-      <PageCard title="登记新批次" subtitle="合格转「可复用」，不合格转「维修中」">
+      <PageCard title="登记新批次" subtitle="合格转「空闲」并自动入库，不合格转「维修中」">
         <template v-slot:extra>
           <span class="sems-text-muted">已录入 {{ rows.length }} / {{ DISINFECT_BATCH_MAX }} 只</span>
         </template>

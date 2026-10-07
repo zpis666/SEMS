@@ -223,9 +223,9 @@ public class OrderTransitionActions {
      * 确认遗失伴随动作（设计书 3.2 #18）：
      * 订单转 LOST 并写 lost_at（<b>含已取消订单的终态覆盖</b>）；在持袋数 −1；写责任记录；推送。
      *
-     * <p>在持袋数用 {@link StockService#decrementOpen(Long)}（契约模块版第 3 节：袋离开三态时
+     * <p>在持袋数用 {@link StockService#decrementOpen(Long)}（契约模块版第 3 节：袋离开已分配/使用中两态时
      * 计数 −1，内部已做下限截断与截断续期）；撤回/超时取消留下的已取消订单同样参与本次 −1，
-     * 因为其袋直到此刻才离开三态。走 StockService 而非直接操作 CounterService 的原因（7.2）：
+     * 因为其袋直到此刻才离开这两种状态。走 StockService 而非直接操作 CounterService 的原因（7.2）：
      * 熔断期不写 Redis 计数（由恢复重建与每日对账纠偏），Redis 异常也只记 WARN 不阻断本笔流转
      * ——否则平台管理员在 Redis 故障时根本无法确认遗失/修正状态。
      */
@@ -256,7 +256,7 @@ public class OrderTransitionActions {
         liability.setCreatedAt(now);
         liabilityRecordMapper.insert(liability);
 
-        // 袋离开三态（已分配/使用中/回收在途）→ 在持袋数 −1（3.5 口径）
+        // 袋离开已分配/使用中两态 → 在持袋数 −1（3.5 口径）
         stockService.decrementOpen(order.getUserId());
 
         pushOrderAndStock(order.getUserId(), cmd.getStationId(),

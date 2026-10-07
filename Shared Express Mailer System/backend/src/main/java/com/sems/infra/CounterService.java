@@ -56,7 +56,7 @@ public class CounterService {
         redis.opsForValue().set(RedisKeys.borrowOpen(uid), String.valueOf(value), OPEN_TTL);
     }
 
-    /** 申领进入三态：+1；返回自增后的值，供调用方做「≤ 在持袋数上限」判定与超限回退。 */
+    /** 申领进入已分配态：+1；返回自增后的值，供调用方做「≤ 在持袋数上限」判定与超限回退。 */
     public long incrementOpen(Long uid) {
         String key = RedisKeys.borrowOpen(uid);
         Long count = redis.opsForValue().increment(key);
@@ -65,7 +65,7 @@ public class CounterService {
         return count == null ? 0L : count;
     }
 
-    /** 袋离开三态：−1；DECR 减到负值（键曾被过期清理）时回写 0，计数不保留负数语义。 */
+    /** 袋离开已分配/使用中两态：−1；DECR 减到负值（键曾被过期清理）时回写 0，计数不保留负数语义。 */
     public void decrementOpenFloor0(Long uid) {
         String key = RedisKeys.borrowOpen(uid);
         Long left = redis.opsForValue().decrement(key);

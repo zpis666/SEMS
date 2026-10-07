@@ -15,7 +15,7 @@ echo "$JAVA_HOME"          # 应为 E:\tools-env\jdk-21.0.11+10
 
 # 2) 编译 / 跑测试 / 打包
 ./mvnw -q clean test       # 单元测试（不依赖 MySQL/Redis 的部分）
-./mvnw -q clean package    # 产出 target/sems-backend-0.1.0.jar
+./mvnw -q clean package    # 产出 target/sems-backend-0.1.1.jar
 ./mvnw -q spring-boot:run  # 本地启动（需先起中间件，见下）；pom 已把 run 目标默认设为 dev profile
 ```
 
@@ -50,6 +50,7 @@ MySQL 8.0 与 Redis 7 由 `../deploy/docker/docker-compose.yml` 提供，镜像�
   脚本会给出提示，改 `deploy/docker/.env` 的 `MYSQL_PORT` / `REDIS_PORT` 即可。
 - 初始化后会有一个**预置平台管理员**：手机号 `13800000000`，初始口令 `Sems@2026`，
   `must_change_password=1`——首次登录必须改密。
+- 当前本地开发库的四个演示账号见[开发主目录 README](../README.md#本地演示账号)；其中另外三个角色账号属于联调数据，不由初始化 SQL 自动创建。
 
 ## 三、配置
 
@@ -59,7 +60,7 @@ MySQL 8.0 与 Redis 7 由 `../deploy/docker/docker-compose.yml` 提供，镜像�
 | `application-dev.yml` | 本地开发：连本机容器，口令默认值与 `deploy/docker/.env.example` 一致 |
 | `application-prod.yml` | 生产：**不含明文密钥**，数据库/Redis 口令与 JWT 密钥全部走环境变量 |
 
-## 四、已实现范围（SEMS v0.1.0）
+## 四、已实现范围（SEMS v0.1.1）
 
 M1–M6 全部接口、21 条转移的袋状态机、Redis 库存原子扣减与 R0–R4 回补、WebSocket 推送、5 个定时任务均已实现。
 

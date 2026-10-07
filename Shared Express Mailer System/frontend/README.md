@@ -1,6 +1,6 @@
 # sems-frontend — 共享快递袋系统前端
 
-共享快递袋系统（Shared Express Mailer System，SEMS）前端工程，对应后端 **SEMS v0.1.0**。
+共享快递袋系统（Shared Express Mailer System，SEMS）前端工程，对应系统版本 **SEMS v0.1.1**。
 页面清单与视觉规范的**唯一出处**是《系统设计说明书》10.2 与 10.5；接口清单见 5.x；
 校验规则与错误提示约定的唯一出处是 6.6 与 10.4。
 
@@ -21,7 +21,7 @@ npm run preview      # 本地预览构建产物
 （生产按设计书 11.1 走 Nginx 反代 8080；本机 8080 被 Burp Suite 占用，后端 dev 配置已改 8090）。
 业务代码里不出现任何后端地址——开发期靠代理，生产期靠 Nginx，与 9.4「生产同域部署、CORS 默认关闭」一致。
 
-**演示账号**：手机号 `13800000000` / 初始口令 `Sems@2026`（V2 种子预置的平台管理员，首次登录强制改密）。
+**演示账号**：本地开发库的四个角色演示账号、绑定站点及初始口令统一记录在[开发主目录 README](../README.md#本地演示账号)；首次登录后必须修改密码。
 
 ## 二、目录结构（设计书 10.1）
 
@@ -30,7 +30,7 @@ src/
 ├── api/            按模块封装的接口函数（auth/user/bag/order/station/allocation/stats）
 ├── components/     公共组件：StatusTag BagTimeline BagCodeInput BatchResultDialog
 │                   PageCard PageSkeleton EmptyState DataPager StatCard
-├── constants/      枚举与文案映射（袋 11 态 / 订单 6 态 / 调拨 / 盘点 / 告警类型…）
+├── constants/      枚举与文案映射（袋 8 态：4 个正常态 + 4 个扩展态 / 订单 6 态 / 调拨 / 盘点 / 告警类型…）
 ├── layouts/        UserLayout（用户端 H5）AdminLayout（站点端与平台端共用）
 ├── router/         路由表 + 全局守卫（未登录跳登录、按 role 过滤、强制改密拉回）
 ├── stores/         Pinia：user（token/角色/续签调度）websocket（连接/重连/订阅）

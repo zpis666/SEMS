@@ -9,7 +9,7 @@ import java.util.Map;
  * （见《系统设计说明书》3.2 状态转移表、3.3 状态机实现设计）。
  *
  * <p>注册范围＝设计书 3.2 的 21 条编号规则；多前态规则（#12/#15/#18 各 3 个前态、#21 除外）
- * 展开后共 <b>26 条</b>规则记录。除 {@code STATUS_CORRECT} 外，任何未注册的 {@code (状态, 事件)}
+ * 展开后共 <b>21 条</b>规则记录。除 {@code STATUS_CORRECT} 外，任何未注册的 {@code (状态, 事件)}
  * 组合都属非法跳变，由 {@code BagTransitionService} 统一拒绝（4102）。
  *
  * <p><b>{@code STATUS_CORRECT} 为什么不在表里：</b>#21 的目标态不由图决定，而由命令携带
@@ -26,9 +26,7 @@ public final class TransitionRegistry {
     private static final Map<String, TransitionRule> RULES = new LinkedHashMap<>();
 
     static {
-        // #1 未激活 → 空闲（激活上架）
-        register(BagStatus.INACTIVE, BagEvent.ACTIVATE, BagStatus.IDLE,
-                "激活上架：新袋贴标上架，进入可申领空闲库存");
+        // #1 新袋建档即空闲，不再单独激活
         // #2 空闲 → 已分配（扫码申领）
         register(BagStatus.IDLE, BagEvent.BORROW, BagStatus.ALLOCATED,
                 "扫码申领：空闲袋被用户领取并生成待寄件订单");
@@ -41,57 +39,49 @@ public final class TransitionRegistry {
         // #5 已分配 → 待消毒（回收确认，袋已被取走但未寄件）
         register(BagStatus.ALLOCATED, BagEvent.RECOVER_CONFIRM, BagStatus.TO_DISINFECT,
                 "回收确认：袋已取走未寄件即投回回收箱，关闭订单并送消毒");
-        // #6 使用中 → 回收在途（标记归还；只记订单归还站点，不改袋归属）
-        register(BagStatus.IN_USE, BagEvent.RETURN_MARK, BagStatus.RETURNING,
+        // #6 使用中 → 使用中（标记归还；只记订单归还站点，不改袋归属）
+        register(BagStatus.IN_USE, BagEvent.RETURN_MARK, BagStatus.IN_USE,
                 "标记归还：用户标记已投递，等待站点扫码确认");
         // #7 使用中 → 待消毒（回收确认-直投，用户未标记）
         register(BagStatus.IN_USE, BagEvent.RECOVER_DIRECT, BagStatus.TO_DISINFECT,
                 "回收确认（直投）：未标记归还直接投回，站点扫码确认并完成订单");
-        // #8 回收在途 → 待消毒（回收确认）
-        register(BagStatus.RETURNING, BagEvent.RECOVER_CONFIRM, BagStatus.TO_DISINFECT,
+        // #8 使用中 → 待消毒（回收确认）
+        register(BagStatus.IN_USE, BagEvent.RECOVER_CONFIRM, BagStatus.TO_DISINFECT,
                 "回收确认：站点扫码确认在途归还，复用量计入");
-        // #9 待消毒 → 可复用（消毒合格）
-        register(BagStatus.TO_DISINFECT, BagEvent.DISINFECT_PASS, BagStatus.REUSABLE,
-                "消毒完成（合格）：检验通过，暂存待上架");
+        // #9 待消毒 → 空闲（消毒合格）
+        register(BagStatus.TO_DISINFECT, BagEvent.DISINFECT_PASS, BagStatus.IDLE,
+                "消毒完成（合格）：检验通过，直接入库并补回可用库存");
         // #10 待消毒 → 维修中（消毒不合格）
         register(BagStatus.TO_DISINFECT, BagEvent.DISINFECT_FAIL, BagStatus.REPAIRING,
                 "消毒完成（不合格）：登记缺陷并转维修");
-        // #11 可复用 → 空闲（上架入库）
-        register(BagStatus.REUSABLE, BagEvent.SHELVE, BagStatus.IDLE,
-                "上架入库：复用次数未超限，重新上架补充可用库存");
-        // #12 空闲/待消毒/可复用 → 维修中（转维修）
+        // #11 消毒合格自动入库，不再单独上架
+        // #12 空闲/待消毒 → 维修中（转维修）
         register(BagStatus.IDLE, BagEvent.REPAIR_START, BagStatus.REPAIRING,
                 "转维修：空闲袋登记破损后下架（可用库存同步 −1）");
         register(BagStatus.TO_DISINFECT, BagEvent.REPAIR_START, BagStatus.REPAIRING,
                 "转维修：待消毒袋登记破损后转维修");
-        register(BagStatus.REUSABLE, BagEvent.REPAIR_START, BagStatus.REPAIRING,
-                "转维修：可复用袋登记破损后转维修");
-        // #13 维修中 → 可复用（修复入库）
-        register(BagStatus.REPAIRING, BagEvent.REPAIR_DONE, BagStatus.REUSABLE,
-                "修复入库：维修完成，转可复用待上架");
+        // #13 维修中 → 待消毒（修复入库）
+        register(BagStatus.REPAIRING, BagEvent.REPAIR_DONE, BagStatus.TO_DISINFECT,
+                "修复入库：维修完成，转待消毒，合格后自动入库");
         // #14 维修中 → 报废（无法修复或超复用上限）
         register(BagStatus.REPAIRING, BagEvent.SCRAP, BagStatus.SCRAPPED,
                 "报废：无法修复或复用次数达上限，退出循环（审计重点）");
-        // #15 空闲/待消毒/可复用 → 报废（直接报废）
+        // #15 空闲/待消毒 → 报废（直接报废）
         register(BagStatus.IDLE, BagEvent.SCRAP_DIRECT, BagStatus.SCRAPPED,
                 "直接报废：空闲袋登记报废原因后退出循环（可用库存同步 −1，审计重点）");
         register(BagStatus.TO_DISINFECT, BagEvent.SCRAP_DIRECT, BagStatus.SCRAPPED,
                 "直接报废：待消毒袋登记报废原因后退出循环（审计重点）");
-        register(BagStatus.REUSABLE, BagEvent.SCRAP_DIRECT, BagStatus.SCRAPPED,
-                "直接报废：可复用袋登记报废原因后退出循环（审计重点）");
         // #16 空闲 → 调拨在途（调拨出库）
         register(BagStatus.IDLE, BagEvent.ALLOCATE_OUT, BagStatus.TRANSFERRING,
                 "调拨出库：进入站间调拨在途，源站可用库存 −1");
         // #17 调拨在途 → 空闲（调拨入库）
         register(BagStatus.TRANSFERRING, BagEvent.ALLOCATE_IN, BagStatus.IDLE,
                 "调拨入库：到达目标站并上架，归属改为目标站、可用库存 +1");
-        // #18 已分配/使用中/回收在途 → 已遗失（确认遗失）
+        // #18 已分配/使用中 → 已遗失（确认遗失）
         register(BagStatus.ALLOCATED, BagEvent.LOST_CONFIRM, BagStatus.LOST,
                 "确认遗失：已分配留置超期，平台管理员确认遗失并写责任记录");
         register(BagStatus.IN_USE, BagEvent.LOST_CONFIRM, BagStatus.LOST,
                 "确认遗失：寄件后超期未还，平台管理员确认遗失并写责任记录");
-        register(BagStatus.RETURNING, BagEvent.LOST_CONFIRM, BagStatus.LOST,
-                "确认遗失：回收在途超时未确认，平台管理员确认遗失并写责任记录");
         // #19 调拨在途 → 已遗失（在途遗失确认）
         register(BagStatus.TRANSFERRING, BagEvent.LOST_IN_TRANSIT, BagStatus.LOST,
                 "在途遗失确认：调拨超时未核收，写调拨异常与责任记录");
@@ -138,7 +128,7 @@ public final class TransitionRegistry {
         return rule == null ? null : rule.to();
     }
 
-    /** 全部规则（只读，按设计书 3.2 表序）；供自检与单元测试核对 26 条注册是否齐全。 */
+    /** 全部规则（只读，按设计书 3.2 表序）；供自检与单元测试核对 21 条注册是否齐全。 */
     public static List<TransitionRule> all() {
         return List.copyOf(RULES.values());
     }

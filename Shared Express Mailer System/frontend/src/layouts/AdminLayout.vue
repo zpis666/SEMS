@@ -29,7 +29,7 @@ const scope = computed(() => route.matched.find((r) => r.meta?.scope)?.meta.scop
 const STATION_MENUS = [
   { path: '/station/workbench', label: '工作台', icon: 'Odometer' },
   { path: '/station/recycle', label: '回收确认', icon: 'RefreshLeft' },
-  { path: '/station/stock', label: '出入库 / 激活上架', icon: 'Box' },
+  { path: '/station/stock', label: '实物出库', icon: 'Box' },
   { path: '/station/disinfect', label: '消毒登记', icon: 'MagicStick' },
   { path: '/station/repair', label: '维修报废', icon: 'Tools' },
   { path: '/station/inventory', label: '库存盘点', icon: 'DocumentChecked' },
@@ -92,7 +92,12 @@ async function handleLogout() {
 }
 
 function goProfile() {
-  router.push(scope.value === 'platform' ? '/platform/dashboard' : '/m/profile')
+  router.push(`/${scope.value}/profile`)
+}
+
+function handleUserCommand(command) {
+  if (command === 'profile') goProfile()
+  else if (command === 'logout') handleLogout()
 }
 </script>
 
@@ -134,7 +139,7 @@ function goProfile() {
             <el-icon><Connection /></el-icon>
             <span class="admin-layout__ws-text">{{ wsStore.statusText }}</span>
           </span>
-          <el-dropdown trigger="click">
+          <el-dropdown trigger="click" @command="handleUserCommand">
             <span class="admin-layout__user">
               <el-icon><UserFilled /></el-icon>
               <span>{{ userStore.user?.nickname || '未登录' }}</span>
@@ -142,8 +147,8 @@ function goProfile() {
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item @click="goProfile">个人中心</el-dropdown-item>
-                <el-dropdown-item divided @click="handleLogout">退出登录</el-dropdown-item>
+                <el-dropdown-item command="profile">个人中心</el-dropdown-item>
+                <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>

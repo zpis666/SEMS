@@ -45,6 +45,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     /** 开发期跨域白名单：Vite 前端地址与后端自身地址（前端契约见设计书第 12 节）。 */
     private static final String[] DEV_ALLOWED_ORIGINS = {
             "http://localhost:5173",
+            "http://127.0.0.1:5173",
             "http://localhost:8090"
     };
 

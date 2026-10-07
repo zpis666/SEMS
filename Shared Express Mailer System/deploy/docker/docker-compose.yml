@@ -53,8 +53,12 @@ services:
       - everysec
       - --maxmemory
       - 512mb
+      # 淘汰策略用 noeviction：计数与安全类键多带 TTL（borrow:open、login:fail、
+      # rate:*、idempotent:* 等），volatile-lru 会在内存压力下静默逐出它们；少数
+      # 无 TTL 的键又回收不了、内存照样打满。noeviction 行为明确——内存打满即写
+      # 失败，正好触发《系统设计说明书》7.2 的熔断降级路径（行为可测）。
       - --maxmemory-policy
-      - volatile-lru
+      - noeviction
     environment:
       TZ: Asia/Shanghai
     ports:

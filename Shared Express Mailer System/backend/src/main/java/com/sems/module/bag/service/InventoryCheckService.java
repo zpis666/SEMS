@@ -46,7 +46,7 @@ import java.util.Set;
  * <p><b>提交盘点单</b>：系统按 DB 实时统计本站各状态账面数（DB 为权威口径），与录入的实盘数
  * 逐状态比对自动计算差异，并生成袋级差异清单（差异无法从计数直接定位到实物，按账面袋清单取
  * 「盘亏候选 / 盘盈候选」，供平台管理员现场核对后按 #21 状态修正并留痕，见 3.4.4；
- * 修正经 {@code bag_transfer_log.ref_check_no} 与本单号关联，形成「盘点→修正→追溯」闭环）。
+ * 状态修正不要求盘点单号，也不与本单自动关联）。
  *
  * <p><b>盘点单不可删除</b>：状态只在 PENDING_FIX 待修正 / CLOSED 已闭环 / VOID 作废 间流转；
  * 仅「待修正」可作废（否则 4105），作废需填原因（重盘说明）并记录作废人/作废时间，作废后可重盘。
@@ -183,8 +183,12 @@ public class InventoryCheckService {
         check.setActualJson(JsonUtils.toJson(actual));
         check.setDiffBagsJson(JsonUtils.toJson(diffBags));
         check.setDiffCount(diffBags.size());
-        // 有差异待平台管理员按 #21 修正；无差异也保持待修正（状态扭转入口本期只提供作废，见 5.4）
-        check.setStatus(STATUS_PENDING_FIX);
+        // 账实逐态一致直接闭环；差异候选不能证明实物身份，需人工核验。
+        boolean balanced = expect.equals(actual);
+        check.setStatus(balanced ? STATUS_CLOSED : STATUS_PENDING_FIX);
+        if (balanced) {
+            check.setClosedAt(now);
+        }
         check.setOperatorId(operator.getUserId());
         check.setRemark(trimToNull(dto.getRemark()));
         check.setCreatedAt(now);
@@ -194,7 +198,7 @@ public class InventoryCheckService {
         return toVo(check);
     }
 
-    /** 实盘数归一：键必须是 11 态枚举码，值必须非负；缺省状态补 0，保证与账面快照键集合一致。 */
+    /** 实盘数归一：键必须是 8 态枚举码，值必须非负；缺省状态补 0，保证与账面快照键集合一致。 */
     private Map<String, Integer> normalizeActual(Map<String, Integer> actualJson) {
         if (actualJson == null || actualJson.isEmpty()) {
             throw new BizException(ErrorCode.PARAM_INVALID, "实盘各状态袋数不能为空");
@@ -219,7 +223,7 @@ public class InventoryCheckService {
 
     /**
      * 账面各状态袋数统计：复用站点模块 {@link StockQueryService#countByStatus(Long)}
-     * （跨模块只调对方 Service，不重复实现聚合逻辑；该方法返回全 11 态、无记录补 0，
+     * （跨模块只调对方 Service，不重复实现聚合逻辑；该方法返回全 8 态、无记录补 0，
      * 与实盘快照的键集合天然一致），此处仅把计数类型收敛为 Integer 供快照与比对使用。
      */
     private Map<String, Integer> countByStatus(Long stationId) {

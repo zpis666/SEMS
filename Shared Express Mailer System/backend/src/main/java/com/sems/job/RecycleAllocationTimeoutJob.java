@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  *
  * <p>两步：
  * <ol>
- *   <li><b>回收在途 24 小时提醒</b>：订单 PENDING_CONFIRM（袋=回收在途）且 {@code return_mark_at} 早于
+ *   <li><b>待回收确认 24 小时提醒</b>：订单 PENDING_CONFIRM（袋仍为使用中）且 {@code return_mark_at} 早于
  *       now-24h 且 {@code return_remind_at} 为空 → 写 {@code return_remind_at} 并向投放站点推送回收待办
  *       （7.3 的 {@code station/{id}/recycle} 主题）；</li>
  *   <li><b>回收在途 72 小时 / 调拨出库 48 小时</b>：只读扫描并打 WARN 日志——异常看板清单由 {@code /alerts}

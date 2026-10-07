@@ -34,7 +34,7 @@ public class BagDetailVo {
     /** 当前存放站点名称（联查展示） */
     private String stationName;
 
-    /** 状态码（11 态枚举码） */
+    /** 状态码（8 态枚举码） */
     private String status;
 
     /** 状态中文名（与设计书 3.1 一致） */

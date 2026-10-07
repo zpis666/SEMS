@@ -53,7 +53,7 @@ import java.util.Set;
  *   <li>已分配 +（订单为空/已取消）且未勾选「曾寄出」 → #4 RECOVER_UNUSED（袋回空闲、库存 +1）；</li>
  *   <li>已分配 +（订单待寄件，或勾选「曾寄出」） → #5 RECOVER_CONFIRM（袋到待消毒、订单转已取消）；</li>
  *   <li>使用中 → #7 RECOVER_DIRECT（袋到待消毒、订单转已完成、use_count+1，含未标记直投）；</li>
- *   <li>回收在途 → #8 RECOVER_CONFIRM（同上）。</li>
+ *   <li>订单待回收确认（袋仍为使用中）→ #8 RECOVER_CONFIRM（同上）。</li>
  * </ul>
  *
  * <p><b>原子性与幂等：</b>批量入口做一次接口级幂等（键 = HTTP 方法 + 路径模板，TTL 10 分钟），
@@ -80,7 +80,7 @@ public class RecycleService {
 
     /** 可进入回收确认流程的袋状态集（#4/#5/#7/#8 的前态）。 */
     private static final Set<BagStatus> RECOVERABLE =
-            EnumSet.of(BagStatus.ALLOCATED, BagStatus.IN_USE, BagStatus.RETURNING);
+            EnumSet.of(BagStatus.ALLOCATED, BagStatus.IN_USE);
 
     /**
      * 风控告警阈值：同站点同操作人 10 分钟内确认类操作 ≥20 次 → 触发 5101（设计书 3.5「风控告警阈值」；
@@ -128,7 +128,7 @@ public class RecycleService {
 
     /**
      * 回收箱待确认清单（GET /stations/{id}/recycle-bin，本站站点管理员 / 平台管理员；见 5.3 与 FR-M3-07）：
-     * ① 已标记投放本站的回收在途袋（订单 return_station_id=本站 且订单为待回收确认）；
+     * ① 已标记投放本站且订单为待回收确认的使用中袋（订单 return_station_id=本站）；
      * ② 未标记但状态为使用中、袋台账在本站的袋（用户未标记即投放的候选清单）。
      * 清单仅作清点辅助：跨站未标记直投的袋仍可由扫码确认接口直接确认（4.4 第④条）。
      */
@@ -147,7 +147,7 @@ public class RecycleService {
                 .eq(Bag::getStatus, BagStatus.IN_USE.code())
                 .orderByAsc(Bag::getBagCode));
 
-        // ① 的袋行批量装载（校验袋仍处于回收在途）
+        // ① 的袋行批量装载（校验袋仍处于使用中）
         Map<String, Bag> bagsByCode = new HashMap<>();
         if (!markedOrders.isEmpty()) {
             List<String> codes = markedOrders.stream().map(BagOrder::getBagCode).distinct().toList();
@@ -163,8 +163,8 @@ public class RecycleService {
         Set<String> added = new HashSet<>();
         for (BagOrder order : markedOrders) {
             Bag bag = bagsByCode.get(order.getBagCode());
-            if (bag == null || !BagStatus.RETURNING.code().equals(bag.getStatus())) {
-                // 订单仍待确认但袋已不在回收在途：属数据漂移，记录日志但不混入待确认清单
+            if (bag == null || !BagStatus.IN_USE.code().equals(bag.getStatus())) {
+                // 订单仍待确认但袋已不在使用中：属数据漂移，记录日志但不混入待确认清单
                 log.warn("回收箱清单跳过数据不一致的袋：bagCode={}, orderNo={}, bagStatus={}",
                         order.getBagCode(), order.getOrderNo(), bag == null ? "missing" : bag.getStatus());
                 continue;
@@ -392,7 +392,7 @@ public class RecycleService {
             return fail(item, bagCode, ErrorCode.BAG_NOT_FOUND, "袋码不存在：" + bagCode);
         }
 
-        // 2) 状态校验：仅 {已分配, 使用中, 回收在途} 可进入回收流程，其余（空闲/待消毒/已确认等）报 4102。
+        // 2) 状态校验：仅 {已分配, 使用中} 可进入回收流程，其余（空闲/待消毒/已确认等）报 4102。
         //    校验通过前不占用逐袋幂等键：校验失败的袋不落键、重试可正常复检（同 BagService 既定约定），
         //    否则失败袋的键会被重复条目/重试反推为「已确认完成」，未确认的袋被计入成功数（9.6）
         BagStatus from = BagStatus.of(bag.getStatus());
@@ -422,7 +422,8 @@ public class RecycleService {
                         "绑定订单状态为「" + OrderStatus.of(order.getStatus()).displayName() + "」，与袋状态不匹配，不允许回收确认");
             }
         } else if (from == BagStatus.IN_USE) {
-            event = BagEvent.RECOVER_DIRECT;
+            event = order != null && OrderStatus.PENDING_CONFIRM.code().equals(order.getStatus())
+                    ? BagEvent.RECOVER_CONFIRM : BagEvent.RECOVER_DIRECT;
         } else {
             event = BagEvent.RECOVER_CONFIRM;
         }
@@ -491,11 +492,11 @@ public class RecycleService {
 
     /**
      * 逐袋幂等命中处理（前次同 clientRequestId 的同袋请求未真正提交完成时的续跑保护）：
-     * 能走到这里说明本请求内的校验已通过（袋仍处三态），即前次的幂等键已消费但流转未生效
+     * 能走到这里说明本请求内的校验已通过（袋仍处已分配/使用中），即前次的幂等键已消费但流转未生效
      * （失败或中断——Redis 键不随 DB 事务回滚），本次不再重复执行，提示更换 clientRequestId 重试。
      *
-     * <p>为什么不再用「袋已离开三态 ⇒ 视为前次成功」反推成功（旧实现）：幂等键现在只在
-     * 校验通过后才占用，校验失败的袋不落键；继续把「不在三态」当作前次成功的证据，
+     * <p>为什么不再用「袋已离开已分配/使用中 ⇒ 视为前次成功」反推成功（旧实现）：幂等键现在只在
+     * 校验通过后才占用，校验失败的袋不落键；继续把「不在这两种状态」当作前次成功的证据，
      * 会把本就不可回收的袋或重复条目的第二次出现报成「已确认完成」，
      * 未确认的袋被计入成功数并提示已完成（违背 9.6 的幂等语义与 6.2 的部分失败口径）。
      */

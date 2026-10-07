@@ -53,7 +53,8 @@ import java.util.stream.Collectors;
  *
  * <p>三条贯穿本类的口径：
  * <ul>
- *   <li><b>输出脱敏</b>：手机号出参一律 {@link MaskUtils#maskPhone}（9.5）；密码摘要只进不出，绝不落入 VO；</li>
+ *   <li><b>输出最小化</b>：本人信息手机号脱敏；仅平台管理员用户管理接口返回完整登录手机号；
+ *       密码摘要只进不出，绝不落入 VO（9.5）；</li>
  *   <li><b>会话吊销</b>：角色变更、站点绑定变更、禁用、重置密码、本人改密后，
  *       {@code sys_user.token_version} 自增 1 并删除 Redis 读缓存 {@code auth:userver:{uid}}
  *       （7.1「两级主动失效」，旧令牌下一次请求即被拒绝）；</li>
@@ -515,11 +516,11 @@ public class UserService {
         return vo;
     }
 
-    /** 实体 → 管理视角 VO（手机号脱敏；角色与站点名由调用方批量装配）。 */
+    /** 实体 → 平台管理视角 VO（返回完整登录手机号；角色与站点名由调用方批量装配）。 */
     private UserDetailVo toDetailVo(SysUser user, List<RoleVo> roles, String stationName) {
         UserDetailVo vo = new UserDetailVo();
         vo.setId(user.getId());
-        vo.setPhone(MaskUtils.maskPhone(user.getPhone()));
+        vo.setPhone(user.getPhone());
         vo.setNickname(user.getNickname());
         vo.setStatus(user.getStatus());
         vo.setStationId(user.getStationId());

@@ -556,35 +556,37 @@ onUnmounted(() => {
           </el-table-column>
           <el-table-column label="操作" width="216">
             <template #default="{ row }">
-              <el-button link type="primary" size="small" @click="openRolesDialog(row)">
-                调整角色
-              </el-button>
-              <el-button link type="primary" size="small" @click="toggleStatus(row)">
-                {{ row.status === 'ENABLED' ? '禁用' : '启用' }}
-              </el-button>
-              <el-dropdown trigger="click">
-                <el-button link type="primary" size="small">
-                  更多
-                  <el-icon class="user-manage__more-icon"><ArrowDown /></el-icon>
+              <div class="user-manage__row-actions">
+                <el-button link type="primary" size="small" @click="openRolesDialog(row)">
+                  调整角色
                 </el-button>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-tooltip
-                      :disabled="isStationAdminRow(row)"
-                      content="仅站点管理员需要绑定站点"
-                      placement="left"
-                    >
-                      <el-dropdown-item
-                        :disabled="!isStationAdminRow(row)"
-                        @click="openStationDialog(row)"
+                <el-button link type="primary" size="small" @click="toggleStatus(row)">
+                  {{ row.status === 'ENABLED' ? '禁用' : '启用' }}
+                </el-button>
+                <el-dropdown trigger="click">
+                  <el-button link type="primary" size="small">
+                    更多
+                    <el-icon class="user-manage__more-icon"><ArrowDown /></el-icon>
+                  </el-button>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-tooltip
+                        :disabled="isStationAdminRow(row)"
+                        content="仅站点管理员需要绑定站点"
+                        placement="left"
                       >
-                        绑定站点
-                      </el-dropdown-item>
-                    </el-tooltip>
-                    <el-dropdown-item @click="handleResetPassword(row)">重置密码</el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
+                        <el-dropdown-item
+                          :disabled="!isStationAdminRow(row)"
+                          @click="openStationDialog(row)"
+                        >
+                          绑定站点
+                        </el-dropdown-item>
+                      </el-tooltip>
+                      <el-dropdown-item @click="handleResetPassword(row)">重置密码</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -761,6 +763,16 @@ onUnmounted(() => {
 
 .user-manage__more-icon {
   margin-left: var(--sems-space-1);
+}
+.user-manage__row-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--sems-space-2);
+  white-space: nowrap;
+}
+.user-manage__row-actions :deep(.el-button) {
+  margin-left: 0;
 }
 
 /* 移动端卡片列表 */

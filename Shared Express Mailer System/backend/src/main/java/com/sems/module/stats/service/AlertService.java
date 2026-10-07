@@ -285,7 +285,7 @@ public class AlertService {
     /**
      * ② 回收在途超时（3.5：标记归还后 72 小时未确认）。
      *
-     * <p>袋为 RETURNING 且对应订单（待回收确认，3.6 与袋 RETURNING 严格联动）的
+     * <p>袋保持 IN_USE 且对应订单为待回收确认时，其
      * {@code return_mark_at} 早于 now − 72h；每个袋码只取最新一单，避免历史单重复计入。
      * 关联站点取订单的 {@code return_station_id}（投放站点，更贴近处置现场），缺失时回落取袋站点。
      */
@@ -293,7 +293,7 @@ public class AlertService {
         LocalDateTime deadline = LocalDateTime.now().minus(RETURNING_TIMEOUT_AGE);
         List<Bag> returningBags = bagMapper.selectPage(new Page<Bag>(1, MAX_SCAN_PER_SOURCE, false),
                 Wrappers.lambdaQuery(Bag.class)
-                        .eq(Bag::getStatus, BagStatus.RETURNING.code())).getRecords();
+                        .eq(Bag::getStatus, BagStatus.IN_USE.code())).getRecords();
         if (returningBags.isEmpty()) {
             return List.of();
         }

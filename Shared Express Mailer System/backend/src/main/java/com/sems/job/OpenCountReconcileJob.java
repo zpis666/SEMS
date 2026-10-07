@@ -26,13 +26,13 @@ import java.util.Set;
  *
  * <p>流程：
  * <ol>
- *   <li>装载「当前处于三态」的袋码集合：{@code bag.status ∈ {ALLOCATED, IN_USE, RETURNING}}（3.5 口径），
+ *   <li>装载「当前处于两态」的袋码集合：{@code bag.status ∈ {ALLOCATED, IN_USE}}（3.5 口径），
  *       按主键游标分批（每批 {@value #BATCH_SIZE} 条，命中 {@code idx_bag_status}）；</li>
  *   <li>以袋码集合反查订单（命中 {@code idx_order_bag_code}，袋码按 {@value #BATCH_SIZE} 一组分块
  *       IN 查询），取每只袋 id 最大的订单作为其<b>当前持有订单</b>，按用户聚合出 DB 口径计数——
- *       与 7.2 降级路径「COUNT 袋处于三态的订单数」同口径：撤回/超时取消（R1/R2 不释放额度）的
- *       订单计入，用户归还过的历史订单不随袋被他人借出重新计入（3.5「袋离开三态才 −1」）；</li>
- *   <li>在已载入的三态袋上有订单的用户全部作为候选（含当前不持袋、仅剩历史订单的用户），
+ *       与 7.2 降级路径「COUNT 袋处于已分配/使用中两态的订单数」同口径：撤回/超时取消（R1/R2 不释放额度）的
+ *       订单计入，用户归还过的历史订单不随袋被他人借出重新计入（3.5「袋离开已分配/使用中才 −1」）；</li>
+ *   <li>在已载入的在持袋上有订单的用户全部作为候选（含当前不持袋、仅剩历史订单的用户），
  *       保证残留的旧值能被纠回 0；</li>
  *   <li>与 {@code borrow:open:{uid}}（{@link CounterService#getOpenCount}）比对，不一致时用
  *       {@code SETEX} 显式续期 14 天写回 DB 口径值（{@link CounterService#setOpenCount}，
@@ -80,16 +80,16 @@ public class OpenCountReconcileJob {
         try {
             Set<String> threeStateBagCodes = loadThreeStateBagCodes();
             if (threeStateBagCodes.isEmpty()) {
-                log.info("开单计数对账：当前无三态袋，跳过");
+                log.info("开单计数对账：当前无在持袋，跳过");
                 return;
             }
             Map<Long, Integer> dbCounts = countInFlightByHolder(threeStateBagCodes);
             if (dbCounts.isEmpty()) {
-                log.info("开单计数对账：无相关订单用户，跳过（三态袋 {} 只）", threeStateBagCodes.size());
+                log.info("开单计数对账：无相关订单用户，跳过（在持袋 {} 只）", threeStateBagCodes.size());
                 return;
             }
             int fixed = reconcileUsers(dbCounts);
-            log.info("开单计数对账完成：候选用户 {} 人，修正 {} 人（三态袋 {} 只）",
+            log.info("开单计数对账完成：候选用户 {} 人，修正 {} 人（在持袋 {} 只）",
                     dbCounts.size(), fixed, threeStateBagCodes.size());
         } catch (Exception e) {
             log.error("开单计数对账任务执行异常，本轮到此处终止，下一日重试：{}", e.getMessage(), e);
@@ -97,7 +97,7 @@ public class OpenCountReconcileJob {
     }
 
     /**
-     * 装载当前处于 {已分配, 使用中, 回收在途} 的袋码集合（3.5 在持袋数口径的基础集合）。
+     * 装载当前处于 {已分配, 使用中} 的袋码集合（3.5 在持袋数口径的基础集合）。
      * 按主键游标分批走 {@code idx_bag_status}，命中单轮批数上限即停并告警（剩余留待下一日）。
      */
     private Set<String> loadThreeStateBagCodes() {
@@ -108,7 +108,7 @@ public class OpenCountReconcileJob {
                     new LambdaQueryWrapper<Bag>()
                             .select(Bag::getId, Bag::getBagCode)
                             .in(Bag::getStatus, BagStatus.ALLOCATED.code(),
-                                    BagStatus.IN_USE.code(), BagStatus.RETURNING.code())
+                                    BagStatus.IN_USE.code())
                             .gt(Bag::getId, lastId)
                             .orderByAsc(Bag::getId)).getRecords();
             if (batch.isEmpty()) {
@@ -122,7 +122,7 @@ public class OpenCountReconcileJob {
                 return codes;
             }
             if (round == MAX_BATCHES_PER_RUN - 1) {
-                log.warn("三态袋装载达到单轮批次上限（{}×{}），本次对账按已装载集合执行，剩余留待下一日",
+                log.warn("在持袋装载达到单轮批次上限（{}×{}），本次对账按已装载集合执行，剩余留待下一日",
                         MAX_BATCHES_PER_RUN, BATCH_SIZE);
             }
         }
@@ -130,13 +130,13 @@ public class OpenCountReconcileJob {
     }
 
     /**
-     * 聚合 DB 权威口径的在持袋数（按用户）：袋处于三态的<b>当前持有订单</b>（同袋 id 最大的订单）
-     * 计入其用户；同一袋的历史订单不计入（旧订单已随袋离开三态抵扣过 −1，3.5）。
+     * 聚合 DB 权威口径的在持袋数（按用户）：袋处于已分配/使用中两态的<b>当前持有订单</b>（同袋 id 最大的订单）
+     * 计入其用户；同一袋的历史订单不计入（旧订单已随袋离开这两种状态抵扣过 −1，3.5）。
      *
      * <p>撤回/超时取消（R1/R2）的订单虽为已取消，但袋仍为已分配——它们是该袋的当前持有订单，
      * 必须计入（3.5 明确不释放在持袋数额度）；因此这里不能按订单状态过滤。
      *
-     * <p>返回 Map 覆盖「在已载入的三态袋上有订单的全部用户」：持有者计数 ≥ 1，其余为 0——
+     * <p>返回 Map 覆盖「在已载入的在持袋上有订单的全部用户」：持有者计数 ≥ 1，其余为 0——
      * 后者一并写回 0，可把降级期漏减等原因残留的旧值纠掉。
      */
     private Map<Long, Integer> countInFlightByHolder(Set<String> threeStateBagCodes) {

@@ -55,7 +55,7 @@ public class CreateDisinfectDto {
     @JsonAlias({"details", "items"})
     private List<BagItem> bags;
 
-    /** 逐袋登记项：合格触发转移 #9（待消毒→可复用）；不合格触发 #10（待消毒→维修中） */
+    /** 逐袋登记项：合格触发转移 #9（待消毒→空闲）；不合格触发 #10（待消毒→维修中） */
     @Data
     public static class BagItem {
 

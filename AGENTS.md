@@ -29,7 +29,7 @@
 前端 Vue 3.5+、Vite 8.x（需 Node ≥20.19）、Element Plus 2.14+、Pinia 4.x（需 Vue ≥3.5.11）、Axios 1.x、ECharts 6.x。
 
 ## 领域模型（系统核心，改动需谨慎）
-- 快递袋全生命周期状态机：空闲 → 已分配 → 使用中 → 回收在途 → 待消毒 → 可复用 →（维修/报废）。所有流转必须由后端校验，禁止非法跳变与重复领取；每次流转写流转日志。
+- 快递袋全生命周期状态机：空闲 → 已分配 → 使用中 → 待消毒 → 空闲（正常循环四态）；保留维修中、报废、已遗失、调拨在途扩展态。标记归还仅推进订单，消毒合格自动入库。所有流转必须由后端校验，禁止非法跳变与重复领取；每次流转写流转日志。
 - 角色（RBAC，三类）：普通用户（取用/归还、订单查询、个人中心）；站点管理员（出入库、库存盘点、消毒登记、维修报废）；平台管理员（用户/订单/快递袋/站点管理、数据统计）。
 - 功能模块：用户管理、共享快递袋服务、共享站点管理、快递袋管理、快递订单管理、后台管理与数据统计。
 - 快递袋需有编码与二维码（展示 + 扫码识别）。
@@ -49,6 +49,7 @@
 | JDK | **21.0.11**，`E:\tools-env\jdk-21.0.11+10`，`JAVA_HOME` 已指向它 | 构建与运行**一律以 `JAVA_HOME` 为准**。注意：PATH 上排第一的 `java` 是 Oracle Java 8，**不属于本项目**，直接执行 `java -version` 会误报为 1.8 |
 | Node.js | 24.16.0，`E:\tools-env\nodejs-24.16.0`（含 npm 11） | 前端构建与开发服务器 |
 | Git | 2.54.0，`E:\tools-env\git-2.54.0.windows.1` | 仓库已初始化，分支 `main`，提交身份 `zp <1931662166@qq.com>` |
+| PowerShell | **7.6.6**（Microsoft Store 安装，命令名 `pwsh`） | **默认 shell**；命令行操作一律走 pwsh，不要回落 Windows PowerShell 5.1 或 Git Bash。用法注意见「环境注意」 |
 | Docker | CLI 29.4.3 + Compose v5.1.3（Docker Desktop 已安装） | 本地 MySQL 8.0 与 Redis 7 用容器运行，见 `Shared Express Mailer System/deploy/docker/`；使用前需启动 Docker Desktop |
 | Maven | **本机没有，也不需要装** | 后端使用 Maven Wrapper（`mvnw`），随工程提交 |
 | Maven 依赖源 | 已配阿里云公共仓库：`C:\Users\Admin1\.m2\settings.xml` | 本机全局配置，**不在仓库内、不参与交付**；2026-10-06 实测 340 次下载全部走 `aliyunmaven` |
@@ -58,7 +59,12 @@
 | JMeter | 未安装 | 2027-01 并发测试阶段再装 |
 
 ## 环境注意
-- Windows + Git Bash，路径与文件名含中文，shell 命令注意引号与编码。
+- **默认 shell 是 PowerShell 7（pwsh）**，不再默认 Git Bash。Windows 平台，路径与文件名含中文，shell 命令注意引号与编码。
+  - pwsh 里跑 Maven Wrapper 必须写 `.\mvnw.cmd`：写 `.\mvnw` 会失败（PowerShell 认到的是同目录那个无扩展名的 bash 脚本，报「无法在管道中间运行文档」）。2026-10-07 实测 `.\mvnw.cmd -v` 正常（Maven 3.9.11 / JDK 21.0.11）。
+  - 不要再调 `powershell.exe`——那是 Windows PowerShell 5.1，不属于本项目。
+  - Git Bash 仍可用，但只在确实需要 POSIX 脚本时才用。注意其中 `export MSYS_NO_PATHCONV=1` 会让 `./mvnw` 报
+    `找不到或无法加载主类 org.codehaus.plexus.classworlds.launcher.Launcher`（MSYS 路径改写被关掉所致，**不是 Maven 坏了**）；
+    该 export 与 `./mvnw` 不要写进同一条命令，或提前 `unset`。
 - 仓库根目录有 `.zcodeignore`（仅影响 ZCode 文件搜索，不等同于 .gitignore）；维护忽略规则时以 `.gitignore` 为准。
 - `.gitattributes` 已统一换行策略：源码/文档入库为 LF；`*.cmd`/`*.bat` 为 CRLF；`正式提交/**` 为 `-text`（字节原样）。
 - 新建批处理脚本后需确保为 CRLF 换行，否则 cmd.exe 可能解析异常。

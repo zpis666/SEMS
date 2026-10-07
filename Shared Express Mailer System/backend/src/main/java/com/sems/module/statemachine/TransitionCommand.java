@@ -46,9 +46,6 @@ public class TransitionCommand {
     /** 备注（修正原因/找回说明等，写流转日志） */
     private String remark;
 
-    /** 关联盘点差异单号（仅 {@code STATUS_CORRECT} 必填，写流转日志 ref_check_no） */
-    private String refCheckNo;
-
     /** 客户端幂等ID：与袋码组成逐袋幂等键（批量接口逐袋独立；缺失时状态机不做逐袋去重） */
     private String clientRequestId;
 

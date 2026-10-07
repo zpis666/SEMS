@@ -64,7 +64,7 @@ public class OrderService {
     /** #18 遗失认定时限（设计书 3.2 #18、3.5）：使用中 → 寄件提交后 14 天。 */
     private static final Duration LOST_WINDOW_AFTER_SHIP = Duration.ofDays(14);
 
-    /** #18 遗失认定时限：回收在途 → 标记归还后 72 小时。 */
+    /** #18 遗失认定时限：订单待回收确认 → 标记归还后 72 小时。 */
     private static final Duration LOST_WINDOW_IN_RETURN = Duration.ofHours(72);
 
     /** #18 遗失认定时限：已分配 → 订单取消后 7 天（须人工核验后确认，见 3.5）。 */
@@ -175,7 +175,7 @@ public class OrderService {
      * 标记"已投放回收箱"（设计书 5.2、3.2 #6、3.4.2 辅助路径）。
      *
      * <p>写订单的 {@code return_station_id}（不改袋归属），触发 {@code RETURN_MARK}：
-     * 订单→待回收确认、袋→回收在途；并向投放站点推送回收待办（7.3 {@code station/{id}/recycle}）。
+     * 订单→待回收确认、袋保持使用中；并向投放站点推送回收待办（7.3 {@code station/{id}/recycle}）。
      */
     @Transactional(rollbackFor = Exception.class)
     public void returnMark(String orderNo, ReturnMarkDto dto, String clientRequestId) {
@@ -258,12 +258,12 @@ public class OrderService {
     /**
      * 确认遗失（设计书 5.5、3.2 #18；平台管理员）。
      *
-     * <p>触发 {@code LOST_CONFIRM}：袋→已遗失（前态须为已分配/使用中/回收在途，由状态机校验），
+     * <p>触发 {@code LOST_CONFIRM}：袋→已遗失（前态须为已分配/使用中，由状态机校验），
      * 订单→已遗失（含已取消订单的终态覆盖），写 {@code liability_record}（
      * {@code biz_type=ORDER}、{@code type=遗失}、责任用户可空、结论/裁决人/裁决时间），
      * 并在持袋数 −1（由伴随动作完成）。
      *
-     * <p>时限前置校验（3.2 #18 / 3.5）：使用中 → 寄件后满 14 天；回收在途 → 标记归还后满 72h；
+     * <p>时限前置校验（3.2 #18 / 3.5）：使用中 → 寄件后满 14 天；订单待回收确认 → 标记归还后满 72h；
      * 已分配 → 订单已取消且满 7 天。三者按袋当前状态取其一，未届满一律拒绝——
      * 防止责任认定被提前触发（袋进终态后不可回退）；定时任务扫描（7.5）只生成告警候选，
      * 具体结论仍由平台管理员核验后填写并随责任记录留痕。
@@ -341,18 +341,23 @@ public class OrderService {
 
     /**
      * #18 确认遗失的时限前置校验（设计书 3.2 #18、3.5）：
-     * 使用中 → 寄件后 ≥14 天；回收在途 → 标记归还后 ≥72h；已分配 → 订单已取消且 ≥7 天。
+     * 使用中 → 寄件后 ≥14 天；订单待回收确认 → 标记归还后 ≥72h；已分配 → 订单已取消且 ≥7 天。
      *
-     * <p>其余袋状态（含终态、非三态）不在 #18 的源态内，交由状态机按 4102 拒绝，
+     * <p>其余袋状态（含终态、非已分配/使用中）不在 #18 的源态内，交由状态机按 4102 拒绝，
      * 此处不抢先改判错误码（设计书 3.2 表头「袋状态机拒绝一律 4102」）。
      */
     private static void assertLostConfirmWindow(BagOrder order, BagStatus bagStatus) {
         LocalDateTime now = LocalDateTime.now();
         switch (bagStatus) {
-            case IN_USE -> assertWindowElapsed(order.getShippedAt(), now,
-                    LOST_WINDOW_AFTER_SHIP, "寄件提交后满 14 天");
-            case RETURNING -> assertWindowElapsed(order.getReturnMarkAt(), now,
-                    LOST_WINDOW_IN_RETURN, "回收在途满 72 小时");
+            case IN_USE -> {
+                if (OrderStatus.PENDING_CONFIRM.code().equals(order.getStatus())) {
+                    assertWindowElapsed(order.getReturnMarkAt(), now,
+                            LOST_WINDOW_IN_RETURN, "标记归还满 72 小时");
+                } else {
+                    assertWindowElapsed(order.getShippedAt(), now,
+                            LOST_WINDOW_AFTER_SHIP, "寄件提交后满 14 天");
+                }
+            }
             case ALLOCATED -> {
                 // 3.2 #18：已分配须「订单已取消 ≥7 天未回收」；R2 超时取消后订单最长停留 24h
                 if (!OrderStatus.CANCELLED.code().equals(order.getStatus())) {

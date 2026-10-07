@@ -51,7 +51,6 @@ const KPI_CARDS = [
   { status: 'IDLE', label: '空闲（可领用）' },
   { status: 'IN_USE', label: '使用中' },
   { status: 'TO_DISINFECT', label: '待消毒' },
-  { status: 'REUSABLE', label: '可复用' },
 ]
 
 const detailRows = computed(() =>

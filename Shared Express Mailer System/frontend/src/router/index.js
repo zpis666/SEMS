@@ -113,6 +113,12 @@ const routes = [
         meta: { title: '工作台' },
       },
       {
+        path: 'profile',
+        name: 'StationProfile',
+        component: () => import('@/views/user/Profile.vue'),
+        meta: { title: '个人中心' },
+      },
+      {
         path: 'recycle',
         name: 'RecycleConfirm',
         component: () => import('@/views/station/RecycleConfirm.vue'),
@@ -174,6 +180,12 @@ const routes = [
         name: 'Dashboard',
         component: () => import('@/views/platform/Dashboard.vue'),
         meta: { title: '数据看板' },
+      },
+      {
+        path: 'profile',
+        name: 'PlatformProfile',
+        component: () => import('@/views/user/Profile.vue'),
+        meta: { title: '个人中心' },
       },
       {
         path: 'users',

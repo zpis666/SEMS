@@ -13,7 +13,7 @@ import { BAG_CODE_REGEX } from '@/utils/validators'
  *
  * 三个功能区用 Tab 承载：
  *  ①维修登记：repairBag（破损描述必填）——袋转「维修中」；
- *  ②维修完成：repairComplete（结果=修复转「可复用」；无法修复转「报废」）；
+ *  ②维修完成：repairComplete（结果=修复转「待消毒」；无法修复转「报废」）；
  *  ③直接报废：scrapBag（原因必填 + 二次确认，明确报废是审计重点核查项）。
  * 三区下方「最近操作」列表本地维护本次会话的处理结果（刷新后清空）。
  */
@@ -144,7 +144,7 @@ async function submitComplete() {
   try {
     const remark = completeForm.remark.trim()
     await repairComplete(code, { result: completeForm.result, remark: remark || undefined })
-    const message = completeForm.result === '修复' ? '已修复，转「可复用」' : '无法修复，已转「报废」'
+    const message = completeForm.result === '修复' ? '已修复，转「待消毒」' : '无法修复，已转「报废」'
     pushRecord({ type: '维修完成', bagCode: code, success: true, message: `${message}${remark ? `：${remark}` : ''}` })
     ElMessage.success(`${code} ${message}`)
     completeForm.bagCode = ''
@@ -223,7 +223,7 @@ async function submitScrap() {
         <!-- ① 维修登记 -->
         <el-tab-pane label="维修登记" name="repair">
           <p class="sems-text-muted repair-page__tip">
-            适用场景：可复用或空闲的袋出现破损，登记后转「维修中」。破损描述必填，作为维修与审计依据。
+            适用场景：待消毒或空闲的袋出现破损，登记后转「维修中」。破损描述必填，作为维修与审计依据。
           </p>
           <el-form
             ref="repairFormRef"
@@ -260,7 +260,7 @@ async function submitScrap() {
         <!-- ② 维修完成 -->
         <el-tab-pane label="维修完成" name="complete">
           <p class="sems-text-muted repair-page__tip">
-            适用场景：维修中的袋处置完成。结果「修复」转「可复用」；「无法修复」转「报废」（终态）。
+            适用场景：维修中的袋处置完成。结果「修复」转「待消毒」；「无法修复」转「报废」（终态）。
           </p>
           <el-form
             ref="completeFormRef"

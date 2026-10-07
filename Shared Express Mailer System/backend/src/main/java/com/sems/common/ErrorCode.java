@@ -38,7 +38,7 @@ public enum ErrorCode {
     BAG_ILLEGAL_TRANSITION(4102, "快递袋状态非法流转", 200, false),
     /** 重复申领（并发竞争，同一只袋已被领取） */
     DUPLICATE_BORROW(4103, "重复申领", 200, false),
-    /** 在持袋数超限：用户绑定的袋处于 {已分配, 使用中, 回收在途} 的订单数 &gt; 3 */
+    /** 在持袋数超限：用户绑定的袋处于 {已分配, 使用中} 的订单数 &gt; 3 */
     HOLDING_LIMIT(4104, "在持袋数超限", 200, false),
     /** 订单/单据状态不允许该操作（非状态机管辖；袋状态机拒绝归 4102） */
     ORDER_STATE_NOT_ALLOWED(4105, "订单/单据状态不允许该操作", 200, false),

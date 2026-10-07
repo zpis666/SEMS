@@ -98,7 +98,7 @@ public class SemsProperties {
     @Data
     public static class Borrow {
 
-        /** 在持袋数上限（默认 3）：用户绑定的袋处于「已分配/使用中/回收在途」三态的订单数上限（设计书 3.5）。 */
+        /** 在持袋数上限（默认 3）：用户绑定的袋处于「已分配/使用中」两态的订单数上限（设计书 3.5）。 */
         private int openLimit;
 
         /** 每日取袋次数上限（默认 10），含已撤回/已取消（设计书 3.5）。 */

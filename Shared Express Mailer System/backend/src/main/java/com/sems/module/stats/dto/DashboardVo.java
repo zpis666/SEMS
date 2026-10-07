@@ -10,12 +10,12 @@ import java.util.Map;
  *
  * <p>字段口径逐条：
  * <ul>
- *   <li>{@link #inUseCount} 在用袋数：状态 ∈ {已分配, 使用中, 回收在途, 待消毒, 可复用}（3.5）；</li>
+ *   <li>{@link #inUseCount} 在用袋数：状态 ∈ {已分配, 使用中, 待消毒}（3.5）；</li>
  *   <li>{@link #inCirculationCount} 在循环袋数：非报废、非遗失（3.5，含各站点与在途）；</li>
  *   <li>{@link #todayBorrow}/{@link #todayReturn} 今日取/还：读 {@code stats:today:0} 汇总键，
  *       缺失时按各站点 {@code stats:today:{stationId}} 求和（5.6/8.3）；</li>
  *   <li>{@link #warningStationCount} 预警站点数：启用站点中可用库存低于 {@code warn_threshold} 的数量；</li>
- *   <li>{@link #statusDistribution} 各状态分布：键 = {@code BagStatus} 状态码，值 = 袋数（11 态补 0）；</li>
+ *   <li>{@link #statusDistribution} 各状态分布：键 = {@code BagStatus} 状态码，值 = 袋数（8 态补 0）；</li>
  *   <li>{@link #auditDropCount} 审计队列丢弃数：当日累计（7.6）；</li>
  *   <li>{@link #reconcileDiffCount} 库存对账差异数：当日累计（7.2 R4）。</li>
  * </ul>
@@ -23,7 +23,7 @@ import java.util.Map;
 @Data
 public class DashboardVo {
 
-    /** 在用袋数（3.5：已分配/使用中/回收在途/待消毒/可复用） */
+    /** 在用袋数（3.5：已分配/使用中/待消毒/可复用） */
     private Long inUseCount;
 
     /** 在循环袋数（3.5：非报废、非遗失） */
@@ -48,7 +48,7 @@ public class DashboardVo {
     /** 预警站点数：启用站点中当前可用库存低于预警阈值的数量（阈值为 0 表示不预警） */
     private Integer warningStationCount;
 
-    /** 各状态袋数分布：键 = BagStatus 状态码，值 = 袋数（11 态全集，无袋的状态为 0） */
+    /** 各状态袋数分布：键 = BagStatus 状态码，值 = 袋数（8 态全集，无袋的状态为 0） */
     private Map<String, Long> statusDistribution;
 
     /** 审计队列丢弃数（当日累计，见 7.6；读 AuditLogService.getAuditDropCount） */

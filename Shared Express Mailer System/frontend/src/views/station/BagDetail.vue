@@ -147,7 +147,7 @@ const useCountText = computed(
 const canUnusedReturn = computed(() => bag.value?.status === 'ALLOCATED')
 /** 转维修（#12）/ 报废（#15）：空闲、待消毒、可复用 三种前态 */
 const canRepairOrScrap = computed(() =>
-  ['IDLE', 'TO_DISINFECT', 'REUSABLE'].includes(bag.value?.status),
+  ['IDLE', 'TO_DISINFECT'].includes(bag.value?.status),
 )
 
 function formatTime(value) {

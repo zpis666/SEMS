@@ -1,10 +1,11 @@
 -- ============================================================
 -- 共享快递袋系统（Shared Express Mailer System）建表脚本 V1
 -- 目标：MySQL 8.0 / InnoDB / utf8mb4 / utf8mb4_0900_ai_ci
--- 来源：《数据库设计说明书》V1.0 第 4 章
+-- 来源：《数据库设计说明书》V1.1 第 4 章
+-- 库名：由容器环境变量 MYSQL_DATABASE 注入（脚本内不包含建库语句）
 -- 约定：全部 CREATE TABLE IF NOT EXISTS，可重复执行；不含 DROP
--- 说明：本文件由数据库设计规格生成，请勿手工修改；
---       如需变更请改《数据库设计说明书》后重新生成。
+-- 说明：本文件与《数据库设计说明书》第 4 章保持同步；
+--       如需变更，先改文档再改脚本，并在修订历史登记。
 -- ============================================================
 
 SET NAMES utf8mb4;
@@ -60,6 +61,7 @@ CREATE TABLE IF NOT EXISTS `station` (
   `open_time` varchar(50) COMMENT '开放时段展示文本，不做硬校验',
   `warn_threshold` int unsigned NOT NULL DEFAULT 0 COMMENT '库存预警阈值（低于则预警；0=不预警）',
   `status` varchar(20) NOT NULL DEFAULT 'ENABLED' COMMENT '状态：ENABLED启用/DISABLED停用',
+  `handover_station_id` bigint unsigned COMMENT '停用时指定的接收站（可空）',
   `created_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
   `updated_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
   PRIMARY KEY (`id`),
@@ -90,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `bag` (
   `color` varchar(20) NOT NULL COMMENT '颜色（如 黄色）',
   `capacity` varchar(50) NOT NULL COMMENT '容量（如 33×25×5cm）',
   `station_id` bigint unsigned NOT NULL COMMENT '当前存放站点（随实物转移；建袋写登记站）',
-  `status` varchar(20) NOT NULL DEFAULT 'INACTIVE' COMMENT '袋状态（11 态枚举，初始 INACTIVE）',
+  `status` varchar(20) NOT NULL DEFAULT 'IDLE' COMMENT '袋状态（8 态枚举：4 个正常态及 4 个扩展态，初始 IDLE）',
   `use_count` int unsigned NOT NULL DEFAULT 0 COMMENT '复用次数（唯一递增点：回收确认）',
   `max_use_count` int unsigned NOT NULL DEFAULT 50 COMMENT '复用上限（默认 50，超限拒绝上架）',
   `version` int unsigned NOT NULL DEFAULT 0 COMMENT '乐观锁版本（条件 UPDATE 防重领）',
@@ -106,13 +108,13 @@ CREATE TABLE IF NOT EXISTS `bag` (
 CREATE TABLE IF NOT EXISTS `bag_transfer_log` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID（自增，写入有序）',
   `bag_code` varchar(20) NOT NULL COMMENT '快递袋编码（追溯关联，不设外键）',
-  `from_status` varchar(20) NOT NULL COMMENT '流转前状态（11 态枚举码）',
-  `to_status` varchar(20) NOT NULL COMMENT '流转后状态（11 态枚举码）',
-  `event` varchar(20) NOT NULL COMMENT '触发事件（BagEvent 枚举码）',
+  `from_status` varchar(20) NOT NULL COMMENT '流转前状态（8 态枚举码）',
+  `to_status` varchar(20) NOT NULL COMMENT '流转后状态（8 态枚举码）',
+  `event` varchar(20) NOT NULL COMMENT '触发事件（BagEvent 码，与《系统设计说明书》3.2 的 21 条转移一一对应）：ACTIVATE激活上架/BORROW扫码申领/SHIP提交寄件/RETURN_MARK标记归还/RECOVER_UNUSED未使用回收/RECOVER_CONFIRM回收确认（#5、#8 共用）/RECOVER_DIRECT回收确认（直投）/DISINFECT_PASS消毒完成（合格）/DISINFECT_FAIL消毒完成（不合格）/SHELVE上架入库/REPAIR_START转维修/REPAIR_DONE修复入库/SCRAP报废/SCRAP_DIRECT直接报废/ALLOCATE_OUT调拨出库/ALLOCATE_IN调拨入库/LOST_CONFIRM确认遗失/LOST_IN_TRANSIT在途遗失确认/FOUND找回/STATUS_CORRECT状态修正',
   `operator_id` bigint unsigned NOT NULL COMMENT '操作人用户ID（登录用户或管理员）',
   `station_id` bigint unsigned NOT NULL COMMENT '操作站点（事件发生地）',
   `proxy_flag` tinyint unsigned NOT NULL DEFAULT 0 COMMENT '平台管理员代操作：0 否，1 是',
-  `ref_check_no` varchar(32) COMMENT '盘点差异单号，#21 修正必填',
+  `ref_check_no` varchar(32) COMMENT '历史兼容列：旧状态修正日志可能记录盘点差异单号；当前状态修正不写入',
   `remark` varchar(255) COMMENT '备注（修正原因/找回说明等）',
   `created_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '流转时间（写入即发生时间）',
   PRIMARY KEY (`id`),
@@ -165,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `liability_record` (
   `biz_no` varchar(32) NOT NULL COMMENT '业务单号（订单号或调拨单号）',
   `type` varchar(20) NOT NULL COMMENT '责任类型（遗失/在途遗失/超时）',
   `responsible_user_id` bigint unsigned COMMENT '责任用户（可空=责任待定）',
-  `responsible_station_id` bigint unsigned COMMENT '责任站点（调拨在途遗失=源站）',
+  `responsible_station_id` bigint unsigned COMMENT '责任站点（biz_type=ALLOCATION 时指向源站）',
   `conclusion` varchar(255) COMMENT '处置结论（管理员裁决内容）',
   `decided_by` bigint unsigned COMMENT '裁决人（平台管理员ID）',
   `decided_at` datetime(3) COMMENT '裁决时间',
@@ -231,8 +233,8 @@ CREATE TABLE IF NOT EXISTS `disinfect_detail` (
 CREATE TABLE IF NOT EXISTS `repair_record` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键 ID',
   `bag_code` varchar(20) NOT NULL COMMENT '快递袋编码',
-  `reporter_id` bigint unsigned NOT NULL COMMENT '报修人（登记破损的管理员）',
-  `description` varchar(255) NOT NULL COMMENT '破损描述（报修时登记）',
+  `reporter_id` bigint unsigned NOT NULL COMMENT '报修人（登记破损的管理员；#21 状态修正转入维修时=修正操作人）',
+  `description` varchar(255) NOT NULL COMMENT '破损描述（报修时登记；#21 转入维修时取修正原因）',
   `start_time` datetime(3) NOT NULL COMMENT '维修开始时间（转维修时点）',
   `end_time` datetime(3) COMMENT '维修完成时间（未完成为空）',
   `result` varchar(20) COMMENT '维修结果：修复/无法修复',
@@ -270,7 +272,7 @@ CREATE TABLE IF NOT EXISTS `inventory_check` (
   `actual_json` json NOT NULL COMMENT '实盘各状态袋数快照（JSON）',
   `diff_bags_json` json NOT NULL COMMENT '袋级差异清单[{bagCode,diffType}]',
   `diff_count` int unsigned NOT NULL DEFAULT 0 COMMENT '差异袋数（差异清单条数）',
-  `status` varchar(20) NOT NULL DEFAULT 'PENDING_FIX' COMMENT '状态：待修正/已闭环/作废',
+  `status` varchar(20) NOT NULL DEFAULT 'PENDING_FIX' COMMENT '状态：PENDING_FIX待修正/CLOSED已闭环/VOID作废',
   `operator_id` bigint unsigned NOT NULL COMMENT '盘点人（提交账号）ID',
   `closed_at` datetime(3) COMMENT '闭环时间（差异修正完毕）',
   `voided_at` datetime(3) COMMENT '作废时间',
@@ -291,7 +293,7 @@ CREATE TABLE IF NOT EXISTS `allocation_order` (
   `allocation_no` varchar(32) NOT NULL COMMENT '调拨单号（业务唯一编号）',
   `from_station_id` bigint unsigned NOT NULL COMMENT '源站点ID（调出方）',
   `to_station_id` bigint unsigned NOT NULL COMMENT '目标站点ID（调入方）',
-  `status` varchar(20) NOT NULL DEFAULT 'PENDING_DISPATCH' COMMENT '状态：待出库/在途/已完成/异常/已取消/已终止',
+  `status` varchar(20) NOT NULL DEFAULT 'PENDING_DISPATCH' COMMENT '状态：PENDING_DISPATCH待出库/IN_TRANSIT在途/COMPLETED已完成/ABNORMAL异常/CANCELLED已取消/TERMINATED已终止',
   `dispatch_at` datetime(3) COMMENT '首只出库时间（超时起算）',
   `completed_at` datetime(3) COMMENT '全部核收完成时间',
   `abnormal_at` datetime(3) COMMENT '置异常时间（在途遗失/部分核收）',
@@ -315,7 +317,7 @@ CREATE TABLE IF NOT EXISTS `allocation_detail` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `allocation_id` bigint unsigned NOT NULL COMMENT '所属调拨单ID',
   `bag_code` varchar(20) NOT NULL COMMENT '快递袋编码',
-  `status` varchar(20) NOT NULL DEFAULT 'PENDING_DISPATCH' COMMENT '状态：待出库/已出库/已核收/已剔除/已遗失',
+  `status` varchar(20) NOT NULL DEFAULT 'PENDING_DISPATCH' COMMENT '状态：PENDING_DISPATCH待出库/DISPATCHED已出库/RECEIVED已核收/REMOVED已剔除/LOST已遗失',
   `dispatch_at` datetime(3) COMMENT '该袋出库时间',
   `receive_at` datetime(3) COMMENT '该袋核收时间',
   `removed_at` datetime(3) COMMENT '剔除（解锁）时间',
@@ -339,13 +341,14 @@ CREATE TABLE IF NOT EXISTS `audit_log` (
   `request_uri` varchar(255) NOT NULL DEFAULT '' COMMENT '请求URI(如/api/v1/bags)',
   `params_masked` varchar(4096) NOT NULL DEFAULT '' COMMENT '脱敏后入参JSON(超长截断)',
   `result` tinyint unsigned NOT NULL DEFAULT 0 COMMENT '结果:1成功/0失败',
-  `error_code` int unsigned NOT NULL DEFAULT 0 COMMENT '错误码(0=成功,见6.4)',
+  `error_code` int unsigned NOT NULL DEFAULT 0 COMMENT '错误码(0=成功,见《系统设计说明书》6.4 错误码表)',
   `cost_ms` int unsigned NOT NULL DEFAULT 0 COMMENT '处理耗时(毫秒)',
   `created_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '记录写入时间',
   PRIMARY KEY (`id`),
   KEY `idx_audit_created_at` (`created_at`),
   KEY `idx_audit_operator_created` (`operator_id`, `created_at`),
-  KEY `idx_audit_module_created` (`module`, `created_at`)
+  KEY `idx_audit_module_created` (`module`, `created_at`),
+  KEY `idx_audit_action_created` (`action`, `created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='操作审计日志';
 
 -- ---------- login_log：登录日志(成功/失败与原因) ----------

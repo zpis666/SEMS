@@ -54,6 +54,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Map;
 import java.util.Set;
 
@@ -300,7 +301,7 @@ public class AllocationService {
 
         List<String> bagCodes = dedupeBagCodes(dto.getBagCodes());
         checkBatchSize(bagCodes.size());
-        List<String> unavailable = collectUnavailableReasons(bagCodes);
+        List<String> unavailable = collectUnavailableReasons(bagCodes, from.getId());
         if (!unavailable.isEmpty()) {
             // 整单原子：任一袋不可用都不建单，避免"建到一半锁了一部分"
             throw new BizException(ErrorCode.PARAM_INVALID,
@@ -1047,7 +1048,7 @@ public class AllocationService {
     }
 
     /** 逐只收集不可用原因（存在性 / 空闲态 / 调拨锁定），供建单整单拒绝时写明明细。 */
-    private List<String> collectUnavailableReasons(List<String> bagCodes) {
+    private List<String> collectUnavailableReasons(List<String> bagCodes, Long sourceStationId) {
         List<String> reasons = new ArrayList<>();
         List<String> validFormatCodes = new ArrayList<>(bagCodes.size());
         for (String bagCode : bagCodes) {
@@ -1063,7 +1064,8 @@ public class AllocationService {
             return reasons;
         }
         Map<String, Bag> bagByCode = new HashMap<>();
-        List<Bag> bags = bagMapper.selectList(new LambdaQueryWrapper<Bag>().in(Bag::getBagCode, validFormatCodes));
+        List<Bag> bags = bagMapper.selectList(new LambdaQueryWrapper<Bag>().in(Bag::getBagCode, validFormatCodes)
+                .orderByAsc(Bag::getBagCode).last("FOR UPDATE"));
         for (Bag bag : bags) {
             bagByCode.put(bag.getBagCode(), bag);
         }
@@ -1072,6 +1074,10 @@ public class AllocationService {
             Bag bag = bagByCode.get(bagCode);
             if (bag == null) {
                 reasons.add(bagCode + "（袋码不存在）");
+                continue;
+            }
+            if (!Objects.equals(sourceStationId, bag.getStationId())) {
+                reasons.add(bagCode + "（袋不属于源站点）");
                 continue;
             }
             if (!BagStatus.IDLE.code().equals(bag.getStatus())) {

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  *
  * <p>盘点单据不可删除：状态只在 PENDING_FIX 待修正 / CLOSED 已闭环 / VOID 作废 之间流转并留痕。
  * 差异修正按设计书 3.2 的 #21（STATUS_CORRECT）口径执行，盘点单号经
- * {@code bag_transfer_log.ref_check_no} 与流转日志关联，形成「盘点 → 修正 → 追溯」闭环。
+ * 差异候选需人工核验；当前状态修正不与盘点单号自动关联。
  *
  * <p>三个 JSON 列一律以 String 承载：MySQL 的 JSON 类型经 JDBC 读写即字符串，
  * 业务层用 {@code com.sems.common.util.JsonUtils} 做对象转换（见实现契约 3.7）。
@@ -25,7 +25,7 @@ public class InventoryCheck {
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    /** 盘点单号（全局唯一，BizNoUtils.checkNo() 生成；bag_transfer_log.ref_check_no 引用之） */
+    /** 盘点单号（全局唯一，BizNoUtils.checkNo() 生成；当前不与状态修正自动关联） */
     private String checkNo;
 
     /** 盘点站点ID */

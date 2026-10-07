@@ -26,7 +26,7 @@ public class StationStockVo {
     /** 站点地址（预警列表供调拨调度判断用） */
     private String address;
 
-    /** 各状态计数：状态码 → 袋数（11 态全量，无记录补 0） */
+    /** 各状态计数：状态码 → 袋数（8 态全量，无记录补 0） */
     private Map<String, Long> statusCounts;
 
     /** 可用库存（该站点空闲袋数） */

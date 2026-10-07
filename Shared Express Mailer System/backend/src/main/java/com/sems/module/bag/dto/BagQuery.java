@@ -22,7 +22,7 @@ public class BagQuery {
     /** 每页条数（默认 10，最大 100） */
     private Integer pageSize = 10;
 
-    /** 状态筛选（11 态枚举码，如 IDLE；非法码报 3001） */
+    /** 状态筛选（8 态枚举码，如 IDLE；非法码报 3001） */
     private String status;
 
     /** 站点筛选（站点管理员仅允许本站，越界报 2002） */

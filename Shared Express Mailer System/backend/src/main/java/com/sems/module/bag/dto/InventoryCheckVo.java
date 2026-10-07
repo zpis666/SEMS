@@ -21,7 +21,7 @@ public class InventoryCheckVo {
     /** 盘点单主键 ID（作废接口的路径参数） */
     private Long id;
 
-    /** 盘点单号（IC + 时间戳 + 随机段，全局唯一；状态修正经 ref_check_no 引用之） */
+    /** 盘点单号（IC + 时间戳 + 随机段，全局唯一；当前与状态修正无自动关联） */
     private String checkNo;
 
     /** 盘点站点 ID */

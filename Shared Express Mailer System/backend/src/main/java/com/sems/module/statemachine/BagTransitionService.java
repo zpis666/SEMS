@@ -150,7 +150,16 @@ public class BagTransitionService {
 
         // 3) 解析目标态：注册表命中 → 目标态；STATUS_CORRECT → 命令指定（白名单校验）；其余 → 4102
         BagStatus from = BagStatus.of(bag.getStatus());
-        BagStatus to = resolveTarget(cmd, from);
+        BagStatus to = resolveTarget(cmd, from, bag.getStationId());
+        // 调拨建单与流转均先锁袋行；这里用当前读再次校验，关闭前置校验到 UPDATE 的竞态窗口。
+        if (EnumSet.of(BagEvent.BORROW, BagEvent.REPAIR_START, BagEvent.SCRAP_DIRECT,
+                BagEvent.STATUS_CORRECT).contains(cmd.getEvent())
+                && bagMapper.countPendingAllocationForUpdate(bagCode) > 0) {
+            throw new BizException(ErrorCode.BAG_LOCKED_BY_ALLOCATION, "该袋已被待出库调拨单锁定");
+        }
+        if (to == BagStatus.IDLE && bag.getUseCount() >= bag.getMaxUseCount()) {
+            throw new BizException(ErrorCode.USE_COUNT_EXCEEDED, "复用次数已达上限，请登记报废");
+        }
 
         // 4) 条件 UPDATE：一条 SQL 同时约束前态与版本，防并发重复领取的最后防线
         Long stationChangeId = resolveStationId(cmd);
@@ -203,7 +212,7 @@ public class BagTransitionService {
 
     /** 按袋码装载袋行；不存在报 4106（扫码识别失败）。 */
     private Bag loadBag(String bagCode) {
-        Bag bag = bagMapper.selectOne(new LambdaQueryWrapper<Bag>().eq(Bag::getBagCode, bagCode));
+        Bag bag = bagMapper.selectOne(new LambdaQueryWrapper<Bag>().eq(Bag::getBagCode, bagCode).last("FOR UPDATE"));
         if (bag == null) {
             throw new BizException(ErrorCode.BAG_NOT_FOUND, "袋码不存在：" + bagCode);
         }
@@ -215,10 +224,10 @@ public class BagTransitionService {
      *
      * <p>{@code STATUS_CORRECT}（#21）单独处理：注册表刻意不登记它，{@link TransitionRegistry#resolve}
      * 返回 null 不表示非法，而是转入"目标态由命令指定"分支——先拒绝终态（报废袋不可再修正），
-     * 再校验白名单 {空闲, 维修中, 已遗失, 报废} 与必填的盘点差异单号、修正原因（设计书 3.2 #21 前置校验）。
+     * 再校验白名单 {空闲, 维修中, 已遗失, 报废} 与必填的修正原因（设计书 3.2 #21 前置校验）。
      * 其余事件拿到的 null 即非法跳变，一律 4102。
      */
-    private BagStatus resolveTarget(TransitionCommand cmd, BagStatus from) {
+    private BagStatus resolveTarget(TransitionCommand cmd, BagStatus from, Long stationId) {
         if (cmd.getEvent() == BagEvent.STATUS_CORRECT) {
             if (from.isTerminal()) {
                 throw new BizException(ErrorCode.BAG_ILLEGAL_TRANSITION, "报废为终态，不允许再发起状态修正");
@@ -231,11 +240,13 @@ public class BagTransitionService {
                 throw new BizException(ErrorCode.BAG_ILLEGAL_TRANSITION,
                         "状态修正目标态不在白名单内：" + target.code());
             }
-            if (cmd.getRefCheckNo() == null || cmd.getRefCheckNo().isBlank()) {
-                throw new BizException(ErrorCode.PARAM_INVALID, "状态修正必须填写盘点差异单号");
-            }
             if (cmd.getRemark() == null || cmd.getRemark().isBlank()) {
                 throw new BizException(ErrorCode.PARAM_INVALID, "状态修正必须填写修正原因");
+            }
+            if (target == from && (cmd.getTargetStationId() == null
+                    || Objects.equals(cmd.getTargetStationId(), stationId))) {
+                throw new BizException(ErrorCode.BAG_ILLEGAL_TRANSITION,
+                        "目标状态和站点均未改变，无需状态修正");
             }
             return target;
         }
@@ -293,7 +304,6 @@ public class BagTransitionService {
         transferLog.setOperatorId(cmd.getOperatorId());
         transferLog.setStationId(cmd.getStationId());
         transferLog.setProxyFlag(cmd.isProxy() ? 1 : 0);
-        transferLog.setRefCheckNo(cmd.getRefCheckNo());
         transferLog.setRemark(cmd.getRemark());
         // "写入即发生时间"：库里虽有默认值，这里显式赋值，保证台账时间与流转时刻一致
         transferLog.setCreatedAt(LocalDateTime.now());
@@ -360,7 +370,7 @@ public class BagTransitionService {
     private static boolean isTransitionLanded(TransitionCommand cmd, BagStatus currentStatus) {
         if (cmd.getEvent() == BagEvent.STATUS_CORRECT) {
             // #21 目标态由命令指定（白名单由 resolveTarget 校验），当前态与命令目标一致才算落地
-            return cmd.getTargetStatus() != null && cmd.getTargetStatus() == currentStatus;
+            return false; // 状态修正由外层 API 成功结果回放，不以同态猜测逐袋成功。
         }
         for (TransitionRule rule : TransitionRegistry.all()) {
             if (rule.event() == cmd.getEvent()) {

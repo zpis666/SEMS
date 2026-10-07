@@ -84,7 +84,7 @@ function resetFilters() {
 
 /** 状态机 #12 / #15：只有 空闲 / 待消毒 / 可复用 可转维修或直接报废 */
 function canRepairOrScrap(row) {
-  return ['IDLE', 'TO_DISINFECT', 'REUSABLE'].includes(row.status)
+  return ['IDLE', 'TO_DISINFECT'].includes(row.status)
 }
 
 /** 复用次数达到上限：行高亮并提示须转维修/报废（上架入库会被后端以 4108 拒绝） */

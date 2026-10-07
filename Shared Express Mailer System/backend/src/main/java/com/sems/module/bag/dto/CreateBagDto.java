@@ -11,7 +11,7 @@ import lombok.Data;
  *
  * <p>编码由后端自动生成（{@code SJB-规格-年月-流水-校验}），不由前端传入；
  * 规格码同时是袋码的规格段，限定为 1 位大写字母（与 {@code BagCodeUtils} 的口径一致）。
- * 新袋初始状态为「未激活」，登记站点写入 {@code bag.station_id}（设计书 3.2 站点归属说明）。
+ * 新袋初始状态为「空闲」，登记站点写入 {@code bag.station_id}（设计书 3.2 站点归属说明）。
  */
 @Data
 public class CreateBagDto {

@@ -130,7 +130,7 @@ public class StationTransitionActions {
     // ==================== #5 / #8 回收确认（共用 RECOVER_CONFIRM） ====================
 
     /**
-     * RECOVER_CONFIRM 伴随动作：按前态区分 #5（已分配，订单→已取消）与 #8（回收在途，订单→已完成、use_count+1）；
+     * RECOVER_CONFIRM 伴随动作：按前态区分 #5（已分配，订单→已取消）与 #8（使用中且订单待回收确认，订单→已完成、use_count+1）；
      * 两者都做在持袋数 −1、库存不变、推送订单变更。迟寄补救（shippedBefore=true）在 #5 路径计 use_count。
      */
     private void handleRecoverConfirm(BagTransitionContext ctx) {
@@ -150,7 +150,7 @@ public class StationTransitionActions {
             if (shippedBefore) {
                 incrementUseCount(ctx.getBag());
             }
-        } else if (from == BagStatus.RETURNING) {
+        } else if (from == BagStatus.IN_USE) {
             // #8：订单→已完成、use_count+1（与 #7 相同的伴随动作）
             if (order != null && !OrderStatus.FINISHED.code().equals(order.getStatus())) {
                 updateOrderStatus(order, OrderStatus.FINISHED, null, LocalDateTime.now());
@@ -158,7 +158,7 @@ public class StationTransitionActions {
             }
             incrementUseCount(ctx.getBag());
         } else {
-            // 注册表保证 RECOVER_CONFIRM 仅从已分配/回收在途进入（3.2 #5/#8），其余属编码错误
+            // 注册表保证 RECOVER_CONFIRM 仅从已分配/使用中进入（3.2 #5/#8），其余属编码错误
             throw new IllegalStateException("RECOVER_CONFIRM 不支持的袋前态：" + from.code());
         }
 
@@ -237,7 +237,7 @@ public class StationTransitionActions {
     }
 
     /**
-     * 在持袋数 −1（7.2 增减时机表：#4/#5/#8 与 #7 一致，袋离开三态即 −1）。
+     * 在持袋数 −1（7.2 增减时机表：#4/#5/#8 与 #7 一致，袋离开已分配/使用中两态即 −1）。
      * 计数字段由 Redis 承载：写入失败只记 WARN 不阻断流转（DB 才是权威），
      * 由每日开单计数对账纠偏（7.5「开单计数对账」）。
      */

@@ -2,6 +2,8 @@ package com.sems.module.bag.service.action;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.sems.common.util.MaskUtils;
+import com.sems.common.BizException;
+import com.sems.common.ErrorCode;
 import com.sems.infra.CounterService;
 import com.sems.infra.StockService;
 import com.sems.module.bag.entity.Bag;
@@ -168,14 +170,14 @@ public class BagTransitionActions {
      */
     private void onShelve(BagTransitionContext ctx) {
         Bag bag = ctx.getBag();
-        writeStockRecord(bag.getStationId(), bag.getBagCode(), STOCK_TYPE_IN, ctx.getOperatorId(), "上架入库");
-        stockService.increaseAvailable(bag.getStationId(), 1);
+        writeStockRecord(bag.getStationId(), bag.getBagCode(), STOCK_TYPE_IN, ctx.getOperatorId(), "消毒合格自动入库");
+        pushService.afterCommit(() -> stockService.increaseAvailable(bag.getStationId(), 1));
     }
 
     // ==================== #12 转维修 ====================
 
     /**
-     * 转维修（空闲/待消毒/可复用→维修中）：写维修登记（破损描述取命令备注）；
+     * 转维修（空闲/待消毒→维修中）：写维修登记（破损描述取命令备注）；
      * 前态=空闲时站点可用库存 −1（设计书 3.2 #12）。
      */
     private void onRepairStart(BagTransitionContext ctx) {
@@ -196,7 +198,7 @@ public class BagTransitionActions {
     // ==================== #13 修复入库 ====================
 
     /**
-     * 修复入库（维修中→可复用）：回填维修记录的完成时间、结果与完成操作人。
+     * 修复入库（维修中→待消毒）：回填维修记录的完成时间、结果与完成操作人。
      * 结果取命令 attributes 的 {@code repairResult}（Service 传入实际选择），缺省按"修复"。
      */
     private void onRepairDone(BagTransitionContext ctx) {
@@ -224,7 +226,7 @@ public class BagTransitionActions {
     // ==================== #15 直接报废 ====================
 
     /**
-     * 直接报废（空闲/待消毒/可复用→报废）：写报废记录；前态=空闲时站点可用库存 −1。
+     * 直接报废（空闲/待消毒→报废）：写报废记录；前态=空闲时站点可用库存 −1。
      * 这是审计重点核查项（设计书 7.6），Controller 侧以 action="直接报废" 入审计。
      */
     private void onScrapDirect(BagTransitionContext ctx) {
@@ -237,13 +239,9 @@ public class BagTransitionActions {
 
     // ==================== #9 消毒完成（合格） ====================
 
-    /**
-     * 消毒完成（合格）（待消毒→可复用）：无额外伴随动作——消毒批次与明细
-     * （含合格结果）已由消毒登记流程在触发本事件前落库（契约模块版 8.3），
-     * 库存不增减（可复用不计入可用库存，见设计书 3.1）。本 Bean 仅显式声明归属，保持注册表完整。
-     */
+    /** 消毒合格直接入库：写入库凭证并补回可用库存，消毒明细已由登记流程写入。 */
     private void onDisinfectPass(BagTransitionContext ctx) {
-        log.debug("消毒合格流转无额外伴随动作：袋={}", ctx.getBag().getBagCode());
+        onShelve(ctx);
     }
 
     // ==================== #10 消毒完成（不合格） ====================
@@ -303,7 +301,7 @@ public class BagTransitionActions {
 
     /**
      * 状态修正（任意非终态→白名单指定态）：库存按归属站点是否变更判定（设计书 3.2 #21）；
-     * 源态∈{已分配,使用中,回收在途}时闭环订单并释放在持袋数；按目标态补写对应业务记录。
+     * 源态∈{已分配,使用中}时闭环订单并释放在持袋数；按目标态补写对应业务记录。
      *
      * <p>库存公式（源站/目标站各自判定，可为 0；仅同站且同态不动）：
      * <pre>
@@ -327,8 +325,10 @@ public class BagTransitionActions {
         int targetDelta = to.countsAsAvailable() && (stationMoved || !from.countsAsAvailable()) ? 1 : 0;
         // 源站永远改源站的数；目标站增量：跨站改目标站，同站改回源站（如同站 维修中→空闲 的 +1）。
         // delta=0 时 increaseAvailable 内部直接返回，不会产生多余写。
-        stockService.increaseAvailable(sourceStation, sourceDelta);
-        stockService.increaseAvailable(stationMoved ? targetStation : sourceStation, targetDelta);
+        pushService.afterCommit(() -> {
+            stockService.increaseAvailable(sourceStation, sourceDelta);
+            stockService.increaseAvailable(stationMoved ? targetStation : sourceStation, targetDelta);
+        });
 
         // 1.1) 跨站一律推送两站（3.2 #21 表后说明、7.3「状态修正…跨站推送两站」）：状态机只推
         //      「库存真实增减」的一侧（推 −1 则源站已覆盖、推 +1 则目标站已覆盖），这里补推增量为 0
@@ -342,17 +342,18 @@ public class BagTransitionActions {
             pushService.afterCommit(() -> pushService.pushStationStock(targetStation, targetData));
         }
 
-        // 2) 源态∈三态 → 闭环绑定订单并释放在持袋数（订单转已遗失或转已取消，见 #21 口径）
+        // 2) 源态∈{已分配,使用中} → 闭环绑定订单并释放在持袋数（订单转已遗失或转已取消，见 #21 口径）
         BagOrder bindingOrder = null;
-        if (from == BagStatus.ALLOCATED || from == BagStatus.IN_USE || from == BagStatus.RETURNING) {
+        if (from == BagStatus.ALLOCATED || from == BagStatus.IN_USE) {
             bindingOrder = findBindingOrder(bag.getBagCode());
             if (bindingOrder != null) {
                 updateOrderForCorrection(bindingOrder, to);
                 // 在持袋数 −1 一律走 CounterService（内部做下限截断，见契约模块版第 3 节）
-                counterService.decrementOpenFloor0(bindingOrder.getUserId());
+                Long holderId = bindingOrder.getUserId();
+                pushService.afterCommit(() -> counterService.decrementOpenFloor0(holderId));
             } else {
-                log.warn("袋 {} 源态为 {} 但未找到绑定订单，跳过订单闭环与在持袋数递减（#21）",
-                        bag.getBagCode(), from.code());
+                throw new BizException(ErrorCode.ORDER_STATE_NOT_ALLOWED,
+                        "在用袋缺少绑定订单，请核对数据后重试，状态修正已撤销");
             }
         }
 
@@ -419,7 +420,7 @@ public class BagTransitionActions {
         record.setConclusion(truncateOr(description(ctx, "状态修正转入遗失"), TEXT_MAX));
         record.setDecidedBy(ctx.getOperatorId());
         record.setDecidedAt(LocalDateTime.now());
-        record.setNote(truncateOr("状态修正转入遗失（差异单号 " + nullToDash(ctx.getCmd().getRefCheckNo()) + "）", TEXT_MAX));
+        record.setNote("平台管理员状态修正转入遗失");
         record.setCreatedAt(LocalDateTime.now());
         liabilityRecordMapper.insert(record);
     }
@@ -444,8 +445,7 @@ public class BagTransitionActions {
      * 其余目标态（空闲/维修中/报废）→ 订单转已取消（终结后才允许修正）。
      *
      * <p>订单可能已被 R1/R2 取消（袋仍在用户手上、在持额度不释放）：此时状态无需改写，
-     * 但"袋离开三态"的计数释放仍由调用方执行。乐观锁冲突只记 WARN，由条件更新与人工核查兜底，
-     * 不阻断状态修正本身。
+     * 但"袋离开已分配/使用中"的计数释放仍由调用方执行。乐观锁冲突拒绝整笔事务，袋状态、订单、日志同生共死。
      */
     private void updateOrderForCorrection(BagOrder order, BagStatus target) {
         LocalDateTime now = LocalDateTime.now();
@@ -470,14 +470,13 @@ public class BagTransitionActions {
                 update.setStatus(OrderStatus.CANCELLED.code());
                 update.setCancelledAt(now);
             } else {
-                log.warn("订单 {} 状态为 {}，与袋源态不一致，跳过订单状态改写（#21）",
-                        order.getOrderNo(), current.code());
-                return;
+                throw new BizException(ErrorCode.ORDER_STATE_NOT_ALLOWED,
+                        "绑定订单状态与袋状态不一致，状态修正已撤销");
             }
         }
         if (bagOrderMapper.updateById(update) == 0) {
-            log.warn("订单 {} 状态改写未命中（并发变更或版本不一致），交由条件更新与人工核查兜底",
-                    order.getOrderNo());
+            throw new BizException(ErrorCode.ORDER_STATE_NOT_ALLOWED,
+                    "绑定订单已被其他请求更新，请刷新后重试，状态修正已撤销");
         }
     }
 

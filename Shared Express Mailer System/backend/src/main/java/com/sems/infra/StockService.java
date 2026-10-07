@@ -38,6 +38,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -91,6 +92,17 @@ public class StockService {
 
     /** stock:init 互斥标记 TTL 300 秒（设计书 8.3 键表）：进程中途崩溃时标记自愈。 */
     private static final Duration INIT_MARKER_TTL = Duration.ofSeconds(300);
+
+    /** 仅锁持有者可原子发布计数并释放标记，TTL到期后旧持有者不能覆盖新计数。 */
+    private static final DefaultRedisScript<Long> COMPLETE_REBUILD = new DefaultRedisScript<>(
+            "if redis.call('GET', KEYS[1]) ~= ARGV[1] then return 0 end "
+            + "redis.call('SET', KEYS[2], ARGV[2]) redis.call('SET', KEYS[3], '1') "
+            + "redis.call('DEL', KEYS[1]) return 1", Long.class);
+    /** 失败时只释放自己的锁，绝不删除后来者的新锁。 */
+    private static final DefaultRedisScript<Long> RELEASE_INIT = new DefaultRedisScript<>(
+            "if redis.call('GET', KEYS[1]) == ARGV[1] then return redis.call('DEL', KEYS[1]) end return 0",
+            Long.class);
+
 
     /** borrow:open 的 14 天滑动 TTL（8.3 键表）：仅在截断回写时补回（SET 会清除原 TTL）。 */
     private static final Duration OPEN_COUNT_TTL = Duration.ofDays(14);
@@ -292,7 +304,7 @@ public class StockService {
         }
     }
 
-    /** 离开三态时在持袋数 −1（可为负则截断为 0 写回）。撤回/超时取消不调用本方法（7.2 R1/R2）。 */
+    /** 离开已分配/使用中两态时在持袋数 −1（可为负则截断为 0 写回）。撤回/超时取消不调用本方法（7.2 R1/R2）。 */
     public void decrementOpen(Long userId) {
         if (degraded) {
             log.debug("库存熔断打开，跳过在持袋数递减（userId={}），恢复后由开单计数对账纠偏", userId);
@@ -350,7 +362,12 @@ public class StockService {
                 return null;
             }
             try {
-                return Integer.valueOf(value);
+                int count = Integer.parseInt(value);
+                if (count < 0) {
+                    log.warn("站点 {} 库存计数为负数，回退数据库查询并等待对账", stationId);
+                    return null;
+                }
+                return count;
             } catch (NumberFormatException e) {
                 log.warn("站点 {} 库存计数非整数（值={}），按未就绪处理，等待 R4 对账重建", stationId, value);
                 return null;
@@ -363,7 +380,7 @@ public class StockService {
     }
 
     /**
-     * 重建某站点计数（初始化/恢复，7.2）：DEL 旧计数 → SETNX init 互斥 → SET 可用计数
+     * 重建某站点计数（初始化/恢复，7.2）：SETNX init 互斥成功 → DEL 旧计数 → SET 可用计数
      * （DB 权威 COUNT(IDLE)，0 也写入）→ SET 哨兵 → DEL init。
      * 失败仅记日志，由 R4 对账兜底并告警，不向上抛。
      */
@@ -623,7 +640,7 @@ public class StockService {
 
     /**
      * 重建在持袋数计数 {@code borrow:open}（7.2 恢复动作、3.5 口径）：DB 权威口径 = 袋处于
-     * {已分配, 使用中, 回收在途} 的<b>当前持有订单</b>（同袋 id 最大的订单）数，逐用户整值
+     * {已分配, 使用中} 的<b>当前持有订单</b>（同袋 id 最大的订单）数，逐用户整值
      * SETEX 14 天（滑动 TTL 显式续期，3.5/8.3）。
      *
      * <p>同时扫描既有 {@code borrow:open:*} 键，把「降级期间袋已归还但递减被跳过」的用户一并归零：
@@ -650,14 +667,14 @@ public class StockService {
     }
 
     /**
-     * 逐用户统计「当前持有袋数」：袋处于三态，持有者取该袋 id 最大的订单的用户
+     * 逐用户统计「当前持有袋数」：袋处于已分配/使用中两态，持有者取该袋 id 最大的订单的用户
      * （与 7.2 降级路径、每日开单计数对账同一口径——历史订单不重复计入，已取消但袋未回收的计入）。
      */
     private Map<Long, Integer> countHeldBagsByUser() {
         List<String> bagCodes = bagMapper.selectList(new QueryWrapper<Bag>()
                         .select("bag_code")
                         .in("status", BagStatus.ALLOCATED.code(),
-                                BagStatus.IN_USE.code(), BagStatus.RETURNING.code()))
+                                BagStatus.IN_USE.code()))
                 .stream().map(Bag::getBagCode).toList();
         Map<String, BagOrder> latestByBag = new HashMap<>();
         for (int from = 0; from < bagCodes.size(); from += REBUILD_BATCH_SIZE) {
@@ -755,11 +772,11 @@ public class StockService {
         String availableKey = RedisKeys.stockAvailable(stationId);
         String initKey = RedisKeys.stockInit(stationId);
         String sentinelKey = RedisKeys.stockSentinel(stationId);
+        String owner = UUID.randomUUID().toString();
         try {
-            // 1) 先清旧计数：重建语义为整值覆盖，避免旧值在重建窗口内被误读
-            redisTemplate.delete(availableKey);
-            // 2) SETNX 互斥标记（7.2）：初始化中该站点的申领由 Lua 首查标记返回 -1（5102）
-            Boolean acquired = redisTemplate.opsForValue().setIfAbsent(initKey, "1", INIT_MARKER_TTL);
+            // 1) 先抢初始化互斥标记，未抢到时不得删除另一重建持有者的库存。
+            // SETNX 互斥标记（7.2）：初始化中该站点的申领由 Lua 首查标记返回 -1（5102）
+            Boolean acquired = redisTemplate.opsForValue().setIfAbsent(initKey, owner, INIT_MARKER_TTL);
             if (!Boolean.TRUE.equals(acquired)) {
                 log.info("站点 {} 计数重建已被并发的重建持有（stock:init 已存在），本次跳过", stationId);
                 return false;
@@ -771,16 +788,20 @@ public class StockService {
                 if (idleCount == null) {
                     return false;
                 }
-                redisTemplate.opsForValue().set(availableKey, String.valueOf(idleCount));
-                // 4) 哨兵键不设 TTL：缺失即触发重建（覆盖 Redis 被清空但连接正常的情形）
-                redisTemplate.opsForValue().set(sentinelKey, "1");
+                // Lua同时校验owner、发布计数/哨兵并解锁；过期旧持有者不再写入。
+                Long published = redisTemplate.execute(COMPLETE_REBUILD,
+                        List.of(initKey, availableKey, sentinelKey), owner, String.valueOf(idleCount));
+                if (!Long.valueOf(1L).equals(published)) {
+                    log.warn("站点 {} 初始化锁已过期或被替换，本次计数不发布", stationId);
+                    return false;
+                }
                 recordRedisSuccess();
                 log.info("站点 {} 库存计数重建完成：空闲（IDLE）袋 {} 只", stationId, idleCount);
                 return true;
             } finally {
                 // 5) 计数写回之后删标记；删除失败不影响本次结果（标记 300s 后自愈）
                 try {
-                    redisTemplate.delete(initKey);
+                    redisTemplate.execute(RELEASE_INIT, List.of(initKey), owner);
                 } catch (Exception e) {
                     log.warn("删除站点 {} 的初始化互斥标记失败（标记 {} 秒后自愈）：{}",
                             stationId, INIT_MARKER_TTL.toSeconds(), e.getMessage());

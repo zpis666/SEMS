@@ -9,7 +9,8 @@ import java.util.List;
  * 用户管理列表/详情出参（见《系统设计说明书》5.1 {@code GET /api/v1/users} 与前端用户管理页）。
  *
  * <p>在 {@link UserInfoVo} 之外补充管理视角字段：账号状态、角色明细（多对多，含角色名）与
- * 站点名称；手机号同样只回掩码（9.5），密码绝不出参。
+ * 站点名称；该接口仅限平台管理员访问，因此返回完整登录手机号用于账号管理（9.5 的管理端例外），
+ * 密码绝不出参。
  */
 @Data
 public class UserDetailVo {
@@ -17,7 +18,7 @@ public class UserDetailVo {
     /** 用户 ID */
     private Long id;
 
-    /** 手机号（掩码展示） */
+    /** 完整登录手机号（仅平台管理员用户管理接口返回） */
     private String phone;
 
     /** 昵称 */

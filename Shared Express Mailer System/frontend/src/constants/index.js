@@ -1,20 +1,17 @@
 /**
  * 全站枚举与文案映射 —— 前端侧唯一出处。
  *
- * 口径来源：《系统设计说明书》3.1（袋 11 态）、3.6（订单 6 态 + 超时标记）、10.5（状态色映射）、
+ * 口径来源：《系统设计说明书》3.1（袋 8 态（4 个正常态 + 4 个扩展态））、3.6（订单 6 态 + 超时标记）、10.5（状态色映射）、
  * 6.4（错误码）。**颜色不写在这里**——状态色通过 CSS 变量名引用，取色一律走 styles/tokens.css，
  * 组件按 `variant` 决定用描边还是实心浅底（设计书 10.5：颜色相同者靠「描边/实心」区分）。
  */
 
-/** 快递袋状态（11 态，码值与后端 bag.status 一致） */
+/** 快递袋状态（8 态（4 个正常态 + 4 个扩展态），码值与后端 bag.status 一致） */
 export const BAG_STATUS = {
-  INACTIVE: 'INACTIVE',
   IDLE: 'IDLE',
   ALLOCATED: 'ALLOCATED',
   IN_USE: 'IN_USE',
-  RETURNING: 'RETURNING',
   TO_DISINFECT: 'TO_DISINFECT',
-  REUSABLE: 'REUSABLE',
   TRANSFERRING: 'TRANSFERRING',
   REPAIRING: 'REPAIRING',
   LOST: 'LOST',
@@ -27,13 +24,10 @@ export const BAG_STATUS = {
  * token：CSS 变量名（不含 var()），组件里用 `var(${token})` 取色
  */
 export const BAG_STATUS_META = {
-  INACTIVE: { label: '未激活', token: '--sems-bag-inactive', variant: 'outline' },
   IDLE: { label: '空闲', token: '--sems-bag-idle', variant: 'outline' },
   ALLOCATED: { label: '已分配', token: '--sems-bag-allocated', variant: 'solid' },
   IN_USE: { label: '使用中', token: '--sems-bag-in-use', variant: 'solid' },
-  RETURNING: { label: '回收在途', token: '--sems-bag-returning', variant: 'solid' },
   TO_DISINFECT: { label: '待消毒', token: '--sems-bag-to-disinfect', variant: 'solid' },
-  REUSABLE: { label: '可复用', token: '--sems-bag-reusable', variant: 'solid' },
   TRANSFERRING: { label: '调拨在途', token: '--sems-bag-transferring', variant: 'outline' },
   REPAIRING: { label: '维修中', token: '--sems-bag-repairing', variant: 'solid' },
   LOST: { label: '已遗失', token: '--sems-bag-lost', variant: 'outline' },
@@ -61,6 +55,7 @@ export const ORDER_STATUS_META = {
 
 /** 袋状态流转事件（与后端 BagEvent 20 个码值一致，用于流转时间线的节点文案） */
 export const BAG_EVENT_LABEL = {
+  CREATE: '建档入库',
   ACTIVATE: '激活上架',
   BORROW: '扫码申领',
   SHIP: '提交寄件',

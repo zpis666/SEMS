@@ -71,10 +71,10 @@ public class StatsService {
      */
     public static final String METRIC_STOCK_RECONCILE_DIFF_COUNT = "stock_reconcile_diff_count";
 
-    /** 「在用袋数」口径的状态集合（3.5：已分配、使用中、回收在途、待消毒、可复用）。 */
+    /** 「在用袋数」口径的状态集合（3.5：已分配、使用中、待消毒）。 */
     private static final Set<BagStatus> IN_USE_STATUSES = EnumSet.of(
-            BagStatus.ALLOCATED, BagStatus.IN_USE, BagStatus.RETURNING,
-            BagStatus.TO_DISINFECT, BagStatus.REUSABLE);
+            BagStatus.ALLOCATED, BagStatus.IN_USE,
+            BagStatus.TO_DISINFECT);
 
     /** 全平台汇总键的站点段（8.3：{@code stats:today:0} 为可选的全平台汇总键）。 */
     private static final long PLATFORM_STATS_STATION_ID = 0L;
@@ -269,7 +269,7 @@ public class StatsService {
 
     /**
      * 库存分布（5.6，按站点/按状态，供饼图）：
-     * 按状态为 11 态全集计数；按站点为在循环袋数（非报废非遗失，3.5），
+     * 按状态为 8 态全集计数；按站点为在循环袋数（非报废非遗失，3.5），
      * 报废已退出循环、遗失不在站点，均不参与站点分布。
      */
     @Transactional(readOnly = true)
@@ -298,7 +298,7 @@ public class StatsService {
     // ------------------------------------------------------------------
 
     /**
-     * 各状态袋数（11 态全集补 0）：先以枚举顺序铺满 0，再覆盖查询结果，
+     * 各状态袋数（8 态全集补 0）：先以枚举顺序铺满 0，再覆盖查询结果，
      * 保证同一底账无论有无某状态，前端拿到的键集合都一致、图例不跳动。
      */
     private Map<String, Long> bagStatusDistribution() {

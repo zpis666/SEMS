@@ -13,7 +13,7 @@ import StatusTag from '@/components/StatusTag.vue'
  * 用户端首页（《系统设计说明书》5.2 M2、10.2 页面清单）。
  *
  * 三块内容：
- *  1) 问候 + 在持袋数：在持袋数 = 用户绑定的袋处于「已分配 / 使用中 / 回收在途」的订单数，
+ *  1) 问候 + 在持袋数：在持袋数 = 用户绑定的袋处于「已分配 / 使用中」的订单数，
  *     恰好对应订单三态 PENDING_SEND / IN_USE / PENDING_CONFIRM，取三类的分页 total 求和
  *     （设计书 5.2：在持袋数上限 3；撤回与超时取消不释放额度）；
  *  2) 附近站点（listNearbyStations）：名称 / 地址 / 开放时段 / 可用库存，库存为 0 标注「暂无可用袋」；
@@ -27,7 +27,7 @@ const userStore = useUserStore()
 
 /** 在持袋数上限（设计书 5.2：同一用户在持袋数不得超过 3） */
 const OPEN_LIMIT = 3
-/** 在持三态对应的订单状态（设计书 3.5：袋处于已分配/使用中/回收在途时计数） */
+/** 在持袋对应状态（设计书 3.5：袋处于已分配/使用中时计数） */
 const HELD_STATUSES = ['PENDING_SEND', 'IN_USE', 'PENDING_CONFIRM']
 /** 首页只取前 3 条进行中订单，同时用各状态分页 total 求在持袋数 */
 const PREVIEW_SIZE = 3

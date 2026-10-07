@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -24,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * 「状态机全部 21 条转移 + 非法转移拒绝」，并要求状态机分支覆盖 100%）。
  *
  * <p>本测试把设计书 3.2「状态转移表」的 21 条编号规则**逐条固化**为断言：
- * 编号规则中 #12/#15/#18 各覆盖 3 个前态，展开后共 26 条记录。
+ * 编号规则中 #12/#15/#18 各覆盖 当前有效前态，展开后共 21 条记录。
  * 一旦有人改坏注册表（漏注册、注册错方向、把 STATUS_CORRECT 当普通规则注册），本测试立即失败。
  *
  * <p>这里刻意不启动 Spring 容器：注册表是启动即冻结的纯数据、查询是无状态纯函数，
@@ -32,10 +34,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class TransitionRegistryTest {
 
-    /** 设计书 3.2 的全部 26 条展开转移：(前态, 事件) → 目标态 */
+    /** 设计书 3.2 的全部 21 条展开转移：(前态, 事件) → 目标态 */
     private static final Map<String, BagStatus> EXPECTED = Map.ofEntries(
-            // #1 未激活 --激活上架--> 空闲
-            Map.entry("INACTIVE#ACTIVATE", BagStatus.IDLE),
+            // #1 建档即空闲，不注册激活规则
+
             // #2 空闲 --扫码申领--> 已分配
             Map.entry("IDLE#BORROW", BagStatus.ALLOCATED),
             // #3 已分配 --提交寄件--> 使用中
@@ -44,37 +46,37 @@ class TransitionRegistryTest {
             Map.entry("ALLOCATED#RECOVER_UNUSED", BagStatus.IDLE),
             // #5 已分配 --回收确认--> 待消毒
             Map.entry("ALLOCATED#RECOVER_CONFIRM", BagStatus.TO_DISINFECT),
-            // #6 使用中 --标记归还--> 回收在途
-            Map.entry("IN_USE#RETURN_MARK", BagStatus.RETURNING),
+            // #6 使用中 --标记归还--> 使用中
+            Map.entry("IN_USE#RETURN_MARK", BagStatus.IN_USE),
             // #7 使用中 --回收确认（直投）--> 待消毒
             Map.entry("IN_USE#RECOVER_DIRECT", BagStatus.TO_DISINFECT),
-            // #8 回收在途 --回收确认--> 待消毒
-            Map.entry("RETURNING#RECOVER_CONFIRM", BagStatus.TO_DISINFECT),
-            // #9 待消毒 --消毒完成（合格）--> 可复用
-            Map.entry("TO_DISINFECT#DISINFECT_PASS", BagStatus.REUSABLE),
+            // #8 使用中（已标记归还） --回收确认--> 待消毒
+            Map.entry("IN_USE#RECOVER_CONFIRM", BagStatus.TO_DISINFECT),
+            // #9 待消毒 --消毒完成（合格）--> 空闲
+            Map.entry("TO_DISINFECT#DISINFECT_PASS", BagStatus.IDLE),
             // #10 待消毒 --消毒完成（不合格）--> 维修中
             Map.entry("TO_DISINFECT#DISINFECT_FAIL", BagStatus.REPAIRING),
-            // #11 可复用 --上架入库--> 空闲
-            Map.entry("REUSABLE#SHELVE", BagStatus.IDLE),
-            // #12 空闲/待消毒/可复用 --转维修--> 维修中（3 个前态）
+            // #11 消毒合格自动入库，不注册单独上架规则
+
+            // #12 空闲/待消毒 --转维修--> 维修中（当前有效前态）
             Map.entry("IDLE#REPAIR_START", BagStatus.REPAIRING),
             Map.entry("TO_DISINFECT#REPAIR_START", BagStatus.REPAIRING),
-            Map.entry("REUSABLE#REPAIR_START", BagStatus.REPAIRING),
-            // #13 维修中 --修复入库--> 可复用
-            Map.entry("REPAIRING#REPAIR_DONE", BagStatus.REUSABLE),
+
+            // #13 维修中 --修复入库--> 待消毒
+            Map.entry("REPAIRING#REPAIR_DONE", BagStatus.TO_DISINFECT),
             // #14 维修中 --报废--> 报废
             Map.entry("REPAIRING#SCRAP", BagStatus.SCRAPPED),
-            // #15 空闲/待消毒/可复用 --直接报废--> 报废（3 个前态）
+            // #15 空闲/待消毒 --直接报废--> 报废（当前有效前态）
             Map.entry("IDLE#SCRAP_DIRECT", BagStatus.SCRAPPED),
             Map.entry("TO_DISINFECT#SCRAP_DIRECT", BagStatus.SCRAPPED),
-            Map.entry("REUSABLE#SCRAP_DIRECT", BagStatus.SCRAPPED),
+
             // #16 空闲 --调拨出库--> 调拨在途
             Map.entry("IDLE#ALLOCATE_OUT", BagStatus.TRANSFERRING),
             // #17 调拨在途 --调拨入库--> 空闲
             Map.entry("TRANSFERRING#ALLOCATE_IN", BagStatus.IDLE),
-            // #18 使用中/回收在途/已分配 --确认遗失--> 已遗失（3 个前态）
+            // #18 使用中/已分配 --确认遗失--> 已遗失（当前有效前态）
             Map.entry("IN_USE#LOST_CONFIRM", BagStatus.LOST),
-            Map.entry("RETURNING#LOST_CONFIRM", BagStatus.LOST),
+
             Map.entry("ALLOCATED#LOST_CONFIRM", BagStatus.LOST),
             // #19 调拨在途 --在途遗失确认--> 已遗失
             Map.entry("TRANSFERRING#LOST_IN_TRANSIT", BagStatus.LOST),
@@ -84,10 +86,10 @@ class TransitionRegistryTest {
     );
 
     @Test
-    @DisplayName("设计书 3.2 的 21 条规则（展开 26 条）全部注册且目标态一一对应")
+    @DisplayName("设计书 3.2 的 21 条规则（展开 21 条）全部注册且目标态一一对应")
     void allTwentySixExpandedTransitionsAreRegistered() {
-        assertEquals(26, EXPECTED.size(), "期望集本身应为 26 条（#12/#15/#18 各展开 3 个前态）");
-        assertEquals(26, TransitionRegistry.all().size(),
+        assertEquals(21, EXPECTED.size(), "期望集本身应为 21 条（#12/#15/#18 各展开 当前有效前态）");
+        assertEquals(21, TransitionRegistry.all().size(),
                 "注册表条数与设计书 3.2 展开后条数不一致——漏注册或多注册");
 
         EXPECTED.forEach((key, expectedTo) -> {
@@ -114,7 +116,7 @@ class TransitionRegistryTest {
     @Test
     @DisplayName("未注册的 (状态, 事件) 组合一律返回 null：状态机据此拒绝并抛 4102")
     void unregisteredCombinationsReturnNull() {
-        // 任意状态 + 与它无关的事件，除去上表 26 条后全部应为 null
+        // 任意状态 + 与它无关的事件，除去上表 21 条后全部应为 null
         int legal = 0;
         int illegal = 0;
         for (BagStatus from : BagStatus.values()) {
@@ -130,9 +132,9 @@ class TransitionRegistryTest {
                 }
             }
         }
-        assertEquals(26, legal);
-        // 11 态 × 20 事件 = 220 种组合，其中 26 条合法
-        assertEquals(220 - 26, illegal);
+        assertEquals(21, legal);
+        // 8 态 × 21 事件 = 168 种组合，其中 21 条合法
+        assertEquals(BagStatus.values().length * BagEvent.values().length - 21, illegal);
     }
 
     @Test
@@ -176,9 +178,9 @@ class TransitionRegistryTest {
             assertFalse(status.displayName().isBlank(), "缺少中文名：" + status);
         }
 
-        // 设计书 3.1：袋 11 态；3.2：20 个触发事件；3.6：订单 6 态
-        assertEquals(11, BagStatus.values().length, "袋状态应为 11 态");
-        assertEquals(20, BagEvent.values().length, "触发事件应为 20 个");
+        // 设计书 3.1：袋 8 态；3.2：21 个事件（含建档与历史事件）；3.6：订单 6 态
+        assertEquals(8, BagStatus.values().length, "袋状态应为 8 态");
+        assertEquals(21, BagEvent.values().length, "触发事件应为 20 个");
         assertEquals(6, OrderStatus.values().length, "订单状态应为 6 态");
 
         // 未登记的码值一律抛异常而不是静默返回 null：
@@ -188,17 +190,33 @@ class TransitionRegistryTest {
         assertThrows(IllegalArgumentException.class, () -> OrderStatus.of("NO_SUCH_STATUS"));
         // 空值同样视为调用方错误（Controller 层的参数校验应更早拦住）
         assertThrows(IllegalArgumentException.class, () -> BagStatus.of(null));
+        assertThrows(IllegalArgumentException.class, () -> BagStatus.of(" "));
+        assertThrows(IllegalArgumentException.class, () -> BagEvent.of(null));
         assertThrows(IllegalArgumentException.class, () -> BagEvent.of("  "));
+        assertThrows(IllegalArgumentException.class, () -> OrderStatus.of(null));
+        assertThrows(IllegalArgumentException.class, () -> OrderStatus.of(" "));
     }
 
     @Test
     @DisplayName("all() 返回顺序即设计书 3.2 表序，供接口文档与前端时间线复用")
     void allPreservesDesignDocumentOrder() {
         List<TransitionRule> rules = TransitionRegistry.all();
-        assertSame(BagStatus.INACTIVE, rules.get(0).from(), "第一条应为 #1 未激活");
-        assertSame(BagEvent.ACTIVATE, rules.get(0).event());
+        assertSame(BagStatus.IDLE, rules.get(0).from(), "第一条应为空闲申领");
+        assertSame(BagEvent.BORROW, rules.get(0).event());
         TransitionRule last = rules.get(rules.size() - 1);
         assertSame(BagStatus.LOST, last.from(), "最后一条应为 #20 已遗失找回");
         assertSame(BagEvent.FOUND, last.event());
+    }
+
+    @Test
+    @DisplayName("注册表拒绝重复的状态与事件组合")
+    void duplicateRegistrationFailsWithoutReplacingOriginalRule() throws Exception {
+        Method register = TransitionRegistry.class.getDeclaredMethod("register", BagStatus.class,
+                BagEvent.class, BagStatus.class, String.class);
+        register.setAccessible(true);
+        InvocationTargetException thrown = assertThrows(InvocationTargetException.class,
+                () -> register.invoke(null, BagStatus.IDLE, BagEvent.BORROW, BagStatus.IDLE, "duplicate"));
+        assertTrue(thrown.getCause() instanceof IllegalStateException);
+        assertSame(BagStatus.ALLOCATED, TransitionRegistry.resolve(BagStatus.IDLE, BagEvent.BORROW));
     }
 }

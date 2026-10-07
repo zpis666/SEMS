@@ -343,7 +343,7 @@ onUnmounted(() => {
           撤回只取消订单，不释放取袋额度，袋仍在您手上，请尽快投回任一站点回收箱。
         </p>
         <p v-else-if="canReturn" class="sems-text-muted detail-actions__tip">
-          标记归还后袋进入「回收在途」，请将袋投入所选站点的回收箱，等待站点确认。
+          标记归还后订单进入「待回收确认」，袋保持「使用中」。请将袋投入所选站点的回收箱，等待站点确认。
         </p>
       </PageCard>
     </template>
@@ -356,7 +356,7 @@ onUnmounted(() => {
       :close-on-click-modal="false"
     >
       <p class="return-tip sems-text-muted">
-        请选择您投放回收箱的站点。标记后袋进入「回收在途」，待站点确认后订单完成。
+        请选择您投放回收箱的站点。标记后订单进入「待回收确认」，袋保持「使用中」，待站点确认后订单完成。
       </p>
 
       <PageSkeleton v-if="stationsLoading" :rows="3" type="card" />

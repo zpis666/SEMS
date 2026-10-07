@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * <p>两个维度：
  * <ul>
- *   <li>{@link #statusDistribution} 按状态：键 = {@code BagStatus} 状态码、值 = 袋数（11 态补 0），
+ *   <li>{@link #statusDistribution} 按状态：键 = {@code BagStatus} 状态码、值 = 袋数（8 态补 0），
  *       与看板 {@code DashboardVo.statusDistribution} 同构，前端饼图直接按状态码映射中文名；</li>
  *   <li>{@link #byStation} 按站点：每站点当前存放的在循环袋数（非报废、非遗失，3.5）——
  *       报废已退出循环、遗失不在站点，均不计入站点分布。</li>
@@ -20,7 +20,7 @@ import java.util.Map;
 @Data
 public class StockDistributionVo {
 
-    /** 按状态分布：键 = 状态码，值 = 袋数（11 态全集，无袋的状态为 0） */
+    /** 按状态分布：键 = 状态码，值 = 袋数（8 态全集，无袋的状态为 0） */
     private Map<String, Long> statusDistribution;
 
     /** 按站点分布（在循环袋口径，含站点名；无袋的站点保留 count=0，便于前端表格/饼图自行过滤） */

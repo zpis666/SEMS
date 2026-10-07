@@ -3,8 +3,8 @@
  * 平台端 · 快递袋台账（见《系统设计说明书》4.4「平台端」、5.4「快递袋管理」，FR-M4-01/03/05/15/16）。
  *
  * 覆盖功能：
- *  1) 全站袋分页查询：状态（11 态）/ 站点 / 编码关键字筛选；
- *  2) 新建袋档案（初始状态=未激活，写登记站点归属）；提示「需在登记站点激活上架」；
+ *  1) 全站袋分页查询：状态（8 态）/ 站点 / 编码关键字筛选；
+ *  2) 新建袋档案（初始状态=空闲，写登记站点归属）；提示「建档后自动计入登记站点可用库存」；
  *  3) 批量生成（≤500 只/批，整批原子）：响应是 ZIP blob，由本页触发下载并解析文件名；
  *  4) 行内入口：查看详情（跳详情页）、查看二维码、状态修正（#21，审计重点核查项）、遗失找回（#20，仅已遗失）。
  *
@@ -215,7 +215,7 @@ async function submitCreate() {
       stationId: createForm.stationId,
     })
     const code = data?.bagCode
-    ElMessage.success(code ? `袋档案已创建：${code}（未激活）` : '袋档案已创建（未激活）')
+    ElMessage.success(code ? `袋档案已创建：${code}（空闲）` : '袋档案已创建（空闲）')
     createVisible.value = false
     search()
   } catch (error) {
@@ -420,7 +420,6 @@ const correctSubmitting = ref(false)
 const correctFormRef = ref(null)
 const correctForm = reactive({
   bagCode: '',
-  refCheckNo: '',
   reason: '',
   targetStatus: '',
   crossing: false,
@@ -428,10 +427,6 @@ const correctForm = reactive({
 })
 
 const correctRules = computed(() => ({
-  refCheckNo: [
-    { required: true, message: '请输入盘点差异单号', trigger: 'blur' },
-    { max: 50, message: '盘点差异单号不超过 50 个字符', trigger: 'blur' },
-  ],
   reason: [
     { required: true, message: '请输入修正原因', trigger: 'blur' },
     { max: 255, message: '修正原因不超过 255 个字符', trigger: 'blur' },
@@ -444,7 +439,6 @@ const correctRules = computed(() => ({
 
 function openCorrect(row) {
   correctForm.bagCode = row.bagCode
-  correctForm.refCheckNo = ''
   correctForm.reason = ''
   correctForm.targetStatus = ''
   correctForm.crossing = false
@@ -470,8 +464,7 @@ async function submitCorrect() {
   correctSubmitting.value = true
   try {
     const payload = {
-      refCheckNo: correctForm.refCheckNo.trim(),
-      reason: correctForm.reason.trim(),
+      remark: correctForm.reason.trim(),
       targetStatus: correctForm.targetStatus,
     }
     // 仅跨站修正时才带目标站点（同站修正不得改归属）
@@ -545,13 +538,13 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="bag-ledger">
-    <PageCard title="快递袋台账" subtitle="全站袋档案；新建与批量生成产出的是「未激活」档案，需在登记站点激活上架">
+    <PageCard title="快递袋台账" subtitle="全站袋档案；新建与批量生成产出的是「空闲」档案，建档后自动计入登记站点可用库存">
       <template #extra>
         <el-button @click="openCreate">新建袋档案</el-button>
         <el-button type="primary" @click="openBatch">批量生成</el-button>
       </template>
 
-      <!-- 筛选：状态（11 态）/ 站点 / 编码关键字 -->
+      <!-- 筛选：状态（8 态）/ 站点 / 编码关键字 -->
       <el-form class="bag-ledger__filter" :inline="true" @submit.prevent>
         <el-form-item label="状态">
           <el-select
@@ -685,23 +678,25 @@ onBeforeUnmount(() => {
           </el-table-column>
           <el-table-column label="操作" width="180" fixed="right">
             <template #default="{ row }">
-              <el-button link type="primary" size="small" @click="goDetail(row)">查看详情</el-button>
-              <el-dropdown trigger="click" @command="(command) => handleRowCommand(command, row)">
-                <el-button link type="primary" size="small">
-                  更多<el-icon><ArrowDown /></el-icon>
-                </el-button>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item command="qrcode">查看二维码</el-dropdown-item>
-                    <el-dropdown-item v-if="canCorrect(row)" command="correct">
-                      状态修正
-                    </el-dropdown-item>
-                    <el-dropdown-item v-if="row.status === BAG_STATUS.LOST" command="recovery">
-                      遗失找回
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
+              <div class="bag-ledger__row-actions">
+                <el-button link type="primary" size="small" @click="goDetail(row)">查看详情</el-button>
+                <el-dropdown trigger="click" @command="(command) => handleRowCommand(command, row)">
+                  <el-button link type="primary" size="small">
+                    更多<el-icon><ArrowDown /></el-icon>
+                  </el-button>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item command="qrcode">查看二维码</el-dropdown-item>
+                      <el-dropdown-item v-if="canCorrect(row)" command="correct">
+                        状态修正
+                      </el-dropdown-item>
+                      <el-dropdown-item v-if="row.status === BAG_STATUS.LOST" command="recovery">
+                        遗失找回
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -729,7 +724,7 @@ onBeforeUnmount(() => {
         type="info"
         :closable="false"
         show-icon
-        title="新建后状态为未激活，需在登记站点激活上架"
+        title="新建后状态为空闲，建档后自动计入登记站点可用库存"
         description="袋码由系统自动生成，初始归属写入所选登记站点。"
       />
       <el-form ref="createFormRef" :model="createForm" :rules="createRules" label-width="88px">
@@ -782,7 +777,7 @@ onBeforeUnmount(() => {
         :closable="false"
         show-icon
         :title="`单批最多 ${BATCH_MAX_SIZE} 只，整批原子生成（任一只失败则整批不落库）`"
-        description="提交成功后自动下载二维码 PNG 压缩包，用于打印贴标；生成后状态为未激活。"
+        description="提交成功后自动下载二维码 PNG 压缩包，用于打印贴标；生成后状态为空闲。"
       />
       <el-form ref="batchFormRef" :model="batchForm" :rules="batchRules" label-width="88px">
         <el-form-item label="数量" prop="count">
@@ -886,13 +881,6 @@ onBeforeUnmount(() => {
         :rules="correctRules"
         label-width="100px"
       >
-        <el-form-item label="盘点差异单号" prop="refCheckNo">
-          <el-input
-            v-model="correctForm.refCheckNo"
-            maxlength="50"
-            placeholder="盘点单号（必填，关联盘点差异）"
-          />
-        </el-form-item>
         <el-form-item label="修正原因" prop="reason">
           <el-input
             v-model="correctForm.reason"
@@ -1073,6 +1061,16 @@ onBeforeUnmount(() => {
   margin-top: var(--sems-space-2);
   padding-top: var(--sems-space-2);
   border-top: 1px solid var(--sems-border);
+}
+.bag-ledger__row-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--sems-space-2);
+  white-space: nowrap;
+}
+.bag-ledger__row-actions :deep(.el-button) {
+  margin-left: 0;
 }
 
 /* 对话框 */

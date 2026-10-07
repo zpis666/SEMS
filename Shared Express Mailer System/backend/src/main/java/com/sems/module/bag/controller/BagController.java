@@ -65,7 +65,7 @@ public class BagController {
         this.bagService = bagService;
     }
 
-    /** 新建袋档案（平台管理员；编码自动生成、初始未激活）。 */
+    /** 新建袋档案（平台管理员；编码自动生成、初始空闲）。 */
     @PostMapping
     @RequireRole("PLATFORM_ADMIN")
     @AuditLog(module = "快递袋管理", action = "新建袋")
@@ -210,7 +210,7 @@ public class BagController {
         return Result.ok(bagService.lostRecovery(bagCode, dto, clientRequestId));
     }
 
-    /** 状态修正（转移 #21，平台管理员；目标态白名单、差异单号与原因必填；审计重点核查项）。 */
+    /** 状态修正（转移 #21，平台管理员；目标态白名单与修正原因必填；审计重点核查项）。 */
     @PostMapping("/{bagCode}/status-correct")
     @RequireRole("PLATFORM_ADMIN")
     @AuditLog(module = "快递袋管理", action = "状态修正")
