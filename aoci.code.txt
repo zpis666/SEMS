@@ -6,6 +6,7 @@
 .gitignore[FC6T]: F:排除依赖、构建、运行数据、密钥及机器绑定配置 | R:code:.aoci/config.json | A:Git忽略规则 | S:.env.example与Maven Wrapper例外保留；生产密钥和本机覆盖配置不得入库
 .zcodeignore[XC3T]: F:限定ZCode文件搜索的候选范围 | R:code:.gitignore | A:搜索忽略模式 | S:规则只影响搜索，不限制Agent访问
 AGENTS.md[SG9S]: F:规定毕业设计范围、技术栈、业务模型、环境及AOCI治理合同 | R:code:文档/任务书/_extracted.txt | A:开发边界,交付要求,AOCI工作流 | S:正式提交只读；SJB-为实体袋码不得随包名修改；构建使用JAVA_HOME的JDK21和pwsh中的mvnw.cmd
+README.md[SG7T]: F:提供SEMS仓库主页的功能角色、技术栈、目录、启动步骤与文档入口 | R:code:Shared Express Mailer System/README.md,code:文档/测试报告.md | A:本地启动,文档导航,版本说明 | S:测试结论限定2026-10-07的v0.1.1阶段快照，并发回归不代表性能压测；正式提交目录未纳入Git
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/===
 README.md[SG7S]: F:介绍SEMS工程布局、实现范围、启动步骤、本地数据库连接和里程碑 | R:code:文档/系统设计说明书.md,code:Shared Express Mailer System/scripts/db-navicat-compat.ps1 | A:本地启动,演示账号,Navicat连接,开发约定 | S:实现计数需对照源码；初始化SQL不创建其余演示账号；旧账号需单独切换认证，禁止为兼容Navicat清空数据卷
