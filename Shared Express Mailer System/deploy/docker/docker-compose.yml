@@ -14,6 +14,9 @@ services:
     container_name: sems-mysql
     restart: unless-stopped
     command:
+      # 本地 Navicat 12.0.11 不支持 caching_sha2_password；仅本地实例使用兼容认证。
+      # 此项影响握手与新建账号，已有账号需运行 scripts/db-navicat-compat.ps1。
+      - --default-authentication-plugin=mysql_native_password
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_0900_ai_ci
       - --default-time-zone=+08:00

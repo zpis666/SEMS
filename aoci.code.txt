@@ -1,0 +1,597 @@
+#AOCI-CODE-VOLUME: 1
+
+===E:/AI/DSH/毕设-共享快递袋系统/===
+.editorconfig[FC4T]: F:统一文本编码、缩进与行尾编辑规则 | R:code:.gitattributes | A:charset,end_of_line,indent_size | S:Markdown保留行末空白以支持换行
+.gitattributes[FC7T]: F:定义Git文本规范化和二进制差异边界 | R:code:AGENTS.md | A:text,eol,diff | S:正式提交/**标为-text，必须按原字节保管；Windows脚本检出CRLF
+.gitignore[FC6T]: F:排除依赖、构建、运行数据、密钥及机器绑定配置 | R:code:.aoci/config.json | A:Git忽略规则 | S:.env.example与Maven Wrapper例外保留；生产密钥和本机覆盖配置不得入库
+.zcodeignore[XC3T]: F:限定ZCode文件搜索的候选范围 | R:code:.gitignore | A:搜索忽略模式 | S:规则只影响搜索，不限制Agent访问
+AGENTS.md[SG9S]: F:规定毕业设计范围、技术栈、业务模型、环境及AOCI治理合同 | R:code:文档/任务书/_extracted.txt | A:开发边界,交付要求,AOCI工作流 | S:正式提交只读；SJB-为实体袋码不得随包名修改；构建使用JAVA_HOME的JDK21和pwsh中的mvnw.cmd
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/===
+README.md[SG7S]: F:介绍SEMS工程布局、实现范围、启动步骤、本地数据库连接和里程碑 | R:code:文档/系统设计说明书.md,code:Shared Express Mailer System/scripts/db-navicat-compat.ps1 | A:本地启动,演示账号,Navicat连接,开发约定 | S:实现计数需对照源码；初始化SQL不创建其余演示账号；旧账号需单独切换认证，禁止为兼容Navicat清空数据卷
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/===
+.gitignore[FC4T]: F:排除后端编译产物、IDE配置与本地运行残留 | R:code:.gitignore | A:target,日志,application-local.yml | S:-
+README.md[SV6S]: F:说明后端构建、分层约定、配置与测试门禁 | R:code:Shared Express Mailer System/backend/pom.xml | A:Wrapper构建,profile选择,覆盖率验证 | S:文中测试数与覆盖率是旧快照，当前结果应读测试报告和附件；application.yml不设默认dev
+mvnw[RV5M]: F:在POSIX环境下载缓存Maven发行版并执行构建参数 | R:code:Shared Express Mailer System/backend/.mvn/wrapper/maven-wrapper.properties | A:Wrapper命令行,MVNW_REPOURL,MAVEN_USER_HOME | S:MSYS_NO_PATHCONV会破坏Git Bash的Java类路径转换
+mvnw.cmd[RV6S]: F:以Windows批处理与内嵌PowerShell下载缓存Maven并转发构建参数 | R:code:Shared Express Mailer System/backend/.mvn/wrapper/maven-wrapper.properties | A:Wrapper命令行,MVNW_REPOURL,MAVEN_USER_HOME | S:脚本内部仍调用powershell命令；外部使用pwsh时必须显式执行mvnw.cmd
+pom.xml[FV8M]: F:锁定JDK21、SpringBoot3.5与SEMS依赖，配置打包、测试覆盖率及依赖安全门禁 | R:code:Shared Express Mailer System/backend/src/main/resources/application.yml | A:Maven生命周期,security-scan | S:dev仅作用于spring-boot:run；JaCoCo数据放ASCII临时路径且Surefire延迟求值argLine；覆盖率门禁在verify，安全扫描需显式profile
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/.mvn/wrapper/===
+maven-wrapper.properties[FV6T]: F:指定only-script Wrapper和Maven3.9.11下载发行地址 | R:code:Shared Express Mailer System/backend/mvnw.cmd | A:wrapperVersion,distributionType,distributionUrl | S:Maven本体从阿里云下载，依赖镜像由仓库外settings.xml控制
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/===
+SemsApplication.java[EG8T]: F:启动SEMS后端并启用Spring组件、配置属性、定时任务及Mapper发现 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/config/SemsProperties.java | A:main | S:@MapperScan扫描com.sems.module内带@Mapper的接口；新增Mapper必须显式标注，包路径通配符不生效
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/aspect/===
+AuditAspect.java[CO9M]: F:环绕审计注解方法，记录操作人、请求环境、脱敏参数、结果码与耗时并异步提交 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/service/AuditLogService.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthContext.java | A:around | S:业务异常原样抛出；审计采集或提交异常只记录ERROR并吞掉，不能改变业务结果；X-Forwarded-For仅信任最右一段
+AuditLog.java[CO7T]: F:为Controller方法声明审计模块、动作及是否采集参数 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/aspect/AuditAspect.java | A:module,action,recordParams | S:recordParams只控制是否收集入参；敏感字段脱敏由AuditAspect执行，不能把注解本身当作脱敏边界
+package-info.java[SO1T]: F:声明审计切面包的工程结构归属 | R:- | A:- | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/common/===
+BatchResult.java[CG7S]: F:统一逐项批量操作的总数、成功数、失败数与items明细信封 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/RecycleConfirmVo.java | A:of,empty,getItems | S:继承类不得重复声明items字段，否则Jackson可能序列化出重复JSON键；items明细键和元素字段名属于前端契约
+BizException.java[CG8T]: F:以非受检异常携带ErrorCode供全局处理器转换业务响应 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/common/GlobalExceptionHandler.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/common/ErrorCode.java | A:BizException,getErrorCode | S:fillInStackTrace直接返回this以免业务异常填充堆栈；状态机袋跳变应使用4102，订单单据状态错误使用4105
+Constants.java[CC8T]: F:集中定义袋码、手机号、密码、运单号、认证头、角色、账号状态及幂等窗口常量 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/common/util/BagCodeUtils.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/config/SemsProperties.java | A:BAG_CODE_REGEX,PHONE_REGEX,PASSWORD_REGEX,TRACKING_NO_REGEX,CLIENT_REQUEST_ID_HEADER,IDEMPOTENT_TTL_MINUTES | S:写接口幂等窗口固定为10分钟且不属于可运维配置；可调时限阈值应归SemsProperties，袋码前缀仍为SJB-
+ErrorCode.java[CG9S]: F:集中定义业务错误码、默认消息、HTTP状态和重试建议并支持按码查找 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/common/GlobalExceptionHandler.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/common/Result.java | A:of,getCode,getHttpStatus,isRetryable | S:只有1001/2001/2002/3001/5102/5103/5000映射非200状态；5102与5103可重试并触发Retry-After，变更需同步设计书6.4/6.6
+GlobalExceptionHandler.java[CG9M]: F:将业务、参数和系统异常转换为统一Result与HTTP状态，并补记未覆盖的越权审计 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/common/ErrorCode.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/common/event/AuditEvent.java | A:handleBiz,handleMethodArgumentNotValid,handleUnexpected | S:2001审计由AuthzInterceptor投递；本处理器只为未被AuditAspect覆盖的2002补投，避免重复；参数校验日志不记录参数值，系统堆栈不返回前端
+HealthController.java[EO6T]: F:提供无需JWT的/api/health存活探针并只返回UP状态 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/config/WebMvcConfig.java | A:GET /api/health | S:探针不得暴露数据库或Redis连接状态、版本、主机名和构建信息；依赖健康度应由内网监控承担
+PageResult.java[CG6T]: F:承载分页records与total并集中计算页数 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/common/Result.java | A:of,getRecords,getTotal,getPages | S:size小于等于0时pages为0；构造器公式为向上取整，且公开setPages允许调用方覆盖该值
+Result.java[CG9T]: F:定义API统一响应的code、message、data字段及成功和失败构造工厂 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/common/ErrorCode.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/common/PageResult.java | A:ok,fail,getCode,getData | S:批量生成二维码ZIP使用原始二进制流响应，不套此JSON结构；分页数据契约嵌套于data.records/total/pages
+SemsVersion.java[FV3T]: F:集中声明后端版本号供启动日志与接口文档使用 | R:code:Shared Express Mailer System/backend/pom.xml | A:VERSION | S:版本与pom同步；健康探针不暴露版本
+package-info.java[SG1T]: F:声明统一响应与异常类型的公共包 | R:- | A:- | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/common/event/===
+AuditEvent.java[CO6S]: F:承载跨层安全审计事件的操作者、环境、动作、结果与耗时 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/service/AuditLogService.java | A:AuditEvent | S:事件参数须由发布方脱敏，载体本身不做净化
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/common/util/===
+BagCodeUtils.java[KB7S]: F:构建和验证SJB袋码并计算加权模31校验位 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/common/Constants.java | A:build,isValid,checksum | S:校验体去掉分隔符，字符表截止V且字母值按A=10映射；生成器要求流水1至99999而本工具build也允许0
+BizNoUtils.java[KB6S]: F:生成订单、调拨、盘点和消毒批次的业务单号 | R:- | A:orderNo,allocationNo,checkNo,batchNo | S:随机起点加进程内六位自增序列只保障单进程局部生成，跨进程与重启仍依赖数据库唯一键
+JsonUtils.java[CG6T]: F:集中提供带Java时间模块的JSON序列化与对象、列表反序列化 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/common/BizException.java | A:toJson,parse,parseList | S:反序列化忽略未知属性；空输入返回null，解析失败转5000业务异常
+MaskUtils.java[KS8S]: F:脱敏手机号与IP并生成带版本的收件人号码HMAC及文本截断 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/config/SemsProperties.java | A:maskPhone,maskIp,hmacPhone,truncate | S:HMAC密钥及版本缺失直接拒绝；短手机号和格式不完整IP可能原样返回，调用方须先验证；truncate超长后追加省略号，长度可能超过max
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/config/===
+AsyncConfig.java[FO7T]: F:注册有界审计执行器和四线程业务任务执行器 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/config/SchedulingConfig.java | A:auditExecutor,jobExecutor | S:审计队列2000采用CallerRuns；任务队列200采用Abort；审计停机等待30秒，拒绝策略不能互换
+MybatisPlusConfig.java[FD6T]: F:注册MyBatis-Plus乐观锁与MySQL分页拦截器 | R:code:Shared Express Mailer System/backend/pom.xml | A:mybatisPlusInterceptor | S:分页需独立jsqlparser依赖；手写状态更新仍须在SQL中携带版本与前态条件
+OpenApiConfig.java[FN5T]: F:定义SEMS OpenAPI基本信息及HTTP Bearer认证方案 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/common/SemsVersion.java | A:semsOpenApi,bearerAuth | S:全局security仅为文档声明，真实匿名与授权边界由拦截器决定
+PasswordEncoderConfig.java[FI7T]: F:注册cost10的BCrypt密码编码器 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/service/AuthService.java | A:passwordEncoder | S:仅引入Security密码模块；认证授权由自定义JWT拦截器完成
+RedisConfig.java[FD6T]: F:配置Redis对象模板的字符串键与JSON值序列化 | R:code:Shared Express Mailer System/backend/src/main/resources/application.yml | A:redisTemplate | S:库存Lua和计数使用StringRedisTemplate；不能用此对象模板替换数值键读写
+SchedulingConfig.java[FW7T]: F:将Spring定时任务交给四线程jobExecutor执行 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/config/AsyncConfig.java | A:taskScheduler,configureTasks | S:单线程daemon仅负责计时并投递执行器，实际任务运行于jobExecutor；拒绝策略继承执行器
+SemsProperties.java[FC8S]: F:绑定sems前缀下JWT、安全、袋服务与运营时限配置 | R:code:Shared Express Mailer System/backend/src/main/resources/application.yml | A:Jwt,Security,Borrow,Auth,Batch,Alloc | S:JWT与HMAC密钥排除toString；Security内置开发HMAC默认值，生产须由profile环境变量覆盖；可运维阈值不应搬入Constants
+WebMvcConfig.java[FI8S]: F:注册认证与角色拦截器、CurrentUser参数解析及开发CORS和UTF8转换 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthInterceptor.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthzInterceptor.java | A:addInterceptors,addCorsMappings,addArgumentResolvers | S:认证先于角色；仅dev开放固定来源；ws由首帧鉴权；Swagger路径绕过JWT，生产依靠配置关闭暴露
+WebSocketConfig.java[FN7T]: F:注册/ws原生WebSocket处理器和环境相关来源限制 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/push/SemsWsHandler.java | A:registerWebSocketHandlers | S:dev只允许localhost与127.0.0.1的5173来源；生产空来源列表保持同源检查；HTTP握手不代替首帧认证
+package-info.java[SC1T]: F:声明基础配置包的工程归属 | R:- | A:- | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/infra/===
+CounterService.java[PD7S]: F:读写在持袋数、日申领次数与当日站点统计缓存 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/RedisKeys.java | A:getOpenCount,decrementOpenFloor0,incrementDaily,statsTodayIncrement,getStatsToday | S:在持数续期14天；日频次保留到次日末；减到负数后单独归零不是单Lua原子操作，申领限额由StockService脚本校验
+IdempotentService.java[MR9S]: F:以Redis实现接口处理占位、完成结果回放及逐袋幂等标记 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/RedisKeys.java | A:findCompleted,markProcessing,markCompleted,clear,tryAcquireBag | S:接口键含用户和API；完成结果在DB提交后缓存，回滚清理占位；SETNX未成功返回5103；仅Redis数据访问异常降级放行，业务唯一键仍需兜底
+RateLimitService.java[MS7T]: F:按主体与API执行Redis固定窗口请求计数并拒绝超限 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/RedisKeys.java | A:tryAcquire,assertAcquire | S:INCR与首次EXPIRE分两命令，异常向调用方传播；计数返回null时放行；降级兜底需在调用层及Nginx实现
+RedisKeys.java[CD8S]: F:集中拼接库存、额度、认证、幂等、限流和统计的Redis键空间 | R:code:文档/数据库设计说明书.md | A:stockAvailable,stockHold,borrowOpen,authUserVer,idempotent,idempotentBag | S:接口幂等包含用户和API；逐袋键只包含请求ID和袋码；日频次含日期但当日统计键不含日期，需由TTL和定时重置维持日界
+StockService.java[CR9L]: F:执行库存预扣、凭据补偿、站点与用户计数重建并管理Redis熔断恢复 | R:code:Shared Express Mailer System/backend/src/main/resources/lua/stock_deduct.lua,code:Shared Express Mailer System/backend/src/main/resources/lua/stock_compensate.lua | A:tryDeduct,compensate,rebuildStationStock,initializeAllStations,isDegraded,renewToken | S:初始化发布与释放均需Lua比对owner，过期持有者不能覆盖新计数；3次/10秒异常熔断，连续3次PING且全部计数重建成功才关闭；日频次重建取DB与缓存较大值
+package-info.java[CR2T]: F:声明Redis与跨模块基础服务的infra包归属 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/StockService.java | A:package-info | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/job/===
+OpenCountReconcileJob.java[AW8M]: F:每日按数据库当前持有订单重建并纠偏用户在持袋Redis计数 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/CounterService.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagStatus.java | A:reconcile | S:以bag状态ALLOCATED/IN_USE和每袋最大订单ID确定当前持有人；不按订单状态过滤，因此撤回或超时取消但袋仍持有时仍计入；空闲候选旧值可纠为0
+RecycleAllocationTimeoutJob.java[AW8M]: F:提醒24小时未确认回收并扫描回收72小时和调拨配置时限异常 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/push/PushService.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/config/SemsProperties.java | A:scan | S:回收提醒先以return_remind_at条件更新防重推后再推送；72小时回收与调拨超时只记WARN不落库，调拨阈值从配置读取
+StartupRunner.java[AR7S]: F:启动时扫描孤儿库存预扣凭据并初始化启用站点库存计数 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/StockService.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/RedisKeys.java | A:run | S:只删除无订单行的hold凭据，不做库存补偿；清理或Redis故障均被捕获，不阻断应用启动，后续由对账兜底
+StatsDailyJob.java[AA7M]: F:每日汇总前一自然日的站点与全平台订单量、周转率和库存快照 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/mapper/StatsDailyMapper.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/StatsService.java | A:aggregateDaily | S:平台汇总行使用station_id=0；周转率分母为0写0；库存快照补全8态并保留未知状态码；同日按(date,station_id)覆盖重算
+StockReconcileJob.java[AW8M]: F:定期对账启用站点Redis空闲库存并计入差异指标 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/StockService.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/mapper/SysMetricMapper.java | A:reconcile | S:熔断期间跳过写入；单站需先持有120秒互斥标记且相隔1秒两次COUNT(IDLE)一致才回写，差异按日计数，标记finally清理
+TimeoutOrderJob.java[AW8M]: F:分批扫描未寄件超时、寄件提醒及取消后未回收异常并推送用户 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/StockService.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/push/PushService.java | A:scan | S:R2取消只改订单并删除预扣凭据，不恢复袋状态或在持额度；7天超时仅置位提醒，订单仍为IN_USE；48小时异常只写日志
+package-info.java[CW2T]: F:声明定时作业与启动恢复类的job包归属 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/job/StartupRunner.java | A:package-info | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/controller/===
+AuditQueryController.java[EO8T]: F:向平台管理员提供审计日志与登录日志分页查询及单条完整IP查看接口 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/service/AuditQueryService.java | A:listAuditLogs,listLoginLogs,viewAuditLogIp,viewLoginLogIp | S:类级只允许PLATFORM_ADMIN；完整IP分设逐条端点，列表只返回掩码值，查看成功由服务层另行留审计
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/dto/===
+AuditLogQuery.java[EO5T]: F:承载审计分页、操作者、模块、动作、结果与时间区间筛选 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/service/AuditQueryService.java | A:分页,operatorId,module/action,result,beginTime/endTime | S:-
+AuditLogVo.java[EO7T]: F:承载操作审计列表项并将实体IP统一转换为掩码字段 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/entity/AuditLogEntity.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/service/AuditQueryService.java | A:from,getIpMasked | S:列表VO不含完整IP；paramsMasked只透传已脱敏快照，完整IP须走独立审计端点
+LoginLogQuery.java[EO7T]: F:承载登录日志分页、结果、手机号和时间区间筛选 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/service/AuditQueryService.java | A:分页,result,phoneMask,phone,beginTime/endTime | S:phoneMask优先于兼容phone参数；完整手机号由服务层掩码后精确匹配日志，不作明文查询
+LoginLogVo.java[EO7T]: F:承载登录日志列表字段并统一掩码IP后输出 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/entity/LoginLog.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/service/AuditQueryService.java | A:from,getIpMasked | S:列表不含完整IP；手机号从实体的phoneMask直接透传，完整地址只由逐条查看端点返回并留痕
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/entity/===
+AuditLogEntity.java[PO9T]: F:映射操作审计行的操作者快照、环境、动作、脱敏参数、结果码与耗时 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/mapper/AuditLogMapper.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/aspect/AuditLog.java | A:operatorId,action,paramsMasked,errorCode,createdAt | S:应用只插入和查询，修改删除由独立运维账号归档清理；createdAt一般由DB默认，回放时才显式保留原时间
+LoginLog.java[PO8T]: F:映射login_log登录成功或失败审计记录与掩码手机号 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/mapper/LoginLogMapper.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/service/AuditLogService.java | A:phoneMask,failReason,createdAt | S:成功和失败都落日志，手机号仅以掩码保留；应用层只插入，createdAt由数据库默认时间填充
+SysMetric.java[PO7T]: F:映射sys_metric日累计指标键、日期和值 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/mapper/SysMetricMapper.java | A:metricKey,statDate,metricValue | S:唯一业务键为metric_key加stat_date，指标并发累加走Mapper原子语句而非先查后写
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/mapper/===
+AuditLogMapper.java[PO7T]: F:提供操作审计实体的MyBatis-Plus基础映射 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/entity/AuditLogEntity.java | A:BaseMapper | S:继承update/delete不代表允许业务调用；只插入和查询是代码及最小授权要求，部署权限需另行核实
+LoginLogMapper.java[PO7T]: F:提供login_log实体的MyBatis-Plus基础查询与插入映射 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/entity/LoginLog.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/service/AuditLogService.java | A:BaseMapper | S:登录日志应用层只插入不修改，成功与失败记录共用此映射
+SysMetricMapper.java[PO8T]: F:以单条MySQL原子UPSERT按指标键和日期累加计数 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/entity/SysMetric.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/service/AuditLogService.java | A:increment | S:依赖(metric_key,stat_date)唯一键执行INSERT ON DUPLICATE KEY UPDATE；所有输入用#{参数}绑定
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/service/===
+AuditLogService.java[DO9L]: F:异步写操作与登录审计，处理队列饱和降级、应急文件回放、指标和分页查询 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/config/AsyncConfig.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/mapper/AuditLogMapper.java | A:record,recordLogin,onAuditEvent,replayFallbackFiles,pageAuditLogs,pageLoginLogs | S:关键动作或2001/2002/4102饱和时同步入库；普通事件转fallback文件并累计指标；启动回放只删除成功行且保留失败行；任何对外审计故障不向业务抛异常
+AuditQueryService.java[DO9M]: F:分页查询审计与登录记录并以独立请求受控返回单条完整IP | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/service/AuditLogService.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/dto/AuditLogVo.java | A:pageAuditLogs,pageLoginLogs,viewAuditLogIp,viewLoginLogIp | S:列表转换为掩码IP；完整IP只有记录存在才返回且成功查看本身写一条审计；登录完整手机号筛选先掩码，phoneMask优先于phone别名
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/controller/===
+AuthController.java[EI9S]: F:暴露匿名验证码注册登录及登录态续签登出HTTP端点 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/service/AuthService.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/service/CaptchaService.java | A:captcha,register,login,refresh,logout | S:只有refresh/logout要求UUID clientRequestId且不回放结果；captcha/register/login匿名免认证，匿名路径不启用接口级幂等
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/dto/===
+CaptchaVo.java[EI5T]: F:返回一次性验证码ID与PNG图片Base64 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/service/CaptchaService.java | A:captchaId,imageBase64 | S:Base64值不含data:image/png前缀，由前端按需拼接，避免重复前缀
+LoginDto.java[EI7T]: F:定义手机号密码登录入参及可选验证码字段 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/service/AuthService.java | A:phone,password,captchaId,captchaCode | S:DTO不强制验证码；曾被锁定账号在锁定期满后的首次登录由服务层校验
+LoginUserVo.java[EI7T]: F:返回登录用户ID、脱敏手机号、角色、站点与强制改密标记 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/dto/LoginVo.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/common/util/MaskUtils.java | A:id,phone,role,stationId,mustChangePassword | S:用户返回手机号必须已掩码，响应模型不包含密码或令牌版本
+LoginVo.java[EI7T]: F:封装登录或续签响应中的JWT、过期时间和用户信息 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/dto/LoginUserVo.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/service/AuthService.java | A:token,expiresAt,user | S:静默续签复用同一响应结构，前端用expiresAt安排续签
+RegisterDto.java[EI7T]: F:定义手机号、密码、昵称和图形验证码注册入参校验 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/service/AuthService.java | A:phone,password,nickname,captchaId,captchaCode | S:客户端不能提交角色或站点；自助注册只能得到普通USER角色
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/===
+package-info.java[DI2T]: F:声明注册、登录和验证码认证模块包归属 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/service/AuthService.java | A:package-info | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/service/===
+AuthService.java[DI9L]: F:协调注册、登录锁定与验证码升级、会话续签登出及账号角色解析 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/service/CaptchaService.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/security/JwtService.java | A:register,login,refresh,logout | S:注册先消费验证码并将账号和USER角色置于同一事务；账号不存在与密码错误统一提示；Redis锁定/限流故障按降级放行，而验证码仍fail-closed；多角色按最高角色而非站点绑定短路
+CaptchaService.java[DI8M]: F:生成PNG图形验证码并以Redis短期存储后原子消费校验 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/RedisKeys.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/service/AuthService.java | A:generate,verifyAndConsume | S:验证码GETDEL先删再比对，答错也不可重试；Redis读写故障均fail-closed，避免人机屏障失效
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/controller/===
+BagController.java[EB8M]: F:提供袋档案、扫码信息、二维码、追溯及处置接口 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java | A:/bags,trace,repair-complete,status-correct | S:状态修正和报废均审计；批量结果统一封装items
+DisinfectController.java[EB6T]: F:开放消毒批次查询与登记 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/DisinfectService.java | A:/disinfections,page,create | S:-
+InventoryCheckController.java[EB6T]: F:提供库存盘点单分页、提交和作废入口 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/InventoryCheckService.java | A:/inventory-checks,submit,voidCheck | S:盘点单作废保留审计，不提供删除
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/===
+ActivateDto.java[EB2T]: F:承载兼容激活接口的可选备注 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java | A:remark | S:-
+BagDetailVo.java[EB5T]: F:返回袋档案及当前站点、状态、复用计数和版本 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/Bag.java | A:bagCode,status,useCount,version | S:-
+BagInfoVo.java[EB7T]: F:定义扫码查询的最小信息集与归属扩展字段 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java | A:available,stationName,status | S:扩展字段为null时依全局non_null配置省略，勿用空值扩大公开字段
+BagQuery.java[EB5T]: F:定义袋台账分页、筛选和排序请求字段 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java | A:pageNum,status,stationId,orderBy | S:-
+BagTraceVo.java[EB6T]: F:呈现袋流转前后态、事件、操作人和事件发生站点 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/BagTransferLog.java | A:fromStatus,toStatus,event,stationId | S:stationId表示事件发生地，不表示流转后的袋归属站
+BatchGenerateDto.java[EB5T]: F:定义批量建档二维码包的规格、站点与数量 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java | A:spec,stationId,count | S:-
+CreateBagDto.java[EB5T]: F:定义单袋建档属性，不接受前端袋码 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java | A:spec,color,capacity,stationId | S:-
+CreateDisinfectDto.java[EB7T]: F:定义消毒批次及逐袋合格结果和缺陷说明 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/DisinfectService.java | A:method,bags,BagItem | S:逐袋项不做级联校验，单袋错误保留部分成功语义
+CreateInventoryCheckDto.java[EB6T]: F:提交各状态实盘数与盘点备注 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/InventoryCheckService.java | A:actualJson,stationId | S:请求不接收账面expectJson，账面由数据库实时统计
+DisinfectCreateVo.java[EB5T]: F:以批量信封返回消毒批次头与逐袋处理结果 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/common/BatchResult.java | A:batchNo,total,success,failed,items | S:-
+DisinfectDetailVo.java[EB5T]: F:复用单一VO表达消毒留档明细与逐袋响应 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/DisinfectService.java | A:bagCode,result,success,code,message | S:-
+DisinfectQuery.java[EB5T]: F:定义消毒批次分页、站点、结果、时间和排序筛选 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/DisinfectService.java | A:stationId,result,beginTime,orderBy | S:-
+DisinfectVo.java[EB5T]: F:呈现消毒批次汇总及留档逐袋明细 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/DisinfectRecord.java | A:batchNo,result,bagCount,details | S:-
+InventoryCheckQuery.java[EB5T]: F:定义盘点单分页、站点、状态和提交时间筛选 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/InventoryCheckService.java | A:stationId,status,beginTime,orderBy | S:-
+InventoryCheckVo.java[EB6T]: F:返回盘点快照、袋级差异候选及作废留痕 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/entity/InventoryCheck.java | A:expectJson,actualJson,diffBags,status | S:-
+LostRecoveryDto.java[EB5T]: F:提交遗失袋找回说明和新归属站点 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java | A:remark,stationId | S:-
+RepairCompleteDto.java[EB6T]: F:提交修复结果并选择性附维修说明 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java | A:result,remark | S:修复结果为修复但复用数达上限时服务端仍转报废
+RepairDto.java[EB5T]: F:要求维修登记提供必填破损描述 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java | A:description | S:-
+ScrapDto.java[EB5T]: F:要求直接报废登记提供报废原因 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java | A:reason | S:-
+StatusCorrectDto.java[EB8T]: F:限定平台管理员状态修正目标、原因和可选目标站 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java | A:targetStatus,remark,targetStationId | S:修正不绑定盘点单号，目标态白名单及调拨锁由服务端二次校验
+StockInDto.java[EB3T]: F:保留已弃用上架入库请求结构 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java | A:bags,Item,bagCode | S:-
+StockOutDto.java[EB6T]: F:定义逐袋实物出库原因与盘点差异单号 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java | A:bagCode,reason,refCheckNo | S:出库仅登记实物离站，不重复扣减可用库存
+UnusedReturnDto.java[EB3T]: F:承载未使用袋回收备注 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java | A:remark | S:-
+VoidInventoryCheckDto.java[EB5T]: F:要求盘点单作废时说明重盘原因 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/InventoryCheckService.java | A:voidReason | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/===
+Bag.java[PB9T]: F:保存袋码、当前归属、八态状态、复用次数和乐观锁版本 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java | A:bagCode,stationId,status,useCount,version | S:状态和站点通过条件更新流转；use_count只在回收确认路径递增
+BagTransferLog.java[PD8T]: F:保存袋状态流转前后态、事件、操作者与发生站点 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java | A:fromStatus,toStatus,event,proxyFlag | S:日志只追加不更新删除，stationId记事件发生地
+DisinfectDetail.java[PB7T]: F:记录消毒批次中的逐袋结果与不合格缺陷说明 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/DisinfectService.java | A:disinfectId,bagCode,result,defectDesc | S:同批同袋唯一约束防重复明细
+DisinfectRecord.java[PB6T]: F:保存消毒批次头、方式、时间和按明细汇总的结果 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/DisinfectDetail.java | A:batchNo,stationId,result,passCount,failCount | S:-
+RepairRecord.java[PB6T]: F:用同一维修记录承载登记与完成两个阶段 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/action/BagTransitionActions.java | A:description,startTime,endTime,result | S:-
+ScrapRecord.java[PB6T]: F:保存报废袋、当时站点、原因和登记操作人 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/action/BagTransitionActions.java | A:bagCode,stationId,reason,scrapTime | S:-
+StockRecord.java[PD6T]: F:追加记录IN、OUT和SCRAP_OUT三类站点实物流水 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/action/BagTransitionActions.java | A:stationId,bagCode,type,operatorId | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/mapper/===
+BagCodeMapper.java[PB7T]: F:按规格和年月读取袋码最大流水号 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagCodeGenerator.java | A:selectMaxSeq | S:规格与年月使用预编译参数，流水片段固定从第12位读取
+BagMapper.java[PB8T]: F:提供袋档案通用持久化与调拨锁定的当前读查询 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/AllocationService.java | A:BaseMapper,countPendingAllocationForUpdate | S:袋行锁内使用FOR UPDATE当前读，避免重复读快照漏掉并发新调拨
+BagTransferLogMapper.java[PD3T]: F:提供袋流转日志的通用插入与追溯读取 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/BagTransferLog.java | A:BaseMapper | S:-
+DisinfectDetailMapper.java[PB4T]: F:提供消毒逐袋明细的通用持久化 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/DisinfectDetail.java | A:BaseMapper | S:-
+DisinfectRecordMapper.java[PB4T]: F:提供消毒批次头的通用持久化 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/DisinfectRecord.java | A:BaseMapper | S:-
+RepairRecordMapper.java[PB4T]: F:提供维修登记与完成记录的通用持久化 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/RepairRecord.java | A:BaseMapper | S:-
+ScrapRecordMapper.java[PB4T]: F:提供报废凭证的通用持久化 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/ScrapRecord.java | A:BaseMapper | S:-
+StockRecordMapper.java[PD4T]: F:提供站点出入库流水的通用持久化 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/StockRecord.java | A:BaseMapper | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/===
+package-info.java[SG2T]: F:声明快递袋业务模块包边界 | R:- | A:com.sems.module.bag | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/===
+BagCodeGenerator.java[KB7S]: F:按规格与当前年月生成含流水及校验位的SJB袋码 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/mapper/BagCodeMapper.java | A:next,nextBatch | S:最大流水查询不锁分组；并发唯一性依赖bag_code索引并由建档服务处理冲突
+BagService.java[DB9L]: F:编排袋档案查询、批量建档、扫码披露与维修报废处置 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java | A:create,info,trace,repairComplete,stockOut,statusCorrect | S:已建袋状态经fire流转；新袋直接IDLE并同事务写入库与流转凭证，库存提交后重建；批量处置逐袋部分成功；出库只记实物流水；状态修正不自动闭合盘点
+DisinfectService.java[DB9L]: F:登记逐袋消毒结果、驱动状态流转并查询批次 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java | A:register,processBag,perBagTransaction,page | S:外层NOT_SUPPORTED，每袋REQUIRES_NEW，明细与该袋流转同事务
+InventoryCheckService.java[DB8L]: F:生成状态计数快照、袋级差异候选并管理盘点单作废 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/StockQueryService.java | A:submit,buildDiffBags,voidCheck | S:差异候选不证明具体实物且不自动绑定状态修正；数据库状态数才是账面权威
+QrCodeService.java[IB6S]: F:按配置域名生成含二维码图与袋码文字条的PNG | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java | A:generatePng,buildContent | S:域名缺失时仍生成相对路径并告警，旧标签不会自动随域名变更
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/action/===
+BagTransitionActions.java[DB9L]: F:承接消毒、维修、报废、找回和状态修正的袋流转副作用 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java | A:onDisinfectFail,onScrap,onFound,onStatusCorrect | S:动作只写伴随记录和计数，不改袋状态；跨站修正补推零增量一侧
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/order/controller/===
+BorrowController.java[EB8T]: F:开放本人申领、寄件提交和撤回动作接口 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/BorrowService.java | A:/borrows,borrow,shipping,withdraw | S:撤回只取消订单并删预扣凭据，不回库也不释放在持额度
+OrderController.java[EB7S]: F:提供本人和平台订单查询、归还标记及遗失确认接口 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/OrderService.java | A:/orders/mine,return-mark,lost-confirm | S:本人详情越权审计不记录请求参数
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/order/dto/===
+BorrowDto.java[EB5T]: F:验证申领请求袋码格式及长度 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/BorrowService.java | A:bagCode | S:-
+BorrowVo.java[EB4T]: F:返回申领订单号、袋码、站点和寄件时限提示 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/BorrowService.java | A:orderNo,expiresHint | S:-
+LostConfirmDto.java[EB6T]: F:承载遗失责任结论、责任用户和补充注记 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/OrderService.java | A:conclusion,responsibleUserId,note | S:-
+OrderDetailVo.java[EB6T]: F:返回订单全生命周期时点、脱敏手机号及袋当前状态 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/OrderService.java | A:bagStatus,returnMarkAt,recipientPhoneMask | S:-
+OrderQuery.java[EB6T]: F:定义本人或管理端订单分页筛选和排序字段 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/OrderService.java | A:status,stationId,beginTime,orderBy | S:不提供userId入参以封闭本人查询的水平越权面
+OrderVo.java[EB5T]: F:返回订单列表状态、站点、运单和手机号掩码 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/dto/OrderDetailVo.java | A:orderNo,status,trackingNo,recipientPhoneMask | S:-
+ReturnMarkDto.java[EB5T]: F:指定用户投放回收箱的站点 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/OrderService.java | A:stationId | S:该站点仅记录在订单，袋归属要等站点确认回收时才改变
+ShippingDto.java[ES8T]: F:验证快递公司、运单号及收件手机号格式 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/BorrowService.java | A:trackingNo,recipientPhone | S:手机号明文只在请求内存使用，落库仅掩码与带密钥版本的HMAC
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/order/entity/===
+BagOrder.java[PB9T]: F:承载袋申领、寄件、归还、取消和遗失订单事实 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/action/OrderTransitionActions.java | A:status,version,clientRequestId,recipientPhoneHash | S:版本乐观锁守护并发联动；手机号仅保存掩码与HMAC摘要
+LiabilityRecord.java[PS8T]: F:记录订单或调拨的遗失责任主体、裁决和后续注记 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/action/OrderTransitionActions.java | A:bizType,bizNo,responsibleUserId,responsibleStationId | S:找回只追加note，不改写原责任结论
+StockCompensationLog.java[PR7T]: F:持久化Redis预扣失败后的申领库存补偿凭证 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/BorrowService.java | A:clientRequestId,orderNo,compensatedAt | S:client_request_id唯一键防止补偿日志重复写入
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/order/mapper/===
+BagOrderMapper.java[PA8T]: F:提供订单CRUD及按日取袋、归还和站点完成数聚合 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/StatsService.java | A:countBorrowByDay,countReturnByDay,countFinishedByStation | S:趋势区间采用预编译参数和左闭右开边界
+LiabilityRecordMapper.java[PB4T]: F:提供责任记录通用持久化与按条件查询 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/entity/LiabilityRecord.java | A:BaseMapper | S:-
+StockCompensationLogMapper.java[PR5T]: F:提供库存补偿日志通用持久化 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/entity/StockCompensationLog.java | A:BaseMapper | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/order/===
+package-info.java[SG2T]: F:声明快递订单业务模块包边界 | R:- | A:com.sems.module.order | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/===
+BorrowService.java[DB9L]: F:编排申领预扣、寄件隐私处理、撤回和失败库存补偿 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/StockService.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/action/OrderTransitionActions.java | A:borrow,shipping,withdraw,handleR0,borrowDegraded | S:申领与寄件外层不包fire事务；R0按本次orderNo核实落库，历史同crid订单不能阻止本次补偿；Redis故障的DB限额检查与建单同事务，持袋候选包含取消订单
+OrderService.java[DB8L]: F:提供本人/管理订单查询、归还标记和按时限确认遗失 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/action/OrderTransitionActions.java | A:pageMine,detail,returnMark,lostConfirm | S:归还标记不改袋归属；遗失确认必须达到对应状态时间窗
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/action/===
+OrderTransitionActions.java[DB9L]: F:在袋流转事务内联动订单、责任、持袋计数和推送 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java | A:applyBorrow,applyShip,applyReturnMark,applyLostConfirm | S:BORROW不重复增减Lua已处理的Redis计数；订单推送统一afterCommit
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/push/===
+package-info.java[MG2T]: F:声明共享实时推送模块的package归属 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/push/PushService.java | A:package-info | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/===
+BagEvent.java[DB8T]: F:定义袋状态机输入事件码与中文名并校验事件码 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/TransitionRegistry.java | A:code,of,displayName | S:CREATE、ACTIVATE、SHELVE虽有枚举值但不因此构成已注册流转；事件是否可用于当前状态只由TransitionRegistry决定
+BagStatus.java[DB9T]: F:定义八种袋生命周期状态、数据库码及库存/终态派生判断 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/TransitionRegistry.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/StockService.java | A:code,of,isTerminal,countsAsAvailable | S:只有IDLE计入可用库存，只有SCRAPPED是终态；数据库遇到空或未知状态码抛异常，不静默当null
+BagTransitionContext.java[DB7T]: F:向伴随动作传递命令、流转前袋快照、操作人和代理标记 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/TransitionAction.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java | A:cmd,bag,operatorId,proxy | S:bag是条件UPDATE前的前态快照，不是新状态；动作不能将其保留到事务外，提交后推送需重新查询
+BagTransitionResult.java[DB7T]: F:返回袋码、状态前后值、归属站点及是否命中幂等回放 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java | A:bagCode,fromStatus,toStatus,replayed,stationId | S:幂等回放时fromStatus为空，toStatus是回查的当前权威状态，不代表首次转移的目标快照
+BagTransitionService.java[DB9M]: F:事务执行既有袋流转的校验、条件更新、幂等、日志、伴随动作与库存推送 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/TransitionRegistry.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/IdempotentService.java | A:fire | S:先锁袋行并当前读复核调拨引用；UPDATE约束袋码、前态、version；日志与动作同事务；幂等回放需验证目标已落地，状态修正不以同态判回放；推送提交后发送，建档初态由BagService写
+OrderStatus.java[DB8T]: F:定义六种订单状态码和中文展示并拒绝未知库码 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/action/OrderTransitionActions.java | A:code,of,displayName | S:超时由timeout_flag表达；袋事件联动订单，归还标记、撤回及超时取消可单独推进订单且不改袋状态
+TransitionAction.java[DB8T]: F:定义按BagEvent注册的事务内伴随动作接口 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionContext.java | A:event,apply | S:动作在条件UPDATE和流转日志后、同一事务内执行；禁止直接WebSocket推送或另开事务，推送需经afterCommit
+TransitionCommand.java[DB8T]: F:封装一次袋状态变更的事件、操作人、站点、幂等和业务扩展参数 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/TransitionAction.java | A:bagCode,event,clientRequestId,targetStatus,targetStationId,attributes | S:targetStatus仅用于STATUS_CORRECT；stationId是操作地点，targetStationId是变更后的归属站点，二者不要互换
+TransitionRegistry.java[DB9S]: F:以冻结静态映射查询袋状态与事件的合法目标态 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/TransitionRule.java | A:lookup,resolve,all | S:STATUS_CORRECT刻意无注册规则，resolve返回null表示转入命令目标态白名单分支；其他未注册组合必须拒绝，重复键初始化失败
+TransitionRule.java[DB6T]: F:用不可变记录表达状态前态、事件、目标态和规则说明 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/TransitionRegistry.java | A:from,event,to,description | S:-
+package-info.java[DB2T]: F:声明袋状态机与状态枚举模块包归属 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java | A:package-info | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/station/controller/===
+AllocationController.java[EB8S]: F:开放调拨单查询、创建、取消、逐袋出库核收及遗失处置接口 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/AllocationService.java | A:/allocations,dispatch,receive,lost-confirm | S:源站出库和目标站核收分别校验操作站点
+StationController.java[EB8S]: F:提供站点档案、库存、回收箱确认及用户附近站点接口 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/StationService.java | A:/stations,stock,recycle-bin,recycle-confirm,nearby | S:回收确认要求审计并返回分类计数
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/===
+AllocationCancelDto.java[EB4T]: F:承载调拨取消或异常终止的可选原因 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/AllocationService.java | A:reason | S:-
+AllocationDetailVo.java[EB5T]: F:在调拨单摘要上附逐袋状态、时间和备注 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/AllocationVo.java | A:details,DetailItem | S:-
+AllocationDispatchDto.java[EB5T]: F:提交调拨出库袋码列表及批次、逐袋备注 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/AllocationService.java | A:bags,remark,BagItem | S:-
+AllocationLostDto.java[EB7T]: F:提交在途遗失裁决结论、注记和可选袋清单 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/AllocationService.java | A:bags,conclusion,note | S:袋清单缺省时服务端现算该单全部已出库未核收明细
+AllocationQuery.java[EB5T]: F:定义调拨单分页、源目标站、状态和创建时间筛选 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/AllocationService.java | A:status,fromStationId,toStationId,orderBy | S:-
+AllocationReceiveDto.java[EB5T]: F:提交目标站逐袋核收入库清单 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/AllocationService.java | A:bags,remark | S:-
+AllocationRemoveDto.java[EB5T]: F:指定待出库调拨明细袋码及剔除原因 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/AllocationService.java | A:bagCode,remark | S:-
+AllocationVo.java[EB6T]: F:返回调拨单站点、状态、逐袋进度计数和在途超时标记 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/AllocationService.java | A:allocationNo,status,totalCount,timeout | S:-
+CreateAllocationDto.java[EB7T]: F:提交站间调拨源目标站及袋码清单 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/AllocationService.java | A:fromStationId,toStationId,bagCodes | S:建单整单校验全部袋，任一不可用则不创建任何单头或明细
+CreateStationDto.java[EB5T]: F:定义新增站点名称、地址、展示开放时段及库存预警阈值 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/StationService.java | A:name,address,openTime,warnThreshold | S:-
+NearbyStationVo.java[EB4T]: F:为用户端取袋与归还引导返回启用站点和空闲库存 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/StationService.java | A:id,name,address,availableStock | S:-
+RecycleBinVo.java[EB7T]: F:呈现已标记回收和本站未标记使用中袋候选 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/RecycleService.java | A:marked,orderNo,returnMarkAt | S:清单只辅助清点，跨站未标记直投仍可直接扫码确认
+RecycleConfirmDto.java[EB6T]: F:提交逐袋扫码回收确认清单 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/RecycleService.java | A:bags | S:-
+RecycleConfirmItemDto.java[EB7T]: F:承载袋码、曾寄出标注及逐袋流转结果 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/RecycleService.java | A:bagCode,shippedBefore,event,toStatus | S:shippedBefore仅影响已分配袋改走待消毒回收路径并计复用数
+RecycleConfirmVo.java[EB6T]: F:返回回收批次成败信封及代操作、跨站、未标记直投计数 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/RecycleService.java | A:items,proxy,crossStation,directWithoutMark | S:跨站与未标记直投是可重叠的审计类别
+StationQuery.java[EB5T]: F:定义站点管理分页、关键字、状态、创建时间和排序条件 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/StationService.java | A:keyword,status,beginTime,endTime,orderBy | S:-
+StationStatusDto.java[EB7T]: F:提交站点启停状态与可选接收站 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/StationService.java | A:status,handoverStationId | S:停用需库存清零且仍有非终态袋时必须指定合法接收站
+StationStockVo.java[EB6T]: F:返回站点各状态袋数、可用库存、预警阈值和判定 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/StockQueryService.java | A:statusCounts,availableStock,warning | S:-
+StationVo.java[EB4T]: F:返回站点档案、启停状态与停用接收站信息 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/entity/Station.java | A:name,address,status,handoverStationId | S:-
+UpdateStationDto.java[EB4T]: F:提交站点名称地址及可选开放时段和阈值修改 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/StationService.java | A:name,address,openTime,warnThreshold | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/station/entity/===
+AllocationDetail.java[PB7T]: F:记录调拨单内逐袋出库、核收、剔除和遗失状态 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/AllocationService.java | A:allocationId,bagCode,status,dispatchAt,receiveAt | S:PENDING_DISPATCH明细与活动单头共同构成袋锁
+AllocationOrder.java[PB8T]: F:保存站间调拨单状态、首只出库时间、异常和版本 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/AllocationService.java | A:allocationNo,fromStationId,toStationId,status,version | S:version由乐观锁保护出库与核收推进
+InventoryCheck.java[PD8T]: F:保存盘点状态计数快照、袋级差异候选和作废留痕 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/InventoryCheckService.java | A:expectJson,actualJson,diffBagsJson,status | S:单据不可删除，状态修正当前不与盘点单号自动关联
+Station.java[PB8T]: F:保存站点档案、启停、预警阈值和停用接收站 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/StationService.java | A:name,status,warnThreshold,handoverStationId | S:站点以DISABLED表达停用，不执行逻辑删除
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/station/mapper/===
+AllocationDetailMapper.java[PB4T]: F:提供调拨逐袋明细通用持久化 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/entity/AllocationDetail.java | A:BaseMapper | S:-
+AllocationOrderMapper.java[PB5T]: F:提供调拨单通用持久化和乐观锁更新 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/entity/AllocationOrder.java | A:BaseMapper | S:-
+BagStockMapper.java[PD8T]: F:对bag表提供站点库存状态聚合与终态数量查询 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/StockQueryService.java | A:selectStatusCounts,countWithStatus,countNonTerminal | S:可用库存的数据库权威值是IDLE计数，查询参数均预编译
+InventoryCheckMapper.java[PD4T]: F:提供盘点单通用读写持久化 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/entity/InventoryCheck.java | A:BaseMapper | S:-
+StationMapper.java[PB4T]: F:提供站点档案通用持久化 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/entity/Station.java | A:BaseMapper | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/station/===
+package-info.java[SG2T]: F:声明共享站点及站间调拨模块包边界 | R:- | A:com.sems.module.station | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/===
+AllocationService.java[DB9L]: F:编排站间调拨建单、逐袋出入库、遗失处置、终止和查询 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/action/AllocationTransitionActions.java | A:create,dispatch,receive,lostConfirm,removeDetail,isBagLocked | S:建单按袋码升序行锁后验证空闲、源站归属和活动引用，整单失败回滚；出入库逐袋独立fire；前置isBagLocked之外，状态机在袋锁内再次当前读复查4110
+RecycleService.java[DB9L]: F:汇总回收箱候选并按订单及袋状态逐袋路由回收 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/action/StationTransitionActions.java | A:recycleBin,recycleConfirm,confirmOne,recordRisk | S:全部校验通过后才占逐袋幂等键；未标记的跨站直投仍允许确认
+StationService.java[DB8L]: F:编排站点分页、档案编辑、启停、库存视图与附近站点 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/StockQueryService.java | A:page,nearby,stock,stockWarning,updateStatus | S:停用要求可用库存为零，非终态袋须清空或登记合法接收站
+StockQueryService.java[DD7S]: F:统一查询站点状态分布及可用库存并提供DB回退 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/mapper/BagStockMapper.java | A:countByStatus,readAvailableWithRebuild,getAvailableStock | S:Redis缺失先尝试重建；熔断或重建失败读接口可返回null，展示与停用判定转DB COUNT(IDLE)兜底
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/action/===
+AllocationTransitionActions.java[DB8M]: F:承接调拨出库、入库和在途遗失的库存副作用及推送 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/AllocationService.java | A:ALLOCATE_OUT,ALLOCATE_IN,LOST_IN_TRANSIT | S:出库入库库存推送由状态机统一发，本类不重复推送
+StationTransitionActions.java[DB9M]: F:承接回收事件的订单闭环、复用计数、库存计数和推送 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java | A:RECOVER_UNUSED,RECOVER_CONFIRM,RECOVER_DIRECT | S:不改袋状态或重复写流转日志；use_count仅在真实回收确认路径递增
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/controller/===
+AlertController.java[EA7T]: F:开放平台告警分页、类型与时间筛选接口 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/AlertService.java | A:/alerts,listAlerts | S:-
+StatsController.java[EA7T]: F:开放看板汇总、趋势、周转率及库存分布查询 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/StatsService.java | A:/stats/dashboard,order-trend,bag-turnover,stock-distribution | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/dto/===
+AlertQuery.java[EA5T]: F:定义告警类型、发生时间闭区间及分页参数 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/AlertService.java | A:type,beginTime,endTime,pageSize | S:-
+AlertVo.java[EA6T]: F:定义告警类型、级别、目标、发生时刻及处置跳转 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/AlertService.java | A:type,targetNo,occurredAt,actionUrl | S:-
+DashboardVo.java[EA6T]: F:返回循环袋数、今日取还、库存分布、预警和运行指标 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/StatsService.java | A:inUseCount,inCirculationCount,todayBorrow,auditDropCount | S:inCycleCount仅是inCirculationCount兼容别名，不是独立指标
+OrderTrendVo.java[EA4T]: F:表达单日申领数与回收确认数趋势点 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/StatsService.java | A:date,borrowCount,returnCount | S:-
+StockDistributionVo.java[EA5T]: F:表达按袋状态及站点划分的在循环库存分布 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/StatsService.java | A:statusDistribution,byStation,StationSlice | S:-
+TurnoverVo.java[EA5T]: F:表达站点周转率及站点展示名 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/StatsService.java | A:stationId,turnoverRate | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/entity/===
+StatsDaily.java[PA4T]: F:保存按日期和站点划分的可选日统计快照 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/job/StatsDailyJob.java | A:date,stationId,ordersBorrow,stockJson | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/mapper/===
+StatsDailyMapper.java[PA4T]: F:提供stats_daily日统计快照通用持久化 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/entity/StatsDaily.java | A:BaseMapper | S:-
+StatsQueryMapper.java[PA8T]: F:执行看板与告警所需状态、站点和超时聚合扫描 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/AlertService.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/StatsService.java | A:countBagByStatus,countInCirculationByStation,selectCancelledNotRecovered | S:取消未回收扫描排除同袋存在更新订单的旧取消单
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/===
+package-info.java[SG2T]: F:声明平台看板、趋势及告警分析包边界 | R:- | A:com.sems.module.stats | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/===
+AlertService.java[DA8L]: F:从订单、调拨、袋、系统指标和Redis实时组装七类告警 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/mapper/StatsQueryMapper.java | A:pageAlerts,cancelledNotRecovered,returningTimeout,riskConfirmFrequency | S:不建告警表；每个来源扫描上限500并在内存统一排序分页
+StatsService.java[DA8L]: F:计算平台看板、日趋势、站点周转率及库存分布 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/mapper/StatsQueryMapper.java | A:dashboard,orderTrend,bagTurnover,stockDistribution | S:周转率以当前在循环袋数近似周期均值；今日计数缺项时按站点求和
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/user/controller/===
+UserController.java[EI8M]: F:开放本人资料密码维护和平台账号角色站点管理接口 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/service/UserService.java | A:/users/me,roles,station,status,password-reset | S:写接口在业务动作成功后缓存首答供幂等重放
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/user/dto/===
+BindStationDto.java[EI6T]: F:指定站点管理员账号的新绑定站点 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/service/UserService.java | A:stationId | S:-
+ChangePasswordDto.java[ES7T]: F:收集本人改密所需旧密码和符合强度要求的新密码 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/service/UserService.java | A:oldPassword,newPassword | S:改密成功后旧令牌全部失效并清除强制改密标志
+CreateUserDto.java[EI6T]: F:定义手机号、初始密码、昵称、角色列表及可选站点 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/service/UserService.java | A:phone,password,roles,stationId | S:含站点管理员角色时必须绑定站点，其他角色不保留传入站点
+RoleVo.java[EI4T]: F:返回角色码、中文名和说明 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/entity/SysRole.java | A:roleCode,roleName,description | S:-
+UpdateProfileDto.java[EI4T]: F:仅接受本人昵称资料修改 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/service/UserService.java | A:nickname | S:-
+UpdateRolesDto.java[EI7T]: F:提交账号角色全量替换及可选站点绑定 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/service/UserService.java | A:roles,stationId | S:移除STATION_ADMIN时站点绑定清空，保留该角色时必须有有效站点
+UpdateStatusDto.java[ES6T]: F:限定账号启用或禁用的目标状态码 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/service/UserService.java | A:status | S:禁用提升token_version使旧令牌失效，启用不吊销
+UserDetailVo.java[EI7T]: F:返回平台管理视角的账号、完整手机号、角色明细及站点 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/service/UserService.java | A:phone,roles,stationName,mustChangePassword | S:完整手机号仅用于平台管理员用户管理视图，密码摘要不出参
+UserInfoVo.java[EI7T]: F:返回本人资料、最高等级角色、站点及强制改密状态 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/service/UserService.java | A:phone,role,stationId,mustChangePassword | S:本人手机号固定脱敏，多角色只回显最高等级角色码
+UserQuery.java[EI5T]: F:定义平台用户分页、手机号片段、角色、状态和排序条件 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/service/UserService.java | A:phone,role,status,orderBy | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/user/entity/===
+SysRole.java[PI7T]: F:保存预置三类角色码、名称和说明 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/service/UserService.java | A:roleCode,roleName | S:角色权限点由RequireRole注解决定，运行期角色表只读
+SysUser.java[PI9T]: F:保存手机号登录账号、BCrypt摘要、单站绑定与令牌版本及强制改密状态 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthInterceptor.java | A:phone,password,stationId,tokenVersion,mustChangePassword | S:手机号在DB为明文，普通出参掩码而平台用户管理可返回原值；密码摘要不得出参；版本递增是账号级吊销依据
+SysUserRole.java[PI8T]: F:保存用户与角色的多对多授权关联 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/service/UserService.java | A:userId,roleId | S:(user_id,role_id)唯一键防止同一账号重复授予同一角色
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/user/mapper/===
+SysRoleMapper.java[PI4T]: F:提供预置角色表通用查询持久化 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/entity/SysRole.java | A:BaseMapper | S:-
+SysUserMapper.java[PI8T]: F:提供账号CRUD及令牌版本原子递增 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/service/UserService.java | A:BaseMapper,incrementTokenVersion | S:吊销用token_version=token_version+1固定SQL，不采用读后覆盖
+SysUserRoleMapper.java[PI5T]: F:提供用户角色关联行的通用查询与替换持久化 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/entity/SysUserRole.java | A:BaseMapper | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/user/===
+package-info.java[SG2T]: F:声明用户账号与角色管理包边界 | R:- | A:com.sems.module.user | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/user/service/===
+UserService.java[DI9L]: F:编排本人资料密码、平台账号角色站点维护和分页查询 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthInterceptor.java | A:createUser,updateRoles,updateStation,updateStatus,resetPassword,invalidateTokens | S:敏感变更先递增DB令牌版本，事务提交后再删auth:userver快照；删缓存失败只记日志，旧快照仍可能存活至60秒TTL，不能承诺该路径立即全量吊销
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/push/===
+PushService.java[MG8S]: F:将库存、回收、用户订单和看板异动编码后广播到WebSocket主题 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/push/WsSessionManager.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java | A:pushStationStock,pushStationRecycle,pushUserOrder,pushPlatformDashboard,afterCommit | S:写事务推送必须经afterCommit；三个业务推送同时通知platform/dashboard；序列化或广播异常不回滚主业务
+SemsWsHandler.java[MS8M]: F:实现/ws文本帧协议、首帧JWT鉴权、主题订阅控制与越权审计 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/push/WsSessionManager.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/security/JwtService.java | A:afterConnectionEstablished,handleTextMessage,handleAuth,handleSubscribe | S:连接需10秒内首帧auth且即时复查吊销；越权订阅记2002并拒绝；握手X-Forwarded-For取最左段，与审计切面/全局异常处理器最右段口径不一致
+WsMessage.java[MG7S]: F:定义WebSocket统一消息信封与控制、业务推送类型常量 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/push/SemsWsHandler.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/push/PushService.java | A:of,getTopic,getType,getData,getTs | S:ts为服务端毫秒时间戳；控制帧topic或data可为null，业务type与主题末段相同
+WsSessionManager.java[MS9L]: F:管理WebSocket会话与主题订阅，执行首帧超时、广播和周期吊销复查 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/push/SemsWsHandler.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/security/JwtService.java | A:register,canSubscribe,subscribe,broadcast,heartbeat,isTokenRevoked | S:首帧10秒未鉴权即断连；普通用户订单主题严格限本人，平台管理员也不能订阅他人订单；黑名单或账号状态定期复查，账号快照异常回退数据库
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/security/===
+AuthContext.java[CI8T]: F:以ThreadLocal提供请求级登录用户及身份字段快捷读取 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthInterceptor.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/security/LoginUser.java | A:set,require,userId,role,stationId,clear | S:clear使用ThreadLocal.remove释放线程强引用；isPlatformAdmin在无用户时返回false，而require类读取抛1001
+AuthInterceptor.java[MI9M]: F:认证HTTP请求并复查jti吊销、账号版本状态与强制改密门禁 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/security/JwtService.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthContext.java | A:preHandle,afterCompletion | S:jti黑名单Redis异常时按设计fail-open，但账号快照异常回退数据库；强制改密检查必须在AuthContext.set之前，避免拦截抛错后身份残留池化线程
+AuthzInterceptor.java[MI9S]: F:读取RequireRole并按角色等级拦截垂直越权，发布安全审计事件 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/security/RequireRole.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/common/event/AuditEvent.java | A:preHandle | S:无注解接口仍要求已认证；空或未登记角色声明报5000拒绝放行；本层X-Forwarded-For取最左段，与AuditAspect和GlobalExceptionHandler的最右段口径不同
+CurrentUser.java[CI6T]: F:标记Controller参数由MVC解析器注入当前LoginUser | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/config/WebMvcConfig.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthContext.java | A:CurrentUser | S:注解只适用于LoginUser参数；无认证上下文时require抛1001，不会注入匿名主体
+JwtService.java[MI9M]: F:签发解析HS256访问令牌并提供剩余有效期和jti生成 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/config/SemsProperties.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthInterceptor.java | A:issue,parse,remaining,newJti | S:验签前拒绝非HS256，密钥不足32字节启动失败；旧密钥只验不签，宽限从本次启动计时，重启重新计算，结束后应移除旧配置；非法令牌统一1001
+LoginUser.java[CI8T]: F:承载JWT主体字段、账号快照与角色等级供认证上下文使用 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthContext.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthInterceptor.java | A:roleLevel | S:mustChangePassword不写入JWT；每次请求由AuthInterceptor回填，避免重置后旧令牌绕过强制改密；未知角色等级为0
+RequireRole.java[MI8T]: F:声明Controller类或方法的最低角色等级门槛 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthzInterceptor.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/security/LoginUser.java | A:value | S:按等级大于等于门槛放行，不是角色枚举白名单；只拦垂直越权，本站或本人归属仍由Service校验
+package-info.java[CI2T]: F:声明认证与鉴权基础类型的security包归属 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthInterceptor.java | A:package-info | S:-
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/resources/===
+application-dev.yml[FC6T]: F:为本地开发配置容器MySQL/Redis、开发JWT与二维码域名 | R:code:Shared Express Mailer System/backend/src/main/resources/application.yml,code:Shared Express Mailer System/backend/src/main/java/com/sems/config/WebMvcConfig.java | A:server,datasource,data,sems,springdoc | S:开发profile使用8090且配置仅供本地；JWT密钥带dev-only缺省值不得带入生产
+application-prod.yml[FC8T]: F:定义云端数据库Redis与JWT/HMAC密钥环境变量以及生产文档关闭策略 | R:code:Shared Express Mailer System/backend/src/main/resources/application.yml,code:Shared Express Mailer System/backend/src/main/java/com/sems/config/OpenApiConfig.java | A:datasource,data,sems,springdoc,logging | S:生产凭证通过环境变量注入且JWT密钥无默认回退；生产关闭springdoc暴露
+application.yml[FC9S]: F:定义SEMS公共运行配置、数据库Redis连接池、业务默认参数与文档/日志基础项 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/config/SemsProperties.java,code:Shared Express Mailer System/backend/src/main/resources/application-prod.yml | A:server,spring,datasource,data,mybatis-plus,sems | S:不设默认dev profile，未显式选择环境会因数据源或JWT密钥缺失启动失败；类型别名限实体包避免同名DTO冲突
+logback-spring.xml[FO6T]: F:配置UTF-8控制台与按日/大小轮转的应用文件日志 | R:code:Shared Express Mailer System/backend/src/main/resources/application.yml | A:FILE,root | S:文件名和日志级别仍由application.yml提供；滚动策略最多30天且总量封顶3GB
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/resources/lua/===
+stock_compensate.lua[KB9T]: F:以预扣凭据为幂等门闩执行库存补回并在持数为正时递减 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/StockService.java,code:Shared Express Mailer System/backend/src/main/resources/lua/stock_deduct.lua | A:compensateScript | S:hold不存在即返回0且不改计数；存在时先删除凭据再补库存，因此重复补偿不会二次加库存
+stock_deduct.lua[KB9T]: F:原子检查初始化/对账状态、借出上限、日频次和库存后预扣并保存凭据 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/StockService.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/RedisKeys.java | A:deductScript | S:所有失败检查在任何写入前返回；成功时库存、hold、在持数和日频次在一个Lua执行内变化，返回码由StockService映射业务错误
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/common/===
+ErrorCodeMappingTest.java[TR8T]: F:校验业务错误码唯一且完整、HTTP状态映射及仅5102/5103可重试 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/common/ErrorCode.java | A:httpStatusMappingMatchesSpec,retryableOnlyForStockNotReadyAndReconciling,codesAreUniqueAndComplete,unknownCodeFallsBackToSystemError | S:错误码或HTTP映射调整须同步设计书6.4/6.6
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/infra/===
+StockServiceRecoveryTest.java[TR9T]: F:用Redis/Mapper mock覆盖库存Lua返回码、扣减补偿、初始化锁、熔断恢复及令牌续签 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/StockService.java | A:deductionReturnCodesEnforceDistinctBusinessLimits,successfulDeductionAndCompensationOnlyExecuteOnceAtRedisLayer,busyInitializationDoesNotDeleteExistingInventory,expiredOwnerCannotPublishOrDeleteAnotherOwnersLock,recoveryRebuildsCurrentHolderAndDailyMaxInsteadOfDroppingQuota | S:RedisScript.execute为mock，未执行真实Lua；初始化锁的owner校验只验证mock返回码分支
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/module/bag/service/action/===
+BagTransitionActionsTest.java[TB9S]: F:用mock验证袋状态事件的库存流水、维修记录、消毒推送及在用袋修正副作用 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/action/BagTransitionActions.java | A:activateAddsStockRecordAndMakesBagAvailable,disinfectPassWritesStockReceiptAndDefersRedisIncrement,repairStartCreatesDescriptionAndDeductsOnlyIdleInventory,correctingAnInUseBagClosesOrderAndDefersOpenCountRelease | S:PushService.afterCommit仅验证回调注册，测试未运行真实Spring事务提交
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/push/===
+PushTransactionTest.java[TM8T]: F:验证推送回调在事务同步提交后执行、业务主题同步刷新平台看板且推送异常被隔离 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/push/PushService.java | A:callbacksAreDeferredUntilCommit,businessTopicsAlsoRefreshPlatformAndFailureIsIsolated,afterCommit,pushStationStock,pushStationRecycle,pushUserOrder | S:测试手动初始化TransactionSynchronizationManager并直接触发afterCommit，不是事务管理器集成测试
+WebSocketSecurityTest.java[TS9T]: F:用mock会话验证WebSocket角色主题白名单、首帧鉴权、撤销账号拒绝、心跳关闭和越权审计 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/push/WsSessionManager.java | A:subscriptionWhitelist,authenticatedSubscriptionBroadcastAndCleanup,revokedAndDisabledAccountsAreRejected,accountCacheMissUsesAuthoritativeDatabase,heartbeatClosesExpiredSessionAndPingsValidOne,handlerRequiresAuthAndAuditsForbiddenTopics | S:WebSocketSession、Redis与用户Mapper均为mock，未建立真实网络连接或Redis会话
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/unit/aspect/===
+AuditAspectTest.java[TS9T]: F:验证审计切面记录操作者/代理IP并递归掩码敏感字段，失败时保留业务异常 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/aspect/AuditAspect.java | A:successCapturesOperatorNetworkAndMasksNestedSecrets,failuresAreRethrownAndMandatoryAuditActionsNormalized,systemErrorAndAuditOutageDoNotChangeOriginalOutcome | S:AuditLogService使用mock，未验证审计记录实际落库或异步线程竞争
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/unit/audit/===
+AuditLogPersistenceTest.java[TO9T]: F:验证审计/登录事件落库、执行器拒绝时同步降级、应急文件回放及丢弃计数查询 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/service/AuditLogService.java | A:auditAndLoginAreStoredAndNullEventsIgnored,rejectedExecutorKeepsCriticalAuditAndLoginSynchronous,failedPersistenceUsesIsolatedFallbackAndReplayRemovesOnlySuccesses,replayMalformedAndUnknownLinesHasExplicitRetentionPolicy | S:线程池execute被mock为调用当前线程；畸形回放行保留，未知kind/null行按已处理并删除
+AuditQueryServiceTest.java[TS9T]: F:验证查看完整审计IP按记录ID返回原值并追加带操作者、请求IP和URI的审计事件 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/service/AuditQueryService.java | A:fullIpViewReturnsOriginalAddressAndAuditsTheSpecificRecord,missingRecordDoesNotCreateAnIpViewAudit,nullStoredIpIsReturnedAsEmptyStringAndAuditWorksWithoutRequestContext,viewAuditLogIp | S:Mapper和AuditLogService均为mock，不验证查询SQL或真实审计落库
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/unit/auth/===
+AuthenticationServiceTest.java[TI9T]: F:用mock覆盖注册原子角色、登录失败锁定/验证码、角色归并、凭证轮换与账户删除 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/service/AuthService.java | A:registrationStoresHashAndOnlyOrdinaryRole,nonexistentAndWrongPasswordShareMessageAndLeaveMaskedAudit,previousLockRequiresCaptcha,loginSuccessMasksPhoneAndUsesStationRoleFloor,refreshInvalidatesOldJtiAndUsesLatestAccount,loginRedisOutageRetainsPasswordCheck | S:Mapper/Redis/JWT/加密器均为mock；DuplicateKeyException为模拟，不是数据库并发注册测试
+CaptchaServiceTest.java[TS7T]: F:验证验证码图片生成与TTL写入、大小写空白归一、一次消费及缺失/错误/Redis故障关闭 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/service/CaptchaService.java | A:generatedPngIsStoredAndConsumedAtomically,missingWrongAndRedisFailureAreFailClosed,generate,verifyAndConsume | S:getAndDelete/set由Redis mock替代，原子消费语义仅验证调用边界
+JwtContractTest.java[TI9T]: F:使用真实JwtService验证HS256签发解析、密钥/过期/声明拒绝及前一密钥轮换宽限 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/security/JwtService.java | A:issueRoundTripsAndFillsJtiAndExpiry,missingWeakKeyAndInvalidTtlFailAtConfigurationBoundary,badFormatAlgAndSignatureAreRejectedWithoutDetails,expiredMalformedAndMissingClaimsCannotAuthenticate,previousKeyIsOnlyAcceptedDuringRotationGrace | S:轮换过期由ReflectionTestUtils直接改previousKeyAcceptUntil，未使用可控时钟验证边界时序
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/unit/bag/===
+BagOperationIdempotencyTest.java[TR8T]: F:用mock验证盘点/消毒缺失幂等键在Redis或数据库调用前拒绝，非法输入失败时释放处理中占位 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/InventoryCheckService.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/DisinfectService.java | A:inventoryMutationsRequireIdempotencyKeyBeforeDatabaseCalls,inventoryRejectsUnknownBagStatusKeyAndReleasesReservation,disinfectRegistrationRequiresIdempotencyKeyBeforeRedisOrDatabaseCalls,disinfectRejectsUnsupportedMethodAndReleasesReservation | S:幂等服务、Redis和Mapper均为mock，断言调用时序而非真实Redis幂等生命周期
+BagServiceAccessTest.java[TS8S]: F:验证袋台账认证和本站范围、废弃激活/手工入库拒绝及维修前检查调拨锁 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java | A:pageRequiresAuthenticatedIdentity,stationAdministratorWithoutStationCannotListLedger,stationAdministratorCannotRequestAnotherStationsLedger,deprecatedActivationAndManualStockInAreRejected,repairChecksAllocationLockAndFiresRepairTransitionForUnlockedBag | S:Mapper/TransitionService为mock，本站范围与调拨锁断言未执行真实SQL
+BagServiceCreationTest.java[TB9M]: F:用mock验证建档初态/台账、批量二维码ZIP、状态修正、维修完工和复用上限报废 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java | A:createStartsIdleWithReuseLimitAndWritesBothLedgerRecords,batchGenerateReturnsZipManifestAndOneQrPerNewBag,statusCorrectionSendsTargetAndReasonWithoutManualCheckNumber,successfulRepairCompletionReturnsToDisinfectionQueue,repairedBagAtReuseLimitIsScrappedAndAudited,scanInfoShowsMinimalFieldsToUnrelatedUserAndFullViewToStationAdmin | S:Mapper/库存/推送/二维码服务均为mock；ZIP目录内容在内存解包核对，不验证数据库事务或实际二维码编码
+DisinfectServiceTest.java[TB8S]: F:用mock验证消毒批次逐袋失败汇总、合格明细落库与状态转换提交 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/DisinfectService.java | A:invalidDetailFailsIndividuallyAndBatchSummaryUsesActualWrittenRows,passingBagIsWrittenAndTransitionedInsideOnePerBagTransaction,register | S:PlatformTransactionManager及Mapper为mock，commit断言不证明真实事务回滚/隔离
+InventoryCheckServiceWorkflowTest.java[TB8S]: F:用mock验证账实一致闭环、盘盈袋级候选生成、待修正单作废和站点范围 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/InventoryCheckService.java | A:balancedPhysicalCountClosesCheckWithoutBagCandidates,unbalancedCountProducesBagLevelGainCandidatesAndPendingStatus,voidPendingCheckPersistsReasonOperatorAndVoidTimestamp,pageEnforcesStatusWhitelistAndStationScope,platformPageReturnsParsedSnapshotAndDiffCandidate | S:库存查询和Mapper均为mock，差异候选来自stub分页结果而非数据库比对
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/unit/common/===
+GlobalExceptionHandlerTest.java[TR9M]: F:直接调用异常处理器验证统一响应/HTTP码、参数安全、系统错误脱敏及越权审计补偿 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/common/GlobalExceptionHandler.java | A:mapsBusinessStatusAndRetryHeader,bodyValidationReturnsSafeFieldErrors,mapsBindingAndRequestShapeFailures,unexpectedFailureDoesNotLeakExceptionDetails,forbiddenAuditUsesRightmostForwardedAddress,avoidsDuplicateForbiddenAuditsAndKeepsDenialOnPublisherFailure | S:直接调用handler方法，不经过Spring MVC异常解析链；事件publisher为mock
+JsonUtilsTest.java[TG5T]: F:验证公共JSON工具的Java时间格式、未知字段兼容、空输入、泛型列表和安全异常包装 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/common/util/JsonUtils.java | A:serializesJavaTimeAndIgnoresUnknownProperties,handlesEmptyAndTypedList,malformedJsonIsWrappedAsSafeSystemError | S:-
+UtilsTest.java[TG8S]: F:覆盖袋码生成/校验位、手机号/IP脱敏、版本化HMAC、文本截断和业务单号格式 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/common/util/BagCodeUtils.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/common/util/MaskUtils.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/common/util/BizNoUtils.java | A:bagCodeBuildAndValidate,checksumCatchesSingleCharacterMistakes,maskPhoneKeepsFirstThreeAndLastFour,maskIpHidesHostPart,hmacPhoneIsStableAndVersioned,bizNoIsPrefixedUniqueAndFitsColumn | S:1000次SecureRandom不碰撞是概率性回归断言，不构成业务单号数学唯一性证明
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/unit/controller/===
+AuthUserControllerTest.java[TI8S]: F:直调认证与用户控制器验证验证码、代理IP/UA、Bearer头、写入委托和幂等回放 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/controller/AuthController.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/controller/UserController.java | A:authControllerMapsRequestsAndResponses,authControllerRejectsInvalidHeadersBeforeServiceCall,userControllerDelegatesQueriesAndIdempotentWrites,userIdempotencyGuardsInvalidAndReplayedRequests | S:Service与幂等服务为mock；直接构造控制器，不经过HTTP、参数绑定或权限拦截器
+BagControllerTest.java[TB7S]: F:直调袋控制器验证生命周期方法委托、统一BatchResult信封及ZIP/PNG二进制响应头 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/controller/BagController.java | A:delegatesBagOperations,binaryDownloadsHaveContentHeadersAndExactBytes,assertBatchEnvelope | S:控制器和BagService直接构造/模拟，未验证Spring MVC序列化或请求过滤器
+ControllerRouteContractTest.java[TN9S]: F:反射核对公开Controller端点集合、HTTP路径/方法、RequireRole等级及AuditLog覆盖表 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/security/RequireRole.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/aspect/AuditLog.java | A:routesRolesAndAuditsMatchContract,expectedRoutes,join | S:这是反射元数据契约测试而非Spring启动/HTTP集成；新增或改名public端点必须同步expectedRoutes
+OperationsControllerTest.java[TB8S]: F:直调盘点消毒、站点与调拨控制器核对参数透传、幂等头和逐袋批量信封 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/controller/StationController.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/controller/AllocationController.java | A:inventoryAndDisinfectionDelegation,stationControllerDelegationAndIdempotency,allocationControllerDelegationAndBatchEnvelope | S:控制器直接构造，Service为mock；不验证真实HTTP绑定、权限拦截或业务事务
+ReadControllerDelegationTest.java[TG7S]: F:直调只读控制器核对健康最小响应及统计告警、审计、订单和申领参数透传 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/controller/StatsController.java | A:healthHasOnlyUpStatus,statsControllersForwardFiltersAndData,alertQueryIsPassedThrough,auditControllerForwardsQueriesAndRequest,orderControllerForwardsEachOperation,borrowControllerForwardsActionPayloads | S:控制器直接构造、Service为mock；不覆盖HTTP序列化、授权拦截器或真实查询SQL
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/unit/infra/===
+CounterServiceTest.java[TR7T]: F:用Redis mock验证用户在持数/日计数TTL、负数归零及统计Hash坏值归一 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/CounterService.java | A:incrementOpenRenewsSlidingTtlAndReturnsNewValue,decrementBelowZeroClampsToZeroInsteadOfKeepingNegativeOpenCount,dailyCounterUsesDateSpecificKeyAndAtLeastOneDayTtl,statsHashMapsInvalidCounterToZeroAndRenewsExpiryOnIncrement | S:Redis命令由mock替代，TTL只验证传入时长而非真实过期
+IdempotentServiceTest.java[TR9S]: F:验证幂等键按当前用户/匿名范围隔离、处理中与完成结果回放及提交/回滚钩子 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/IdempotentService.java | A:findsCompletedResultAndProcessingMarkerByCurrentUserScopedKey,anonymousRequestsUseAnonymousKeyAndProcessingMarkerHasTtl,completedCacheWriteWaitsForCommitAndUsesCapturedUserKey,rollbackClearsProcessingPlaceholderWithoutWritingCompletedResult,competingRequestWithSameIdIsRejectedAsRetryableInsteadOfRunningTwice,perBagDedupReturnsRedisResultAndFailsOpenOnRedisOutage | S:Redis和事务同步均为mock/手动触发，未验证真实Redis竞争或事务管理器集成
+RateLimitServiceTest.java[TS8T]: F:验证固定窗口限流只在首次请求设置TTL、超限返回RATE_LIMITED且null计数采用放行回退 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/infra/RateLimitService.java | A:fixedWindowExpiresOnlyAtFirstRequestAndRejectsAfterLimit,assertAcquireReturnsRetryableRateLimitError,nullIncrementResultIsTreatedAsFallbackPermit | S:Redis递增及过期均由mock返回，未验证真实Redis固定窗口时序
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/unit/job/===
+DailyStatisticsJobTest.java[TO8T]: F:用mock验证日统计写入平台/站点行、补齐8态库存、同日更新及查询故障不外溢 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/job/StatsDailyJob.java | A:aggregationWritesPlatformAndEachStationAndPadsEightStates,repeatedDayUpdatesInsteadOfDuplicateInsertAndEmptyDenominatorIsZero,queryFailureDoesNotEscapeScheduler | S:所有查询Mapper均为mock，统计聚合和调度故障分支不连接数据库或Scheduler
+ReconciliationJobsTest.java[TR9T]: F:用mock覆盖当前持袋对账、孤儿预扣清理、库存稳定性守卫和超时取消 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/job/OpenCountReconcileJob.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/job/StockReconcileJob.java | A:currentHolderOnlyAndHistoricHolderIsReset,orphanHoldsAreRemovedAndStartupRebuildsStocks,stableInventoryIsCorrectedAndMarkerAlwaysReleased,missingSentinelRebuildsAndBusyMarkerSkips,unstableInventoryDoesNotOverwriteRedis,timeoutCancellationDoesNotReleaseInventoryOrHoldingQuota | S:Redis及Mapper为mock，锁竞争与双采样变化由返回序列模拟，不证明真实并发正确性
+RecoveryReminderJobTest.java[TW7T]: F:验证回收/调拨超时提醒发往归还站或借袋站，重复扫描不重复推送且任务故障隔离 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/job/RecycleAllocationTimeoutJob.java | A:reminderTargetsReturnStationAndWarningsDoNotChangeBusinessState,missingReturnStationFallsBackToBorrowStationAndConcurrentReminderDoesNotRepeat,eachScanFailureIsIsolatedAndEmptyQueuesAreSafe | S:Mapper与PushService为mock，重复提醒通过条件更新返回1后0模拟
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/unit/order/===
+BorrowServiceFlowTest.java[TB9M]: F:用mock验证申领预扣/状态迁移/订单回读、锁定袋拒绝、重复订单补偿、寄件隐私处理和撤回hold释放 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/BorrowService.java | A:successfulBorrowReservesStockThenFiresBorrowTransitionAndReturnsPersistedOrder,occupiedOrUnusableBagsNeverReachStockReservation,pendingAllocationReferenceBlocksBorrowBeforeInventoryReservation,databaseDuplicateOrderErrorTriggersCompensationWhenOrderDidNotCommit,shippingStoresOnlyMaskedAndHashedRecipientPhoneAndDeletesHoldAfterTransition | S:Mapper/Redis服务/PlatformTransactionManager均为mock；重复键补偿是异常分支模拟，不是数据库并发集成
+BorrowServiceIdempotencyTest.java[TR8T]: F:验证申领/寄件/撤回缺失幂等键时在所有存储、库存、限流和状态迁移副作用前拒绝 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/BorrowService.java | A:allWriteOperationsRejectMissingIdempotencyKeyBeforeSideEffects | S:所有下游依赖为mock，断言的是入口校验顺序而非写操作实现
+OrderServiceAccessTest.java[TS9M]: F:用mock验证本人订单归属、状态过滤、归还站选择、遗失14日门槛及失败清理幂等占位 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/OrderService.java | A:personalOrderQueriesRequireAuthentication,personalOrderDetailHidesMissingAndForeignOrders,returnMarkValidatesEnabledStationThenFiresTransitionAndRegistersNotice,lostConfirmAfterFourteenDaysFiresLostTransitionAndCompletesIdempotency,lostConfirmBeforeFourteenDayWindowIsRejectedAndReservationCleared | S:订单/站点/状态机均mock，14日边界依赖测试构造的LocalDateTime，不是数据库或时钟集成
+OrderTransitionActionsTest.java[TB9S]: F:用mock验证申领建单/重复回放、寄件版本更新、归还只改订单、遗失责任记录和失败关闭 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/action/OrderTransitionActions.java | A:borrowCreatesPendingOrderIncrementsStationStatisticAndDefersPush,duplicateClientRequestReplaysWithoutAnotherInsertOrStatistic,shipRequiresPendingOrderAndMovesOnlyOrderWithVersionGuard,returnMarkStoresReturnStationWithoutChangingBagAndMovesOrderToConfirmation,lostConfirmationClosesOrderWritesLiabilityAndReleasesOpenCount,staleOrderVersionAbortsTheTransition | S:Mapper/库存计数/推送均为mock，版本冲突由updateById返回0模拟
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/unit/security/===
+AuthInterceptorTest.java[TS9S]: F:用mock验证OPTIONS/匿名端点放行、Bearer/JWT/黑名单和账号版本检查、强制改密拒绝及AuthContext清理 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthInterceptor.java | A:preflightAndAnonymousEndpointsDoNotRequireToken,missingOrEmptyBearerTokenFailsClosed,validCachedAccountSnapshotSetsRequestIdentityAndCompletionClearsIt,disabledDatabaseAccountRejectsTokenEvenWhenRedisSnapshotMissing,mustChangePasswordBlocksBusinessRequestBeforeSettingThreadLocal,revokedJtiIsRejectedBeforeAccountLookup | S:JWT/Redis/用户Mapper均为mock，账户缓存回源和失效标记未接真实认证基础设施
+AuthzInterceptorTest.java[TS9S]: F:用mock HandlerMethod验证无注解端点也需认证、方法角色覆盖/等级继承、越权审计及无效角色拒绝 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthzInterceptor.java | A:requiresAuthenticationEvenWhenHandlerHasNoRoleAnnotation,methodRoleOverridesClassAndHigherRoleSatisfiesLowerThreshold,lowerRoleIsDeniedAndPublishesSecurityAuditUsingFirstForwardedIp,auditFailureDoesNotChangeAuthorizationDenial,blankRoleDeclarationFailsClosedAsConfigurationError,unknownRoleDeclarationFailsClosed | S:事件Publisher为mock，断言first X-Forwarded-For地址；未验证真实代理链和审计异步投递
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/unit/statemachine/===
+BagLifecycleSimplificationTest.java[TB9T]: F:固化四态袋循环与维修必经消毒规则，并验证复用次数耗尽后消毒合格不能回流 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/TransitionRegistry.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java | A:normalCycleAndRepairRequireDisinfection,exhaustedBagCannotBeReleasedAfterDisinfection | S:停用状态名INACTIVE/REUSABLE/RETURNING必须继续拒绝解析，避免旧状态进入迁移表
+BagTransitionServiceTest.java[TB9M]: F:验证袋转移命令校验、条件更新/流转日志、分配锁、幂等重放、21条动作路径及状态修正白名单 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java | A:rejectsMissingCommandAndMissingFieldsBeforeDatabaseAccess,optimisticConflictStopsBeforeLogAndAction,pendingAllocationLockBlocksBorrowRepairScrapAndStatusCorrection,idempotentReplayDoesNotWriteLogOrPushAgain,everyRegisteredTransitionCanPassTheAtomicDatabasePath,statusCorrectionAcceptsOnlyTheFourDocumentedTargetsAndMovesStation | S:Mapper/IdempotentService/PushService为mock，update返回值模拟CAS冲突，不能证明真实SQL原子性或事务隔离
+TransitionRegistryTest.java[TB9M]: F:逐项固定袋状态21条有效转移、非法组合、终态/可用口径、枚举码值和注册顺序 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/TransitionRegistry.java | A:allTwentySixExpandedTransitionsAreRegistered,unregisteredCombinationsReturnNull,terminalStateAndAvailabilitySemantics,enumCodesRoundTripWithDisplayNames,allPreservesDesignDocumentOrder,duplicateRegistrationFailsWithoutReplacingOriginalRule | S:方法名写TwentySix但EXPECTED和断言均为21条；维护时以规则集合断言和设计表为准
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/unit/station/===
+AllocationServiceTest.java[TB9L]: F:用mock覆盖调拨袋锁、站点范围、创建/取消/出库/核收、在途遗失责任及明细剔除条件 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/AllocationService.java | A:pendingDetailLocksBagOnlyWhileItsAllocationIsPendingOrInTransit,creatingTransferBetweenSameStationIsRejectedAndIdempotencyPlaceholderCleared,pendingAllocationCancellationUnlocksDetailsAndRecordsCompletion,createStoresOrderAndDeduplicatedIdleBagDetails,dispatchMovesPendingDetailForSourceStationAdmin,receiveCompletesOrderWhenAllActiveDetailsAreReceived | S:Mapper/状态机/幂等/审计依赖为mock，不能证明数据库事务、行锁或并发唯一约束
+RecycleServiceTest.java[TB9S]: F:验证回收批次站点权限/非空及大小上限，并覆盖跨站已标记订单路由、风险计数和审计 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/RecycleService.java | A:recycleConfirmRequiresNonemptyListAfterStationAccessChecks,recycleConfirmRejectsOversizeAndNullEntriesBeforeTakingIdempotencyKeys,successfulCrossStationMarkedReturnRoutesAndWritesAuditAndDailyCount | S:Station/Redis/订单/状态机/事件发布均为mock，未验证真实批次事务或风险计数TTL
+StationServiceTest.java[TB9M]: F:验证站点角色范围、启用站就近查询/库存、筛选注入拒绝、幂等维护和停用库存前置 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/StationService.java | A:stationAdminCanAccessOnlyBoundStationAndPlatformAdminCanAccessAll,nearbyOnlyReturnsEnabledRowsAndAddsAuthoritativeAvailableStock,pageRejectsUnsafeStatusAndSortFieldsBeforeQuerying,enablingStationIsIdempotentAndUpdatesStatusWithoutDisablePreconditions,updateFailureClearsRequestPlaceholderSoClientCanRetry,cannotDisableStationWithNonTerminalBagsWithoutHandover | S:Mapper/StockQueryService为mock，站点数量和非终态库存由桩值而非SQL统计
+StationTransitionActionsTest.java[TB9M]: F:用mock验证未使用回收、已分配/使用中回收、直投和迟寄补救对订单/袋/库存/计数的副作用 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/action/StationTransitionActions.java | A:unusedReturnIncreasesStockWritesInboundRecordAndDecrementsOpenCount,allocatedConfirmCancelsPendingOrderAndDefersPushUntilCommit,inUseConfirmFinishesOrderIncrementsUseCountAndDecrementsOpenCount,delayedShippedReturnOfCancelledAllocationStillIncrementsUseCount,completedOrderNeedsNoSecondOrderUpdateButStillCountsUse,failedConditionalOrderUpdateAbortsAccompanyingActions | S:Mapper/库存/计数/推送为mock，提交后回调由测试手动run，不验证事务提交顺序
+StockQueryServiceTest.java[TD7T]: F:验证全部已知袋态计数补零、忽略未知/坏值、Redis未就绪重建回读和非终态口径 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/StockQueryService.java | A:initializesEveryKnownBagStatusAndIgnoresUnknownOrMalformedRows,unavailableRedisTriggersOneRebuildAndReread,degradedRedisSkipsRebuildAndUsesDatabaseForDisplayFallback,redisValueTakesPrecedenceOverDatabaseCount,nonTerminalCountExcludesOnlyScrappedStatus | S:BagStockMapper和StockService均为mock，数据库计数及Redis可用性由预设值模拟
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/unit/stats/===
+AlertServiceTest.java[TO8T]: F:验证审计丢弃告警只在正计数产生、告警类型白名单和Redis高频确认键解析 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/AlertService.java | A:auditDropAlertIsProducedOnlyForPositiveDropCount,invalidTypeFailsClosedBeforeScanningSources,highFrequencyConfirmationAlertResolvesStationAndOperatorFromRedisKey | S:告警源Mapper、审计服务和Redis均为mock，告警数量/阈值未接真实基础设施
+StatsServiceTest.java[TO9S]: F:验证趋势缺日补零/重复聚合求和、库存分布容错、周转率计算和看板降级口径 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/StatsService.java | A:orderTrendFillsMissingDaysWithZeroAndSumsDuplicateAggregateRows,orderTrendUsesSevenDayDefaultAndRejectsOutOfRangePeriod,stockDistributionContainsEveryStatusAndKeepsUnexpectedDatabaseCodesVisible,turnoverUsesZeroForEmptyCirculationAndRoundsNonzeroRate,dashboardDerivesLifecycleTotalsAndFallsBackToStationDailyCountersAndDatabaseStock | S:统计Mapper/Redis计数/库存/审计指标均为mock，测试固定公式与归一分支而非数据库聚合正确性
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/unit/support/===
+MybatisTestMetadata.java[TQ6T]: F:为无Spring容器的单元测试同步注册MyBatis-Plus实体TableInfo供LambdaWrapper解析 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/Bag.java | A:init | S:只初始化固定实体元数据且不连接数据库；不替代Mapper XML/SQL或真实schema验证
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/test/java/com/sems/unit/user/===
+UserServiceTest.java[TI9M]: F:用真实BCrypt和mock Mapper/Redis验证个人资料脱敏、账号自禁用/角色、改密凭证撤销及启停行为 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/user/service/UserService.java | A:getMeUsesAuthenticatedIdentityAndReturnsMaskedPhoneWithoutCredential,platformAdminCannotDisableOwnAccount,duplicatePhoneIsRejectedBeforeRoleOrCredentialWrites,wrongCurrentPasswordCannotChangeCredentialsOrInvalidateSessions,successfulPasswordChangeClearsForcedChangeAndRevokesExistingTokens,disablingAnotherAccountRevokesItsTokenVersionButEnablingDoesNot | S:BCryptPasswordEncoder实际运行，Mapper/Redis为mock，不验证token版本缓存与数据库事务原子性
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/deploy/docker/===
+.env.example[FC5T]: F:提供本地MySQL与Redis口令、数据库名及端口变量示例 | R:code:Shared Express Mailer System/deploy/docker/docker-compose.yml | A:MYSQL_*,REDIS_* | S:仅供本地演示，生产口令不得沿用；复制为.env后不入库
+docker-compose.yml[OR8T]: F:运行带持久数据卷与健康检查的本地MySQL8和Redis7，并兼容Navicat12认证 | R:code:Shared Express Mailer System/deploy/sql/V1__init_schema.sql,code:Shared Express Mailer System/scripts/db-navicat-compat.ps1 | A:mysql,redis,mysql-data,redis-data | S:兼容认证仅用于本地，默认插件不自动改变已有账号；SQL只在空卷导入；Redis必须noeviction，禁止淘汰安全计数键
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/deploy/nginx/===
+nginx.conf.example[ON8S]: F:示范TLS终结、SPA静态托管、API与WebSocket代理及IP限流 | R:code:文档/系统设计说明书.md | A:/api/,/ws,login_zone,borrow_zone,scan_zone | S:超限显式返回429；后端只监听回环8080；XFF追加直连对端，审计取最右段依赖单层可信反代
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/deploy/sql/===
+README.md[SD6T]: F:说明SQL版本顺序、初始化与四态升级操作 | R:code:Shared Express Mailer System/deploy/sql/V3__simplify_bag_status.sql | A:首次初始化,已有库升级 | S:已有数据卷不会自动重跑SQL；V2重复执行会重置预置账号口令；V3升级后清除库存与哨兵键
+V1__init_schema.sql[PD9M]: F:创建用户、袋、订单、站点、流转、消毒、调拨与审计等21张业务表及索引 | R:code:文档/数据库设计说明书.md | A:CREATE TABLE IF NOT EXISTS,唯一键,查询索引 | S:不设物理外键和逻辑删除；fk_只是普通索引；订单幂等与运单组合唯一键独立兜底；ref_check_no保留历史兼容
+V2__init_data.sql[PD7T]: F:幂等预置三角色、平台管理员及两站点并建立用户角色关联 | R:code:Shared Express Mailer System/deploy/sql/V1__init_schema.sql | A:INSERT ON DUPLICATE KEY UPDATE | S:重复执行会重置预置管理员口令并强制再次改密；关联通过实时SELECT取ID，禁止写死主键
+V3__simplify_bag_status.sql[PD8T]: F:迁移旧袋状态为四态循环并递增袋版本 | R:code:Shared Express Mailer System/deploy/sql/V1__init_schema.sql | A:ALTER bag.status,UPDATE状态迁移 | S:先停后端并备份；历史流转和订单不重写；RETURNING优先映射IN_USE，超复用旧可用态改待消毒；重启前清库存哨兵缓存
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/docs/releases/===
+v0.1.1.md[SV6T]: F:发布v0.1.1四态循环、状态修正兼容变更与并发防护说明 | R:code:文档/测试报告.md | A:版本变更,兼容性,验证结果 | S:历史ref_check_no列继续保留；5轮竞争只验证正确性，不代表性能压测
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/===
+.gitignore[FV3T]: F:排除前端依赖、构建产物、本地配置、日志及IDE临时文件 | R:code:Shared Express Mailer System/frontend/package.json | A:node_modules,dist,dist-ssr,*.local | S:-
+README.md[SV5T]: F:说明SEMS前端安装运行、开发代理、目录职责、状态交互与校验约定 | R:code:Shared Express Mailer System/frontend/vite.config.js | A:dev,build,preview,proxy | S:页面清单和视觉规则以系统设计说明书10.2/10.5为准；批量结果只认data.items，前端校验不替代后端
+index.html[EU5T]: F:提供中文SPA静态宿主页、移动端viewport与#app挂载容器 | R:code:Shared Express Mailer System/frontend/src/main.js | A:lang,viewport,#app,main.js | S:只声明light色彩模式，项目不提供整站深色模式
+package-lock.json[FV5L]: F:锁定npm解析的前端依赖图及包完整性信息以复现安装 | R:code:Shared Express Mailer System/frontend/package.json | A:lockfileVersion,packages,requires | S:根包依赖声明须与package.json一致；锁文件由npm维护，不手工拼接自动解析的传递依赖项
+package.json[FV8T]: F:定义sems-frontend工程元信息、Node版本范围、构建脚本和Vue/Vite/Element Plus等依赖 | R:code:Shared Express Mailer System/frontend/package-lock.json | A:scripts,dependencies,devDependencies,engines | S:Pinia 4要求Vue 3.5.11以上且Vite 8要求Node 20.19以上；版本基线变化需同步设计书
+vite.config.js[FV8T]: F:配置Vue插件、@源码别名、5173开发端口、/api与/ws代理及构建分包 | R:code:Shared Express Mailer System/frontend/src/utils/request.js | A:alias,proxy,manualChunks,build | S:开发期代理固定指向8090；业务API保持同源相对路径，生产反代由Nginx承担
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/===
+App.vue[EW7T]: F:启动时恢复会话并驱动WebSocket连接，登录态变化时连接或断开推送 | R:code:Shared Express Mailer System/frontend/src/stores/user.js | A:bootstrap,handleVisibility,watch,isLogin | S:回前台除ensureConnected外广播sems:visibility-resume供页面重新拉数据；推送不提供离线补发
+main.js[EC8T]: F:创建Vue应用并注册Pinia、router、中文Element Plus与全局图标后挂载#app | R:code:Shared Express Mailer System/frontend/src/App.vue | A:createApp,app.use,app.component,app.mount | S:先引Element Plus基础CSS再引styles/index.css；全局错误处理器只调用console.error记录异常
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/api/===
+allocation.js[IN7T]: F:封装调拨单查询/创建/取消、源站出库、目标站核收、在途遗失和明细剔除接口 | R:code:Shared Express Mailer System/frontend/src/utils/request.js | A:listAllocations,createAllocation,dispatchAllocation,receiveAllocation,confirmAllocationLost,removeAllocationDetail | S:创建明细袋会被后端锁定；逐袋动作bags与创建清单bagCodes是不同请求形态，状态机由后端执行
+auth.js[II8T]: F:封装验证码、注册、登录、静默续签与退出登录认证端点 | R:code:Shared Express Mailer System/frontend/src/utils/request.js | A:getCaptcha,register,login,refresh,logout | S:注册与登录以skipIdempotent豁免匿名写请求
+bag.js[IB8S]: F:封装快递袋信息/台账/追溯/二维码、建档、出入库、维修报废、找回、修正、消毒和盘点端点 | R:code:Shared Express Mailer System/frontend/src/utils/request.js | A:getBagInfo,listBags,getBagQrcode,stockIn,stockOut,createDisinfection | S:二维码PNG/批量ZIP为JSON之外的blob例外；消毒批量上限200且其余批量上限500；状态转换以后端为准
+order.js[IB8T]: F:封装申领、寄件、撤回、标记归还、本人/平台订单查询及遗失确认端点 | R:code:Shared Express Mailer System/frontend/src/utils/request.js | A:borrow,submitShipping,cancelBorrow,markReturn,listMyOrders,confirmLost | S:撤回只取消订单且不释放袋额度；标记归还只推进订单状态；状态机和责任归属以服务端校验为准
+station.js[IN7T]: F:封装就近/分页站点、站点维护、库存预警、回收箱查询和逐袋回收确认接口 | R:code:Shared Express Mailer System/frontend/src/utils/request.js | A:listNearbyStations,getStationStock,listStockWarningStations,getRecycleBin,recycleConfirm | S:站点权限范围与停用前置条件由后端执行；回收确认单批部分成功需保留逐袋信封
+stats.js[IO7T]: F:封装看板、趋势、周转率、库存分布、操作审计、登录日志与异常告警查询 | R:code:Shared Express Mailer System/frontend/src/utils/request.js | A:getDashboard,getOrderTrend,getBagTurnover,getStockDistribution,listAuditLogs,listAlerts | S:统计口径由服务端设计书定义，前端只呈现接口数据；完整审计IP查询本身也会被审计
+user.js[II8T]: F:封装本人资料/改密及平台管理员的账号、角色、站点绑定、状态和密码重置端点 | R:code:Shared Express Mailer System/frontend/src/utils/request.js | A:getMe,updateMe,changePassword,listUsers,updateRoles,updateStatus | S:角色、绑定、状态与重置密码会使旧凭证失效
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/components/===
+BagCodeInput.vue[EU7M]: F:统一袋码v-model输入、即时大写、扫码按钮和回车scan事件并从二维码文本提取袋码 | R:code:Shared Express Mailer System/frontend/src/utils/scanner.js | A:handleEnter,openScanner,extractBagCode,handleDecoded | S:格式错误只提示不阻断提交，服务端仍负责权威校验；扫码器关闭时必须释放摄像头
+BagTimeline.vue[EU8S]: F:将袋流转记录呈现为含事件、状态变化、操作人、站点、时间和备注的时间线 | R:code:Shared Express Mailer System/frontend/src/constants/index.js | A:isDanger,nodeColor,eventLabel,formatTime | S:输入记录按时间正序，最后一条即当前状态；遗失与报废节点突出显示
+BatchResultDialog.vue[EU7M]: F:统一展示批量操作成功/失败计数、逐袋原因并复制可见失败清单 | R:code:Shared Express Mailer System/frontend/src/utils/batch.js | A:successCount,failedCount,totalCount,copyFailed | S:批次总数和失败数优先使用后端信封，因为items明细可能被截断
+DataPager.vue[EU6S]: F:统一分页双向绑定、移动端布局和页码/页大小变化事件 | R:code:Shared Express Mailer System/frontend/src/constants/index.js | A:handleSizeChange,handleCurrentChange,layout | S:改变每页条数回到第1页且只派发一次change；移动端只保留上一页/页码/下一页
+EmptyState.vue[EU5T]: F:统一展示空态图标、说明文字和可选主操作插槽 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:icon,description,default slot | S:-
+PageCard.vue[EU5T]: F:提供可选标题、副标题和extra插槽的页面卡片容器 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:title,subtitle,extra | S:-
+PageSkeleton.vue[EU6S]: F:提供表格行、卡片块和16:9图表三种加载占位并限制占位数量 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:tableRows,cardBlocks,type | S:占位尺寸需与真实内容一致以免加载完成时跳版
+StatCard.vue[EU5S]: F:统一展示指标标题、数值、单位及带方向文字的环比变化 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:trendIcon,trendText | S:趋势同时用箭头、升降文字和颜色表达，不单独依赖颜色
+StatusTag.vue[EU8S]: F:统一渲染袋、订单、调拨、盘点、账号与结果状态的文案和令牌颜色 | R:code:Shared Express Mailer System/frontend/src/constants/index.js | A:META_MAP,meta,colorVar,showCheckIcon | S:状态必须同时有颜色与文字；success绿色标签带对勾，颜色仅来自CSS令牌
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/constants/===
+index.js[CD8S]: F:集中定义袋/订单/调拨/盘点/角色/告警枚举、展示映射、分页与批量上限 | R:code:Shared Express Mailer System/frontend/src/components/StatusTag.vue | A:BAG_STATUS,ORDER_STATUS,ROLE_LABEL,ALERT_TYPE_META,PAGE_SIZES,BATCH_MAX_SIZE | S:状态码须与后端契约一致；颜色只引用CSS令牌，超时是标记而非订单状态
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/layouts/===
+AdminLayout.vue[EU8M]: F:按route scope区分站点/平台菜单并响应侧栏折叠、移动端底部导航和用户退出 | R:code:Shared Express Mailer System/frontend/src/router/index.js | A:STATION_MENUS,PLATFORM_MENUS,syncLayout,handleLogout | S:菜单显示不构成授权边界；访问控制由router守卫和后端接口共同执行
+UserLayout.vue[EU7M]: F:承载用户端H5页面、底部首页/订单/个人中心Tab、扫码主按钮和WebSocket状态 | R:code:Shared Express Mailer System/frontend/src/router/index.js | A:activeTab,goScan,showBack,wsConnected | S:移动端安全区与44px触控热区属于布局约束；实时断开不阻断业务
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/router/===
+index.js[EI9M]: F:定义用户/站点/平台路由和全局守卫，按token、强制改密及角色等级控制导航 | R:code:Shared Express Mailer System/frontend/src/stores/user.js | A:routes,beforeEach,afterEach,ROLE_LEVEL | S:客户端路由守卫只约束导航，实际角色和数据权限仍须由后端接口执行
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/stores/===
+user.js[MI9S]: F:以Pinia管理会话token、角色和站点信息，恢复用户资料并按到期时间静默续签 | R:code:Shared Express Mailer System/frontend/src/utils/request.js | A:applySession,scheduleRenew,bootstrap,changePassword,logout | S:token以内存为主并以sessionStorage兜底；改密清空会话，续签会影响旧jti并需与WebSocket重连协调
+websocket.js[MN9M]: F:管理WebSocket首帧JWT认证、主题订阅、心跳响应与退避重连 | R:code:Shared Express Mailer System/frontend/src/stores/user.js | A:connect,ensureConnected,subscribe,unsubscribe,disconnect | S:JWT放首帧而非URL；退避connect复用当前token，ensureConnected另有续签流程；断开清理订阅，页面在认证恢复后须重建订阅
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/styles/===
+element-override.css[CC8S]: F:将Element Plus颜色、文本、边框、填充、圆角、字号和阴影映射到SEMS令牌 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:--el-color-primary,.el-table,.el-button,.sems-num | S:必须覆盖Element亮阶避免默认色回流；此文件随tokens.css作为色值定义例外；样式引入顺序由main.js保证
+index.css[CC6T]: F:作为全局样式入口加载令牌与Element覆盖并定义基线、通用文字工具类和移动端显示规则 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:@import,.sems-page-title,.sems-mono,@media | S:页面样式留在scoped区；小屏表格须使用卡片布局而非横向滚动
+tokens.css[CC9S]: F:定义SEMS全站颜色、文字、字号、间距、圆角、阴影、状态色、图表色与布局令牌 | R:code:Shared Express Mailer System/frontend/src/styles/element-override.css | A:--sems-color, --sems-bag, --sems-order, --sems-space, --sems-sidebar-width | S:本文件是颜色等设计令牌唯一出处，页面不得写死色值；令牌变更须同步设计说明书10.5
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/utils/===
+batch.js[CU8T]: F:统一解析逐袋批量接口的total/success/failed/items信封并在格式异常时告警 | R:code:Shared Express Mailer System/frontend/src/components/BatchResultDialog.vue | A:extractBatch,emptyEnvelope,resolveCount | S:明细只认data.items，不兼容results/records/details或裸数组，避免掩盖契约漂移
+request.js[MN9M]: F:封装Axios请求，注入Authorization与幂等头、复用重试ID、解包统一响应并分流错误 | R:code:Shared Express Mailer System/frontend/src/api/order.js | A:requestWithRetry,redirectToLogin,handleBizError,get,post,download | S:匿名认证写接口显式跳过幂等头；5102/5103重试必须复用同一clientRequestId
+scanner.js[KU8M]: F:以摄像头持续解码袋码，优先BarcodeDetector并动态降级jsQR，支持单次扫码与资源释放 | R:code:Shared Express Mailer System/frontend/src/components/BagCodeInput.vue | A:createScanner,scanOnce,scanFromCamera,CameraScanner | S:stop必须取消帧循环、关闭媒体轨道并清空video.srcObject；无摄像头时提供中文手输提示
+validators.js[CS8S]: F:集中提供袋码/手机号/运单号/UUID正则、密码强度和Element表单规则 | R:code:Shared Express Mailer System/frontend/src/utils/request.js | A:BAG_CODE_REGEX,PHONE_REGEX,TRACKING_NO_REGEX,isStrongPassword,passwordRules | S:前端规则仅作体验提示，后端才是权威；正则须与com.sems.common.Constants逐字一致
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/views/common/===
+ChangePassword.vue[ES8M]: F:提交旧密码和新密码并展示强度，成功后提示重新登录 | R:code:Shared Express Mailer System/frontend/src/stores/user.js | A:handleSubmit,passwordStrength | S:改密会递增token_version并使当前凭证失效；成功后必须回登录页，前端密码规则不替代服务端校验
+Forbidden.vue[EU5T]: F:显示无权限说明并按登录态返回角色首页或登录页 | R:code:Shared Express Mailer System/frontend/src/stores/user.js | A:homePath,goHome | S:-
+Login.vue[EI8L]: F:完成手机号密码登录、按需图形验证码、错误提示和按角色/回跳地址导航 | R:code:Shared Express Mailer System/frontend/src/stores/user.js | A:readRedirect,refreshCaptcha,needsCaptcha,handleLogin | S:回跳地址拒绝//外部地址；验证码一次性失败后换图；账号锁定与验证码要求由后端返回
+NotFound.vue[EU4T]: F:呈现未匹配路由说明并提供返回角色首页或登录页入口 | R:code:Shared Express Mailer System/frontend/src/router/index.js | A:homePath,goHome | S:-
+Register.vue[EI7L]: F:以图形验证码、手机号、强密码、确认密码和昵称创建普通用户账号 | R:code:Shared Express Mailer System/frontend/src/stores/user.js | A:refreshCaptcha,handleRegister,passwordStrength | S:注册失败即刷新一次性验证码；输入校验只是体验层，账号创建由后端校验
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/views/platform/===
+Alerts.vue[AO8L]: F:按类型和时间分页浏览系统/业务告警，展示汇总并跳转对应订单、调拨、看板或审计处置页 | R:code:Shared Express Mailer System/frontend/src/api/stats.js | A:load,summaryValue,kpiItems,goHandle | S:缺少后端summary时顶部数量只统计当前页；告警跳转不等同于完成处置，数据仍由服务端判定
+AllocationManage.vue[EB9L]: F:平台管理全站调拨单，创建并锁定袋清单、查看明细进度和处置取消/剔除/在途遗失/异常终止 | R:code:Shared Express Mailer System/frontend/src/api/allocation.js | A:submitCreate,loadDetail,submitCancel,submitRemove,submitLost,submitTerminate | S:取消仅待出库、终止仅异常；遗失确认默认责任主体为源站；终止复用取消端点由后端按状态分流
+AuditLog.vue[EO9L]: F:按操作者/模块/动作/时间查询审计日志，展示脱敏参数并逐条受控查看完整IP | R:code:Shared Express Mailer System/frontend/src/api/stats.js | A:load,paramsText,maskIp,openIp,QUICK_ACTIONS | S:列表只展示ipMasked，完整IP必须调用逐条端点且查看本身被审计；关键动作筛选与脱敏语义不可绕过
+BagDetail.vue[EB9L]: F:展示全站袋资料、二维码和流转日志，并办理状态修正或遗失找回 | R:code:Shared Express Mailer System/frontend/src/components/BagTimeline.vue | A:load,loadQrcode,submitCorrect,submitRecovery | S:二维码blob/objectURL须在切换和卸载时释放；修正/找回由后端校验并留痕
+BagLedger.vue[EB9L]: F:平台管理员检索全站袋、建档/批量生成并下载二维码，执行状态修正或遗失找回 | R:code:Shared Express Mailer System/frontend/src/api/bag.js | A:buildQuery,submitCreate,submitBatch,submitCorrect,submitRecovery | S:批量生成整批原子且上限500；修正目标只允许IDLE/REPAIRING/LOST/SCRAPPED；修正需审计确认
+Dashboard.vue[AO9L]: F:聚合呈现平台KPI、告警位、订单趋势、库存分布和站点周转率ECharts图表 | R:code:Shared Express Mailer System/frontend/src/api/stats.js | A:loadAll,refreshAll,normalizeTrend,normalizeDistribution,normalizeTurnover,disposeCharts | S:统计公式以服务端口径为准，页面仅兼容字段并绘图；分布饼图最多三类；推送刷新需复订阅并释放图表资源
+LoginLog.vue[ES8M]: F:按结果/手机号掩码/时间分页查询登录日志并显示失败原因、IP和UA | R:code:Shared Express Mailer System/frontend/src/api/stats.js | A:buildParams,load,maskIp,openIp | S:当前完整IP对话框只读取行内ipFull/fullIp/ip字段，不调用受控逐条IP端点；隐私展示变更需核对后端列表出参与审计接口
+OrderManage.vue[EB9L]: F:按状态/站点/时间查询全量订单或超时订单，并二次确认遗失处置和责任用户 | R:code:Shared Express Mailer System/frontend/src/api/order.js | A:loadAll,loadTimeout,overdueText,submitLost | S:超时只作标记展示不改订单状态；遗失时限由后端判定且会写责任记录
+StationManage.vue[EB8L]: F:平台管理员分页维护站点和预警阈值，停用时可指定接收站并展示低库存站点 | R:code:Shared Express Mailer System/frontend/src/api/station.js | A:submitForm,submitDisable,enableStation,loadWarnings | S:停用前置条件由后端权威判定且失败后保留对话框；接收站排除自身和停用站
+UserManage.vue[EI9L]: F:平台分页检索创建账号并维护角色、站点绑定、启停和密码重置 | R:code:Shared Express Mailer System/frontend/src/api/user.js | A:submitCreate,submitRoles,submitStation,toggleStatus,handleResetPassword | S:敏感变更提升token_version，旧凭证按后端版本快照校验淘汰；站点管理员必须有站点；重置后强制改密
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/views/station/===
+Allocation.vue[EW8L]: F:列出本站作为源站或目标站的调拨单，按角色站点扫码出库或核收 | R:code:Shared Express Mailer System/frontend/src/api/allocation.js | A:load,canDispatch,canReceive,submitDrawer | S:站点范围由后端强制过滤；48小时仅前端提示、在途遗失裁决归平台端
+BagDetail.vue[EB8L]: F:按本站台账和流转日志展示袋详情/二维码，并提供未使用回收、维修和报废操作 | R:code:Shared Express Mailer System/frontend/src/components/BagTimeline.vue | A:load,loadQrcode,handleUnusedReturn,submitRepair,submitScrap | S:未使用回收仅对已分配袋显示且后端按订单路由；台账和日志依赖后端本站权限；报废二次确认并审计
+BagLedger.vue[ED8L]: F:查询本站袋台账、筛选状态并批量打印二维码标签，办理维修报废 | R:code:Shared Express Mailer System/frontend/src/api/bag.js | A:load,handlePrint,submitRepair,submitScrap | S:查询不传stationId依赖后端本站范围；编码筛选发送keyword，而后端BagQuery为bagCode，维护时须对齐；打印逐袋取PNG并释放objectURL，报废需二次确认
+Disinfection.vue[EB9L]: F:登记含消毒方式/时间/逐袋结果的新批次并分页筛选历史批次 | R:code:Shared Express Mailer System/frontend/src/api/bag.js | A:addBagCode,submitBatch,loadList,batchDetails | S:消毒批次上限200低于一般500；不合格必须有缺陷说明；逐袋判定result与处理成功success不可混为一谈
+InventoryCheck.vue[ED8L]: F:读取本站账面库存并录入实盘数、展示差异、分页查询盘点单和按原因作废 | R:code:Shared Express Mailer System/frontend/src/api/bag.js | A:loadStock,diffOf,submitCheck,loadList,openVoid | S:提交diffBags为空数组由后端生成袋级差异；盘点单不可删除且只能填写原因作废重盘
+RecycleConfirm.vue[EB9L]: F:扫码建立去重回收清单、逐袋标记曾寄出并提交回收确认与结果明细 | R:code:Shared Express Mailer System/frontend/src/api/station.js | A:addBag,loadBagStatus,handleSubmit,loadBin | S:状态查询只是尽力展示且失败不阻止提交；路径路由和袋状态变更由后端按订单决定
+RepairScrap.vue[EB8L]: F:提供单袋维修登记、维修结果提交和直接报废，最近操作记录保存在当前页面状态 | R:code:Shared Express Mailer System/frontend/src/api/bag.js | A:submitRepair,submitComplete,submitScrap,pushRecord | S:修复转待消毒、无法修复转报废；最近操作列表刷新即清空且不是审计记录；报废前二次确认并由后端留痕
+StockInOut.vue[EW7M]: F:扫码累加袋码并按必填备注提交实物出库，展示逐袋部分成功结果 | R:code:Shared Express Mailer System/frontend/src/api/bag.js | A:appendBag,handleStockOut,extractBatch | S:当前页面只实现stock-out标签和stockOut请求，路由标题中的入库能力不在此实现；操作状态以后端校验
+Workbench.vue[ED8L]: F:展示本站各状态库存、可用库存预警及回收箱待办并订阅库存/回收推送 | R:code:Shared Express Mailer System/frontend/src/api/station.js | A:loadStock,loadRecycle,evaluateWarning,handleMessage | S:站点管理员不调用平台专属预警列表；KPI_CARDS当前列出三项，不能按注释假定四项
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/views/user/===
+BagInfo.vue[EB6M]: F:按路由袋码展示用户可见袋信息、复制袋码、流转日志和可领用入口 | R:code:Shared Express Mailer System/frontend/src/components/BagTimeline.vue | A:load,loadTrace,copyBagCode,goBorrow | S:用户页不调用仅管理员可用的二维码端点；流转接口可能因权限返回拒绝并单独呈现
+Home.vue[EU6M]: F:展示用户在持袋数、附近站点库存和最近三条进行中订单并提供扫码入口 | R:code:Shared Express Mailer System/frontend/src/api/order.js | A:load,HELD_STATUSES,heldCount,ongoingOrders | S:在持数按三类订单分页total求和，权限额度与实际扣减以后端为准
+MyOrders.vue[EW8L]: F:分页筛选本人订单，支持待寄件撤回/寄件、使用中选站标记归还并监听订单推送 | R:code:Shared Express Mailer System/frontend/src/api/order.js | A:load,confirmCancel,submitReturn,subscribeOrderTopic | S:撤回不释放额度且袋仍由站点回收；标记归还不改变袋状态
+OrderDetail.vue[EW8L]: F:查询本人订单详情并以订单节点时间构造时间线，提供寄件/撤回/标记归还操作 | R:code:Shared Express Mailer System/frontend/src/components/BagTimeline.vue | A:load,timelineRecords,confirmCancel,submitReturn | S:此时间线由订单时间戳合成，不是袋级完整trace；非本人订单由后端2002拒绝
+Profile.vue[EI7M]: F:展示脱敏账号/角色/绑定站点，编辑昵称、修改密码/退出并查看或重连WebSocket | R:code:Shared Express Mailer System/frontend/src/stores/user.js | A:loadProfile,saveNickname,confirmLogout,reconnect | S:手机号只读且依赖后端脱敏；改密会使全部旧凭证失效
+ScanBorrow.vue[EB9L]: F:支持扫码/手输查袋、二次确认申领并定义成功/失败结果卡视图 | R:code:Shared Express Mailer System/frontend/src/api/order.js | A:handleScanInput,queryBag,confirmBorrow,retryBorrow | S:库存扣减、在持额度与重复申领由后端原子校验；当前成功/失败处理未设置stage=result，结果卡模板不会自动出现
+ShippingForm.vue[EB7M]: F:仅为待寄件订单提交快递公司、运单号和收件人手机号并回显服务端字段错误 | R:code:Shared Express Mailer System/frontend/src/api/order.js | A:load,applyServerFieldErrors,onTrackingInput,submit | S:收件人手机号由后端脱敏并哈希保存，前端不存明文处理结果；订单状态冲突以服务端4105为准
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/scripts/===
+check-env.cmd[XV4T]: F:打印本机Java、Node、Git和Docker版本帮助环境自检 | R:code:AGENTS.md | A:环境自检命令 | S:Java使用JAVA_HOME，不依赖PATH首项
+check-md-tables.py[XQ4T]: F:扫描Markdown表格并报告列数与表头不一致的行 | R:- | A:main,check,ncols,退出码0或1 | S:按原始竖线切分，转义竖线同样计列
+db-down.cmd[OR4T]: F:停止本地Compose中间件并保留数据卷 | R:code:Shared Express Mailer System/deploy/docker/docker-compose.yml | A:docker compose down | S:-
+db-reset.cmd[OR6T]: F:确认后删除本地中间件数据卷并重新初始化容器 | R:code:Shared Express Mailer System/deploy/docker/docker-compose.yml | A:yes确认,down -v,up -d | S:yes比较忽略大小写；删除全部MySQL与Redis本地数据，不是普通重启
+db-up.cmd[OR6T]: F:检查Docker与端口占用后启动本地MySQL和Redis | R:code:Shared Express Mailer System/deploy/docker/docker-compose.yml | A:docker info,端口检查,up -d,ps | S:已有sems容器运行时允许端口占用；从.env读取自定义端口，但不等待健康状态
+remote-access.mjs[ON8S]: F:通过临时HTTPS隧道提供口令保护的前端静态文件及API、WebSocket转发 | R:code:Shared Express Mailer System/scripts/远程手机访问说明.md | A:127.0.0.1:5180,/api/v1/,/api/health,/ws,SEMS_CLOUDFLARED | S:启动四小时后强制关闭；外层Basic与Cookie不转入后端，JWT仍需校验；无SPA路径回退，未知静态路径返回404
+远程手机访问说明.md[SN5T]: F:说明手机Safari使用临时Cloudflare入口及本机启动关闭步骤 | R:code:Shared Express Mailer System/scripts/remote-access.mjs | A:构建前端,设置SEMS_CLOUDFLARED,启动网关 | S:每次启动地址口令更新；电脑和后端须持续在线
+db-navicat-compat.ps1[OI7T]: F:从运行中本地容器配置读取凭证并切换root与应用账号的MySQL认证插件 | R:code:Shared Express Mailer System/deploy/docker/docker-compose.yml | A:AuthenticationPlugin,ConvertTo-SqlLiteral | S:保留权限与业务数据，但按容器环境值重新设置账号口令；实际口令须与容器配置一致；反向切换不自动修改服务端默认插件
+
+===E:/AI/DSH/毕设-共享快递袋系统/文档/任务书/===
+_extracted.txt[SG9T]: F:提供权威任务书文本提取，定义范围、固定技术栈、五份文档交付及进度 | R:code:AGENTS.md | A:毕业设计要求,七项工作内容,进度安排 | S:任务书使用早期生命周期描述，当前四态实现按后续设计与AGENTS约定；二进制原件不得随代码口径改写
+
+===E:/AI/DSH/毕设-共享快递袋系统/文档/归档/===
+全量合规审计意见_2026-10-06.md[SQ4M]: F:归档需求、设计、数据库与脚手架审计的问题及可信度 | R:code:文档/归档/全量合规审计意见_处理记录_2026-10-06.md | A:P0/P1/P2发现,覆盖范围,处置建议 | S:归档结论针对修复前版本
+全量合规审计意见_处理记录_2026-10-06.md[SQ4S]: F:归档跨文档合规问题的处置落点、取舍和复核记录 | R:code:文档/归档/全量合规审计意见_2026-10-06.md | A:处置表,统一口径,复核结论 | S:通过闸门指当时文档基线
+四态模型回归测试记录_2026-10-07.md[TQ4T]: F:归档四态迁移、袋循环、幂等和非法流转的阶段验证 | R:code:文档/测试报告.md | A:模型迁移,接口检查,测试数据边界 | S:两请求重复领取检查不是性能压测
+系统设计说明书_审核意见.md[SQ4M]: F:归档设计V1.0的状态机、归还、库存与权限审核意见 | R:code:文档/归档/系统设计说明书_审核意见处理记录.md | A:五项P0,后续建议,未采纳结论 | S:引文行号在后续修订后会漂移
+系统设计说明书_审核意见处理记录.md[SQ4T]: F:归档设计从V1.0至V1.1审核项处理与遗留事项 | R:code:文档/归档/系统设计说明书_审核意见.md | A:P0/P1/P2处置,遗留事项 | S:-
+编码实现合规审计意见_2026-10-06.md[SQ4L]: F:归档v0.1.0实现与设计偏差及完整性缺口的对抗审计 | R:code:文档/归档/编码实现合规审计意见_处理记录_2026-10-06.md | A:F01至F55,G01至G06,处置摘要 | S:过程稿不代表当前缺陷状态
+编码实现合规审计意见_处理记录_2026-10-06.md[SQ4M]: F:归档实现审计修复、未采纳理由、验证和各组原始回执 | R:code:文档/归档/编码实现合规审计意见_2026-10-06.md | A:修复主题,验证证据,取舍说明 | S:当时构建结果须与当前版本区分
+
+===E:/AI/DSH/毕设-共享快递袋系统/文档/===
+数据库设计说明书.md[SD9L]: F:展开21表字段、索引、完整性、Redis键空间与敏感数据授权设计 | R:code:Shared Express Mailer System/deploy/sql/V1__init_schema.sql | A:表结构,键空间,初始化数据,最小授权 | S:无逻辑删除、无物理外键；ref_check_no仅兼容旧日志；收件人号码只存掩码与HMAC；审计表最小授权是设计要求，须核对部署实际权限
+测试报告.md[TQ7T]: F:记录v0.1.1四态、盘点、调拨竞争、接口与覆盖率阶段验证 | R:code:文档/测试附件/v0.1.1/接口与并发回归.json,code:文档/测试附件/v0.1.1/覆盖率摘要.json | A:294单元测试,48接口检查,5轮竞争,未覆盖事项 | S:2026-10-07结果是版本快照；5轮双请求竞争验证正确性，不能当作正式并发性能压测
+系统设计说明书.md[SG9L]: F:规定SEMS架构、状态机、REST契约、权限、库存补偿、安全与部署设计 | R:code:文档/数据库设计说明书.md | A:版本基线,接口与错误码,时限口径,Redis键,视觉规范 | S:袋状态是权威且订单联动；标记归还不改袋状态；DB为库存权威；盘点差异需人工核验；写事务幂等结果仅提交后缓存
+需求规格说明书.md[SB9L]: F:定义六模块需求、角色用例、业务规则、非功能验收及任务追溯 | R:code:文档/系统设计说明书.md | A:FR-M1至M6,BR规则,NFR,验收矩阵 | S:撤回和超时取消不释放在持袋额度；持有数按袋状态而非未完成订单数；单机部署且不对接物流支付，责任记录不自动执行资金赔付
+
+===E:/AI/DSH/毕设-共享快递袋系统/文档/测试附件/v0.1.1/===
+接口与并发回归.json[TQ5T]: F:保存48项接口检查、测试袋与5轮调拨和修正竞争结果 | R:code:文档/测试报告.md | A:checks,fixtures,races,balancedCheckNo | S:各轮调拨成功且修正返回4110，是历史回归结果
+覆盖率摘要.json[TQ5T]: F:保存v0.1.1的JaCoCo各类覆盖计数和测试数 | R:code:文档/测试报告.md | A:JaCoCo,测试数量,状态机分支覆盖率 | S:既有排除口径未扩大；数据为2026-10-07快照

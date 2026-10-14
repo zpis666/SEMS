@@ -1,0 +1,298 @@
+{
+  "version": "database-evidence-baseline/v1",
+  "sources": [
+    {
+      "source_id": "sems-local",
+      "engine": "mysql",
+      "database": "sems",
+      "namespaces": [
+        "sems"
+      ],
+      "include_namespaces": [],
+      "exclude_namespaces": [],
+      "include_tables": [],
+      "exclude_tables": [],
+      "case_semantics": {
+        "identifier_case": "server_lower_case_table_names",
+        "lower_case_table_names": 0
+      },
+      "evidence_version": "database-evidence/v1",
+      "source_snapshot_sha256": "e60dff8767511abc59e5c64bb01b0561bc2af090c161de449c5c760d099019ab",
+      "tables": [
+        {
+          "object_ref": "database://sems-local/sems/allocation_detail",
+          "table_evidence_sha256": "6b53764608a6e0d7550b7598ff3d7008d9fb5f218e4ac97890ab08829f849d13",
+          "component_hashes": {
+            "columns": "1b16f3e654a74e35648a6ca1d6146dec6484491947c0a399d753ebb00fc18e04",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "f3558ce3797606da2e0cc7d814efa51c9f18fec842298d56aab855073a8cbc40",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "21497c4f19a4252aa82fd9d9f21eb1dfa53296ab46bdd5d0d1f516696338ef20",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/allocation_order",
+          "table_evidence_sha256": "1fbdc6a99d7d80f56e313e94fc40cec3cbec363312caa33a4ad6d8dd094914eb",
+          "component_hashes": {
+            "columns": "14493bc8ffb445b6be491759cab6792a3506c2048bb9f94662e5e73e25f9eb30",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "30521c6b9164454534743b64129f573556a9b26d25b29ce042c864fabe62a1b6",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "86579e70cf1ca98f39d16251ec91ed0ae45ddfc77d4f8910d335dbcf95049af1",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/audit_log",
+          "table_evidence_sha256": "e2a5eae5651ca0ca6d58a2f460c48e4920d444ec9dcf876670c34a78be4e56fa",
+          "component_hashes": {
+            "columns": "00c259041e8aaf1e7eab8e00a286f020c19e34c70edb1f6a36faefc68abc163e",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "25cae3c0831830b9adc4cb0d9a5b095d21b1811f6d2d4b824ed193996ba99e73",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/bag",
+          "table_evidence_sha256": "a8645501f27bfecc5aed5e556f3fe80ccf4837fa2b125146f719d9bec50498e2",
+          "component_hashes": {
+            "columns": "5a15aec3c61cfc3963fc2ea6d7e30c2e69330e6e88120ee5923b6561e08a6a60",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "f529cf745c30807ea78b8a3d08ecb27bdd18b0542909f9876b8cea20023abc45",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "f5f5bee637850a443ef52a86f749660ddfb104252c8a7e9d561aea4d9472d2ae",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/bag_order",
+          "table_evidence_sha256": "7d6ed08e23775b3b965b68ec29afddc04fea849742c80cd669c94dd69fe16fb7",
+          "component_hashes": {
+            "columns": "01ff0f1dd59482c96bcbf254f9025e3620131cc17b2565626d08faa946c67243",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "7c7a7944e226c6db22e6a02af573a17e02febac3ea313c747afb5d64b7aeb320",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "9a95e26cffc6f6b7bc4db6defd803dc35127ac2c1d6c4c218c826936ea8e70bd",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/bag_transfer_log",
+          "table_evidence_sha256": "bee8b84322df55f74353b4f155cf54c33d3c0520ba3417fe504fc2eac6524d44",
+          "component_hashes": {
+            "columns": "1a428df4919d44f58c49cf9dcd64145ec0d2c492849bbb76d25c2c838bc0f2f1",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "761611b19aa3dd4a4c4eeae6254be4bfed6099b929db7a4f8e0d2f3c662d6000",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/disinfect_detail",
+          "table_evidence_sha256": "89e126ad67de37eca37cd3a6c2eef10391aa70782ae7a465b3559037351794a2",
+          "component_hashes": {
+            "columns": "e40e107de9c4c528fdb9b731ef4617bbee9d8920804780fb3fd21b625191bf87",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "ea113da3c99120bb658e0be2f72731d9e9d0fe1f6f7224f9efaafa163f00ec74",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "7ee3982a8c42c99ca39a2a7fc442a2f2e9ba22e11b252032851da0f35cbed642",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/disinfect_record",
+          "table_evidence_sha256": "91757529937e5fa51f02fefa07dd4473be960fa20ab488bf77ccb7976c0d3902",
+          "component_hashes": {
+            "columns": "797cca987d39b93161bde94b1378b00ecc6dc32624bc1feed62b9b0e6e889b47",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "20cf9d99905acc9a2e02e9679400a8e48d0182b939697f5fa7ee753e62a0e03f",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "511e88257acda4ac0132ca968d8375ae507ba8e337a2e52e322853712cab173c",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/inventory_check",
+          "table_evidence_sha256": "87806898157ba2f436dca734a7fb496124cf10bd8e0757cb3a215aa87c8e0034",
+          "component_hashes": {
+            "columns": "d0a48caaeea0a89ad8e2da68df14e57761e76180838bbe5c0e4a9fdc39119538",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "ce7ced41a3a34850a53e8b1915d4d373db7397a488d18cb8538bdd18c8b035bb",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "8c2c50eddc3db63e8f970302d00e2d882119a508a0106aa69a1a2003a4c5b166",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/liability_record",
+          "table_evidence_sha256": "a55f630432cafb9d3edfe0e8cabff469410c0bac4581c7e458b85def92782d56",
+          "component_hashes": {
+            "columns": "a39f81fcab7715b1e012bdbca5d216e74966f418c2c19986c44bac10ccfb11a3",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "843b7a2ae37ef025f972c325c66b23f9de05285de6889b4c4d190f8365cfe60c",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/login_log",
+          "table_evidence_sha256": "605bff1f161d692b8cfeab0c8e8c37ff3bece1274e26aa35859465f4d6d0d430",
+          "component_hashes": {
+            "columns": "6512e6f685e3c2a541abbfd9c1b6bf9a1950345ec8636e0c9fd109cad98e762b",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "a9d8f3a0f037d12ff075915a4c2f1eb06ec9bb97c8077f286ecb21407f634d5e",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/repair_record",
+          "table_evidence_sha256": "18a04cac8f321880f7393970c7e6b023a088a6b35300a35e6cd7b6875fee818d",
+          "component_hashes": {
+            "columns": "862cbdecdbbe98af50b648389dea2fe6b971e8d150091fb31cd72c462654323a",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "ea596783accfa40bd3ea391f1a01d065ec8d2d7b850743d213ddd0fd28cb1866",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/scrap_record",
+          "table_evidence_sha256": "7d62b047d52c6588b5e60997012e3507899abca4155d272f056bc8e7228423e0",
+          "component_hashes": {
+            "columns": "f370e0fc3acbd5e1559de4e6f4b8a9c8b7a17f636ba6d090381b48f5885e29dd",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "e8b614a7fca715b90a234220c78f59265e03d728f0761c1c9dfcf20d708ffaee",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/station",
+          "table_evidence_sha256": "ddc95976a004c054f216929b9e3b978d3e5a331313e27c3f0456346714e39958",
+          "component_hashes": {
+            "columns": "ff96cfef2f44fb6b05a80e40c479b87f80d01edf3dbdab1431e128f0c1f55a7c",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "6059d82f44d452c212aa0f2947994dc5029d8a607db577654edfff30354cd291",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "f49ad70c83f20e446557877290c14b30749dc2cd1d7e9d0bbd86f15352c957fa",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/stats_daily",
+          "table_evidence_sha256": "7f806901c89d656c74fa6efff38938fc86512d0d66c2d3b865b7309d15bbeb6d",
+          "component_hashes": {
+            "columns": "dc4351df60a0b5c11f666fca2d44b693f621109421ad836efa41f00809ca2fa8",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "5d829ed5b0d218b5ecc41c3b5584435ff49b8fe27293862ef6e787fe629be686",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "b59a2037a0e721b642f811232aaa0e3b9a0353043634040c94c2a7e48417be08",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/stock_compensation_log",
+          "table_evidence_sha256": "f3ca09f2934449cf3a41f499c8a0b0ab5e9f7c4bc043b8eb1ee7b2c682fa0ab3",
+          "component_hashes": {
+            "columns": "fb2384f3a826929f2e3666897987abfd8ef9ce968157090b273b2cc066324234",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "8ec154d8004a6c64aa4d817427052a45fbf5ffe505b01af4dee58175cdb421c1",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "c1e6cc7500f2d148e4d4d0280b6124d62efadf84552d48c9251357308bfea258",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/stock_record",
+          "table_evidence_sha256": "fc8e85c144eafa73cc6ce3c53b108b01f59b124d3dcd0c59255be61b741afc5c",
+          "component_hashes": {
+            "columns": "e4b012df7dfc08c48bd275e5dc6c64b47567b60da3db67ff0f114964bdd1c763",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "53ea6f28bb6bf704b2fd42929a2811a9caff81c2d2a6a66ac9e11224ec373d20",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/sys_metric",
+          "table_evidence_sha256": "d7bfe6632244448eae4aac0065dae1b1b9ca3324f2efa2ab2966e8b8ad99ed2f",
+          "component_hashes": {
+            "columns": "d3df075152d0c5b2e21dc4d9743f042f3e0a85e502a92d80df7aa32d818d472f",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "b6c735f2690fced52feb2ce8e1ef13e82f0864287d273358d218898126dd62d4",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "89a17bda185633a71bf89e311da44c23afed120cb05a093bd06af9dfdb81599d",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/sys_role",
+          "table_evidence_sha256": "461437c8288b025bab2bf799a35754514c9bde1d737c3ac7677bf01988ad1c19",
+          "component_hashes": {
+            "columns": "36920bb3a92cc3a6a3070fd4254df489f67d86e8b4adfb3edbcc1cbb44d02d23",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "2f890b48b19f6d1a5740966c6642c4b9752bb42c12bd41e0e286d084fc517cfd",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "009bb02a4fe0a6cf8a19e8353a8d139b3b4ffc98813ebfb0e425187ebf8afef1",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/sys_user",
+          "table_evidence_sha256": "18544170ee5716ba520202ed46c09351652dd45e85dbc19b6dc22e7e13acc873",
+          "component_hashes": {
+            "columns": "aaa6b6dee0e2ee5dd097b81e83f91bf08b8a1448eb0d91c66913239d90788549",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "f52f9c5bf13dedf61349d3090b6fc7e219857db6fb86b28f36cd0c88d8f797d7",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "30e9aaa0772dbcd268b0db50f18c2d4b224a7b32aa39ae877a411f4f3bab685c",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        },
+        {
+          "object_ref": "database://sems-local/sems/sys_user_role",
+          "table_evidence_sha256": "2ebf3281d4fb1787e463691420294927243ae9bee8475761795ab9f4693cc229",
+          "component_hashes": {
+            "columns": "7892ee05884909a2e91c8eca0989da6059c3cd2b211eb502362060ba564d0263",
+            "primary_key": "a407ef26b2af65b8b6886f127b983f29bd30b8c145a372e68592e1b5211c64eb",
+            "unique_constraints": "aaf88915a2e4f534c6684cfc3117382a9133a4bc1150bd1cf5ffd14e280f4598",
+            "foreign_keys": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "checks": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "indexes": "7991b4aa3b17b0f830be86a23fc777d33fdcf98985547bf35822b6351a13cc49",
+            "partition": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed"
+          }
+        }
+      ]
+    }
+  ]
+}

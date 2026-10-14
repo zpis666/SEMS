@@ -107,6 +107,31 @@ scripts\check-env.cmd  打印本机 JDK / Node / Git / Docker 版本，用于换
 
 ## 常见问题排查
 
+### Navicat 12.0.11 连接本地 MySQL
+
+本地 Compose 使用 `mysql_native_password`，兼容 Navicat 12.0.11。
+MySQL 仍为 8.0，已有数据卷不会重建。已有账号不会因修改启动参数自动切换认证，
+在工程目录用 PowerShell 7 执行一次：
+
+```powershell
+pwsh -File .\scripts\db-navicat-compat.ps1
+docker compose -f .\deploy\docker\docker-compose.yml up -d --no-deps mysql
+```
+
+脚本从运行中容器读取本地配置，将 `root` 和 `MYSQL_USER` 的现有账号切换为兼容认证，
+保留容器配置中的口令及原有权限。若曾单独修改数据库账号口令，应先同步本地配置；
+容器配置与实际口令不一致时不要执行此脚本。
+
+Navicat 连接设置：主机 `127.0.0.1`、端口 `3306`（自定义端口以 `.env` 为准），
+用户名 `sems`、默认本地口令 `sems_dev_pwd`、数据库 `sems`。
+需要管理数据库账号时可使用 `root`，默认本地口令 `root_dev_pwd`。
+这些是数据库账号，与 Web 页面登录账号不同。
+
+此兼容项仅用于本地开发，生产环境继续使用 `caching_sha2_password`。
+恢复时先运行 `pwsh -File .\scripts\db-navicat-compat.ps1 -AuthenticationPlugin caching_sha2_password`，
+再移除 Compose 的 `--default-authentication-plugin=mysql_native_password` 并重新启动 MySQL 容器。
+不要为此运行 `db-reset.cmd`，它会删除数据。
+
 | 现象 | 处理办法 |
 | --- | --- |
 | `db-up.cmd` 提示端口被占用（3306/6379） | 端口可能被其它程序占用（本机常见：phpstudy、其它 MySQL/Redis 实例）：先停止占用程序，或修改 `deploy/docker/.env` 中的 `MYSQL_PORT` / `REDIS_PORT` 为其它空闲端口后重试（若尚无 .env，请先从 .env.example 复制为 .env） |

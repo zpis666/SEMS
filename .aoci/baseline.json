@@ -1,0 +1,2608 @@
+{
+  "version": 1,
+  "created_at": "2026-10-08T08:11:32Z",
+  "updated_at": "2026-10-08T13:55:53Z",
+  "files": {
+    ".editorconfig": {
+      "role": "index",
+      "sha256": "64dbee351f139a9a448486622b669a9ffc5828adb322db088e1a2d95cb12a63a",
+      "size": 334,
+      "normalized_sha256": "64dbee351f139a9a448486622b669a9ffc5828adb322db088e1a2d95cb12a63a"
+    },
+    ".gitattributes": {
+      "role": "index",
+      "sha256": "252e1245d1d56e1c64bb7973022600595cfbf7897753a4c752ac0d4a9bdc5758",
+      "size": 1071,
+      "normalized_sha256": "252e1245d1d56e1c64bb7973022600595cfbf7897753a4c752ac0d4a9bdc5758"
+    },
+    ".gitignore": {
+      "role": "index",
+      "sha256": "2a51a684b8842926b4a256e7dc0e1d67dcee4441e1868894b0f5ddee052ca2eb",
+      "size": 832,
+      "normalized_sha256": "2a51a684b8842926b4a256e7dc0e1d67dcee4441e1868894b0f5ddee052ca2eb"
+    },
+    ".zcodeignore": {
+      "role": "index",
+      "sha256": "3426215d05709084139224c813f4ce85c368786902e6ca9b1ac2663f6d7b759e",
+      "size": 942,
+      "normalized_sha256": "3426215d05709084139224c813f4ce85c368786902e6ca9b1ac2663f6d7b759e"
+    },
+    "AGENTS.md": {
+      "role": "index",
+      "sha256": "12c3ac557dc25d0844d412332f620f37d40484939b1e1e8893bb6d4008797e54",
+      "size": 21833,
+      "normalized_sha256": "12c3ac557dc25d0844d412332f620f37d40484939b1e1e8893bb6d4008797e54"
+    },
+    "Shared Express Mailer System/README.md": {
+      "role": "index",
+      "sha256": "9e1654a7c09378dccfa9e39e460b97136fbcb0789cb3e03dd680fcf6cc0767eb",
+      "size": 9616,
+      "normalized_sha256": "eaabcf87162eaf26db8fd7b8aa20cc27f94b76461067ec2163c38da53990d84e"
+    },
+    "Shared Express Mailer System/backend/.gitignore": {
+      "role": "index",
+      "sha256": "a0383690e56ebfdb42e8ab37084528512567e513dce4caa15f39bcde65ff8894",
+      "size": 471,
+      "normalized_sha256": "a0383690e56ebfdb42e8ab37084528512567e513dce4caa15f39bcde65ff8894"
+    },
+    "Shared Express Mailer System/backend/.mvn/wrapper/maven-wrapper.properties": {
+      "role": "index",
+      "sha256": "d1c1f7fbb66370f3fc74c3b3a24d9e12565b360dedfc10144f2c35c66e006097",
+      "size": 906,
+      "normalized_sha256": "d1c1f7fbb66370f3fc74c3b3a24d9e12565b360dedfc10144f2c35c66e006097"
+    },
+    "Shared Express Mailer System/backend/README.md": {
+      "role": "index",
+      "sha256": "539402f4e4516bf79df61bd2b52b79fcbafad7728bd017e62635f2f474374d18",
+      "size": 8780,
+      "normalized_sha256": "539402f4e4516bf79df61bd2b52b79fcbafad7728bd017e62635f2f474374d18"
+    },
+    "Shared Express Mailer System/backend/mvnw": {
+      "role": "index",
+      "sha256": "cae96cef89ebea3531221f4ae17c23cf8edf67d00eae8306d4186ae1bbed4d02",
+      "size": 11790,
+      "normalized_sha256": "cae96cef89ebea3531221f4ae17c23cf8edf67d00eae8306d4186ae1bbed4d02"
+    },
+    "Shared Express Mailer System/backend/mvnw.cmd": {
+      "role": "index",
+      "sha256": "46eedb8419bd14fe70d5bb2916d7b6f51806e51b39d5b76a42610384ca929c1c",
+      "size": 8481,
+      "normalized_sha256": "4a361e1374a3e5ad6d03e18e9adc0cf181ac5058ac6203b76f0ba3b456b56481"
+    },
+    "Shared Express Mailer System/backend/pom.xml": {
+      "role": "index",
+      "sha256": "6c3e7789a79dde2ed6aefa14963411f881370c1cc24bf3a5a64b78a01b0d61d1",
+      "size": 15646,
+      "normalized_sha256": "6c3e7789a79dde2ed6aefa14963411f881370c1cc24bf3a5a64b78a01b0d61d1"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/SemsApplication.java": {
+      "role": "index",
+      "sha256": "5053161871e1c120270f75ec429c0d92f9697135f89a614a3dd44697f8fff37a",
+      "size": 1254,
+      "normalized_sha256": "5053161871e1c120270f75ec429c0d92f9697135f89a614a3dd44697f8fff37a"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/aspect/AuditAspect.java": {
+      "role": "index",
+      "sha256": "10816b6fbfecacbade170628e2a44a043382c349d9c51c89e74e5a362cbf2d47",
+      "size": 13246,
+      "normalized_sha256": "10816b6fbfecacbade170628e2a44a043382c349d9c51c89e74e5a362cbf2d47"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/aspect/AuditLog.java": {
+      "role": "index",
+      "sha256": "593ddedd701298e30bb940ee5b043376cfc89cf9c9b47f9e9fc488ea385a27ff",
+      "size": 1347,
+      "normalized_sha256": "593ddedd701298e30bb940ee5b043376cfc89cf9c9b47f9e9fc488ea385a27ff"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/aspect/package-info.java": {
+      "role": "index",
+      "sha256": "131efdd2660aed013eeaaf0fc210b3b09de14bda32b819ac234251a19c0f2b34",
+      "size": 114,
+      "normalized_sha256": "131efdd2660aed013eeaaf0fc210b3b09de14bda32b819ac234251a19c0f2b34"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/common/BatchResult.java": {
+      "role": "index",
+      "sha256": "90513fc9926eed2efa96d10ba62f51dc0a4277f35aebca555c956a9251844ba8",
+      "size": 3499,
+      "normalized_sha256": "90513fc9926eed2efa96d10ba62f51dc0a4277f35aebca555c956a9251844ba8"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/common/BizException.java": {
+      "role": "index",
+      "sha256": "568c676eddcd8bbecccd23705b9fb37f5d75a31322bc29bdd1f4c40ae6975d3c",
+      "size": 1336,
+      "normalized_sha256": "568c676eddcd8bbecccd23705b9fb37f5d75a31322bc29bdd1f4c40ae6975d3c"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/common/Constants.java": {
+      "role": "index",
+      "sha256": "4792b8104d827ce924e9f35ebcc44b34c3f61cdda01dbc4e1bca0ea29c034561",
+      "size": 3274,
+      "normalized_sha256": "4792b8104d827ce924e9f35ebcc44b34c3f61cdda01dbc4e1bca0ea29c034561"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/common/ErrorCode.java": {
+      "role": "index",
+      "sha256": "31b4977d22559898317c6777c104a2e3cff9adaeaaf16a138840d0d2adbbd47b",
+      "size": 4638,
+      "normalized_sha256": "31b4977d22559898317c6777c104a2e3cff9adaeaaf16a138840d0d2adbbd47b"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/common/GlobalExceptionHandler.java": {
+      "role": "index",
+      "sha256": "082b0cff59a96b08825da2598801d277694e515ee80f7b20a43dcc94c4bc7553",
+      "size": 13206,
+      "normalized_sha256": "082b0cff59a96b08825da2598801d277694e515ee80f7b20a43dcc94c4bc7553"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/common/HealthController.java": {
+      "role": "index",
+      "sha256": "beaa3fc5b084987bd9ead34fff95e95a955e35cd829c72e6f32c46b52d0531aa",
+      "size": 1013,
+      "normalized_sha256": "beaa3fc5b084987bd9ead34fff95e95a955e35cd829c72e6f32c46b52d0531aa"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/common/PageResult.java": {
+      "role": "index",
+      "sha256": "bde4ef36342ce58723292c5f1d456e68520f7177be373b559a4afd71c4792da3",
+      "size": 1219,
+      "normalized_sha256": "bde4ef36342ce58723292c5f1d456e68520f7177be373b559a4afd71c4792da3"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/common/Result.java": {
+      "role": "index",
+      "sha256": "5ff647d647b0d70fe05a2b54e361e5da7242b481a6d4869d0534118d434b3628",
+      "size": 2110,
+      "normalized_sha256": "5ff647d647b0d70fe05a2b54e361e5da7242b481a6d4869d0534118d434b3628"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/common/SemsVersion.java": {
+      "role": "index",
+      "sha256": "bd2e4c57c13a2cf933b1cec8294958eba966cb07e9e6119916ae8bfd79e068b8",
+      "size": 647,
+      "normalized_sha256": "bd2e4c57c13a2cf933b1cec8294958eba966cb07e9e6119916ae8bfd79e068b8"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/common/event/AuditEvent.java": {
+      "role": "index",
+      "sha256": "cb6621f2dd2ea825f1fef7119610324d8cb44df518afa84794e97b4938881d7b",
+      "size": 4303,
+      "normalized_sha256": "cb6621f2dd2ea825f1fef7119610324d8cb44df518afa84794e97b4938881d7b"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/common/package-info.java": {
+      "role": "index",
+      "sha256": "c7484c3205ed57c465873339aaded692015feed88c9e9594efe89aecbd2c16c5",
+      "size": 114,
+      "normalized_sha256": "c7484c3205ed57c465873339aaded692015feed88c9e9594efe89aecbd2c16c5"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/common/util/BagCodeUtils.java": {
+      "role": "index",
+      "sha256": "eec4c7ba08769db50faf59f987f02379a868e7b93589f150f3e7a0283da06310",
+      "size": 6248,
+      "normalized_sha256": "eec4c7ba08769db50faf59f987f02379a868e7b93589f150f3e7a0283da06310"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/common/util/BizNoUtils.java": {
+      "role": "index",
+      "sha256": "19c51c98c76e2be29e0cebc26c4479496b016263e1062cbde8c0ba807eca2b48",
+      "size": 4981,
+      "normalized_sha256": "19c51c98c76e2be29e0cebc26c4479496b016263e1062cbde8c0ba807eca2b48"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/common/util/JsonUtils.java": {
+      "role": "index",
+      "sha256": "27aa3fc2437f2628b4246dcd9510d5971c78ad9fb1639709cfdcf17fa335094d",
+      "size": 3829,
+      "normalized_sha256": "27aa3fc2437f2628b4246dcd9510d5971c78ad9fb1639709cfdcf17fa335094d"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/common/util/MaskUtils.java": {
+      "role": "index",
+      "sha256": "9648eff93a230936487aa1eaaa154a23025e723adf0599fa202c175356c8e1c6",
+      "size": 6666,
+      "normalized_sha256": "9648eff93a230936487aa1eaaa154a23025e723adf0599fa202c175356c8e1c6"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/config/AsyncConfig.java": {
+      "role": "index",
+      "sha256": "c2137ef38524314ab8ced1ffc9e20f8890853f58a68f97acd27593031b6e8d07",
+      "size": 3639,
+      "normalized_sha256": "c2137ef38524314ab8ced1ffc9e20f8890853f58a68f97acd27593031b6e8d07"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/config/MybatisPlusConfig.java": {
+      "role": "index",
+      "sha256": "7c0039302d7b92e910ab4d681c16b034af1d9a28f5a90d1931adc541ab427642",
+      "size": 1417,
+      "normalized_sha256": "7c0039302d7b92e910ab4d681c16b034af1d9a28f5a90d1931adc541ab427642"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/config/OpenApiConfig.java": {
+      "role": "index",
+      "sha256": "0ff64e60ed4403885179bb1cf0d09a011b2ca28459741157abcf898e65e1e948",
+      "size": 2575,
+      "normalized_sha256": "0ff64e60ed4403885179bb1cf0d09a011b2ca28459741157abcf898e65e1e948"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/config/PasswordEncoderConfig.java": {
+      "role": "index",
+      "sha256": "b12dc80befa4a0c18add8ec48380d704e525095522bea9a2f158b4f9effa7ed2",
+      "size": 1521,
+      "normalized_sha256": "b12dc80befa4a0c18add8ec48380d704e525095522bea9a2f158b4f9effa7ed2"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/config/RedisConfig.java": {
+      "role": "index",
+      "sha256": "8b5aa3253412173e9301cc7dbf833a28b0db5426e99b6cfdea092cdc7079f36a",
+      "size": 1770,
+      "normalized_sha256": "8b5aa3253412173e9301cc7dbf833a28b0db5426e99b6cfdea092cdc7079f36a"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/config/SchedulingConfig.java": {
+      "role": "index",
+      "sha256": "90666ce9db957da5d7193dc4b5524782fbe2ab9ff9da0fe1ff8af891434d0f52",
+      "size": 3864,
+      "normalized_sha256": "90666ce9db957da5d7193dc4b5524782fbe2ab9ff9da0fe1ff8af891434d0f52"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/config/SemsProperties.java": {
+      "role": "index",
+      "sha256": "6daa44ff9083a010fca8000d1803244483e180e78a1258bdbc9c522594f79290",
+      "size": 6478,
+      "normalized_sha256": "6daa44ff9083a010fca8000d1803244483e180e78a1258bdbc9c522594f79290"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/config/WebMvcConfig.java": {
+      "role": "index",
+      "sha256": "98095c7085e140c05ac6fe88325d7625b4416fccf087ec48ac2407a39228e1de",
+      "size": 7462,
+      "normalized_sha256": "98095c7085e140c05ac6fe88325d7625b4416fccf087ec48ac2407a39228e1de"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/config/WebSocketConfig.java": {
+      "role": "index",
+      "sha256": "219a7a98e58ddaad9e02f9fc2b51f28c11ca9e11b9ebf437d3ddd541053ce930",
+      "size": 2272,
+      "normalized_sha256": "219a7a98e58ddaad9e02f9fc2b51f28c11ca9e11b9ebf437d3ddd541053ce930"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/config/package-info.java": {
+      "role": "index",
+      "sha256": "8b39c4a4530c6ee09f4a5a588149fd4b399134ebe11611dda790a23ab9c4ff57",
+      "size": 114,
+      "normalized_sha256": "8b39c4a4530c6ee09f4a5a588149fd4b399134ebe11611dda790a23ab9c4ff57"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/infra/CounterService.java": {
+      "role": "index",
+      "sha256": "c9387b40c54cb369016a875e4c0c37fc71756eba947744570c8536be9d7e8124",
+      "size": 7300,
+      "normalized_sha256": "c9387b40c54cb369016a875e4c0c37fc71756eba947744570c8536be9d7e8124"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/infra/IdempotentService.java": {
+      "role": "index",
+      "sha256": "781f8953095af302804c7708ed00aff306a62ae5d960fb2bc649bcae59d60f1d",
+      "size": 10434,
+      "normalized_sha256": "781f8953095af302804c7708ed00aff306a62ae5d960fb2bc649bcae59d60f1d"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/infra/RateLimitService.java": {
+      "role": "index",
+      "sha256": "fb9891469086d3acea672d97c5ac76f0ab579b91e92847e55a13fade417430a2",
+      "size": 2480,
+      "normalized_sha256": "fb9891469086d3acea672d97c5ac76f0ab579b91e92847e55a13fade417430a2"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/infra/RedisKeys.java": {
+      "role": "index",
+      "sha256": "9c0a24b0f2a5b4678396cb5dec8206b0fa7fe44ee71e4fb6ad485a882b846c24",
+      "size": 4851,
+      "normalized_sha256": "9c0a24b0f2a5b4678396cb5dec8206b0fa7fe44ee71e4fb6ad485a882b846c24"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/infra/StockService.java": {
+      "role": "index",
+      "sha256": "726d38423ef35a8bd39d0554ccce9b0fdcf4ea771fdd128efabca4b47c36fd3f",
+      "size": 40278,
+      "normalized_sha256": "726d38423ef35a8bd39d0554ccce9b0fdcf4ea771fdd128efabca4b47c36fd3f"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/infra/package-info.java": {
+      "role": "index",
+      "sha256": "ac93c1532210dc527f7c7ff9d5c25f6f1c8e689648df571e277f29dd53bba302",
+      "size": 112,
+      "normalized_sha256": "ac93c1532210dc527f7c7ff9d5c25f6f1c8e689648df571e277f29dd53bba302"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/job/OpenCountReconcileJob.java": {
+      "role": "index",
+      "sha256": "b3bf485d3af3296ccb30b34e624978ec8fe866585858e8cf8d39b7232a1e66c2",
+      "size": 10504,
+      "normalized_sha256": "b3bf485d3af3296ccb30b34e624978ec8fe866585858e8cf8d39b7232a1e66c2"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/job/RecycleAllocationTimeoutJob.java": {
+      "role": "index",
+      "sha256": "1f429b7d46c99018898de8b01d66fddd6ed15a52261af6830a61b4c289d9a34e",
+      "size": 14978,
+      "normalized_sha256": "1f429b7d46c99018898de8b01d66fddd6ed15a52261af6830a61b4c289d9a34e"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/job/StartupRunner.java": {
+      "role": "index",
+      "sha256": "4baa6996cd3b3cf031cea4576fa091aef3e7f5105deb4b45e129de06a974b126",
+      "size": 7495,
+      "normalized_sha256": "4baa6996cd3b3cf031cea4576fa091aef3e7f5105deb4b45e129de06a974b126"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/job/StatsDailyJob.java": {
+      "role": "index",
+      "sha256": "5a7dce830c3870458b1b875c21e31362a6348d431c592a6fcde19f0af3b7ad49",
+      "size": 12704,
+      "normalized_sha256": "5a7dce830c3870458b1b875c21e31362a6348d431c592a6fcde19f0af3b7ad49"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/job/StockReconcileJob.java": {
+      "role": "index",
+      "sha256": "721caf9026a87560ed30e86e5aa26ef59b593add468bc71f3300212945125c60",
+      "size": 12899,
+      "normalized_sha256": "721caf9026a87560ed30e86e5aa26ef59b593add468bc71f3300212945125c60"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/job/TimeoutOrderJob.java": {
+      "role": "index",
+      "sha256": "b466b818f0a50c355bb85c4ca1d04f55878896f6851f8b9176ad24ac26005df3",
+      "size": 17796,
+      "normalized_sha256": "b466b818f0a50c355bb85c4ca1d04f55878896f6851f8b9176ad24ac26005df3"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/job/package-info.java": {
+      "role": "index",
+      "sha256": "f4128fd184f827ad731da41fb68042f168c0ffd52ff10b9162842031a225531e",
+      "size": 108,
+      "normalized_sha256": "f4128fd184f827ad731da41fb68042f168c0ffd52ff10b9162842031a225531e"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/controller/AuditQueryController.java": {
+      "role": "index",
+      "sha256": "94ec4516531c786b454abf26fc7289de3cf4b852321752c6a529229c7e92a015",
+      "size": 4148,
+      "normalized_sha256": "94ec4516531c786b454abf26fc7289de3cf4b852321752c6a529229c7e92a015"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/dto/AuditLogQuery.java": {
+      "role": "index",
+      "sha256": "2b8b913e65137102df16d5e48536feb0ce43bd20ef83260515e041d45aa3df37",
+      "size": 2591,
+      "normalized_sha256": "2b8b913e65137102df16d5e48536feb0ce43bd20ef83260515e041d45aa3df37"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/dto/AuditLogVo.java": {
+      "role": "index",
+      "sha256": "b65e198a0cae34c5f75740716f3bdb29f6159f523618cbaf683d53e3f35acf90",
+      "size": 3192,
+      "normalized_sha256": "b65e198a0cae34c5f75740716f3bdb29f6159f523618cbaf683d53e3f35acf90"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/dto/LoginLogQuery.java": {
+      "role": "index",
+      "sha256": "a5672422ef7f5de6fba8ae02c74a3f5a38d46268869af3db0b31e58c0be45f9f",
+      "size": 2566,
+      "normalized_sha256": "a5672422ef7f5de6fba8ae02c74a3f5a38d46268869af3db0b31e58c0be45f9f"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/dto/LoginLogVo.java": {
+      "role": "index",
+      "sha256": "3182b63964d967372e3df2654aac5a3d747503f0d03ee0e352e071dfde055454",
+      "size": 2138,
+      "normalized_sha256": "3182b63964d967372e3df2654aac5a3d747503f0d03ee0e352e071dfde055454"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/entity/AuditLogEntity.java": {
+      "role": "index",
+      "sha256": "c8693c535c659805989677e70ddad30fe9aea4b493337d5c7311e839ffa0f2e0",
+      "size": 2268,
+      "normalized_sha256": "c8693c535c659805989677e70ddad30fe9aea4b493337d5c7311e839ffa0f2e0"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/entity/LoginLog.java": {
+      "role": "index",
+      "sha256": "5b7c6087339578dedae2e4042e34686e187b147a21f1e3d71613c3d1ea534aa8",
+      "size": 1597,
+      "normalized_sha256": "5b7c6087339578dedae2e4042e34686e187b147a21f1e3d71613c3d1ea534aa8"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/entity/SysMetric.java": {
+      "role": "index",
+      "sha256": "817b2deb83a0b0b37426be51f1a992261968fb25bb40b920f55b150a3b5ad1c1",
+      "size": 1436,
+      "normalized_sha256": "817b2deb83a0b0b37426be51f1a992261968fb25bb40b920f55b150a3b5ad1c1"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/mapper/AuditLogMapper.java": {
+      "role": "index",
+      "sha256": "1777cb84dfd4b3dd0667932cf6a92f51618ef27afee176f1e477fd680b631cc1",
+      "size": 572,
+      "normalized_sha256": "1777cb84dfd4b3dd0667932cf6a92f51618ef27afee176f1e477fd680b631cc1"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/mapper/LoginLogMapper.java": {
+      "role": "index",
+      "sha256": "89f57a980f13cf4fe213ac3701047c69651759298d2e4303e128e5e893d5237e",
+      "size": 464,
+      "normalized_sha256": "89f57a980f13cf4fe213ac3701047c69651759298d2e4303e128e5e893d5237e"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/mapper/SysMetricMapper.java": {
+      "role": "index",
+      "sha256": "5a2e2debd3c7c57c6a62d3269da86faeea8e06a11991a91f01df7a6def891841",
+      "size": 1412,
+      "normalized_sha256": "5a2e2debd3c7c57c6a62d3269da86faeea8e06a11991a91f01df7a6def891841"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/service/AuditLogService.java": {
+      "role": "index",
+      "sha256": "0a4636a99eaab674ef3b9962ac1d55c1c4c6d59f41a1b016632ae6f69053e9e4",
+      "size": 23786,
+      "normalized_sha256": "0a4636a99eaab674ef3b9962ac1d55c1c4c6d59f41a1b016632ae6f69053e9e4"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/audit/service/AuditQueryService.java": {
+      "role": "index",
+      "sha256": "a9f2870aa83bb292d1a5601477ed27232c32b33be25f0548ef7db24ae06020a5",
+      "size": 14504,
+      "normalized_sha256": "a9f2870aa83bb292d1a5601477ed27232c32b33be25f0548ef7db24ae06020a5"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/controller/AuthController.java": {
+      "role": "index",
+      "sha256": "a21f8451ab1e62ed70af2c9c24fa962db0b96449a2622c7b544f034feedd208b",
+      "size": 8806,
+      "normalized_sha256": "a21f8451ab1e62ed70af2c9c24fa962db0b96449a2622c7b544f034feedd208b"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/dto/CaptchaVo.java": {
+      "role": "index",
+      "sha256": "4489f3bceafab138d05dfba7ad1fe55f8b34eeed968f6956ea80f531b706b2da",
+      "size": 672,
+      "normalized_sha256": "4489f3bceafab138d05dfba7ad1fe55f8b34eeed968f6956ea80f531b706b2da"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/dto/LoginDto.java": {
+      "role": "index",
+      "sha256": "c4a92c6adb01c1eb9c725c9db4c42e53978ff7645b48bdf32b7104a5274daf8b",
+      "size": 1385,
+      "normalized_sha256": "c4a92c6adb01c1eb9c725c9db4c42e53978ff7645b48bdf32b7104a5274daf8b"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/dto/LoginUserVo.java": {
+      "role": "index",
+      "sha256": "6d3398a9c6961c7cb0ce26cfe7fa5efdbf830ba42df51bf54d1c9ba37179a555",
+      "size": 1022,
+      "normalized_sha256": "6d3398a9c6961c7cb0ce26cfe7fa5efdbf830ba42df51bf54d1c9ba37179a555"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/dto/LoginVo.java": {
+      "role": "index",
+      "sha256": "4df92d2b4fbb9860838691f836107b0f05de1aaa8d8ad91341291bb827ec6aca",
+      "size": 869,
+      "normalized_sha256": "4df92d2b4fbb9860838691f836107b0f05de1aaa8d8ad91341291bb827ec6aca"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/dto/RegisterDto.java": {
+      "role": "index",
+      "sha256": "1428e8274f91e684fd2de19b207ae21ce411ff76cab9c2f646d3d8a45375cc6d",
+      "size": 2226,
+      "normalized_sha256": "1428e8274f91e684fd2de19b207ae21ce411ff76cab9c2f646d3d8a45375cc6d"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/package-info.java": {
+      "role": "index",
+      "sha256": "9cddbf70c9296783d99ba73a3d9c3195b8e436b4cc48eda6baac0f7ac889679b",
+      "size": 124,
+      "normalized_sha256": "9cddbf70c9296783d99ba73a3d9c3195b8e436b4cc48eda6baac0f7ac889679b"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/service/AuthService.java": {
+      "role": "index",
+      "sha256": "7e8afffb4e792efce10451f0edbcec7e94ef05086795240f7d59826bec431dd5",
+      "size": 30727,
+      "normalized_sha256": "7e8afffb4e792efce10451f0edbcec7e94ef05086795240f7d59826bec431dd5"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/auth/service/CaptchaService.java": {
+      "role": "index",
+      "sha256": "f9c6da483eae561417da47a766f53bdbaacd0c5695e5bf332086f2dcbe14b2fa",
+      "size": 10528,
+      "normalized_sha256": "f9c6da483eae561417da47a766f53bdbaacd0c5695e5bf332086f2dcbe14b2fa"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/controller/BagController.java": {
+      "role": "index",
+      "sha256": "bb28c6a1fe9b157b486c101968476d931adc344659d102b6684131ef3b282c43",
+      "size": 13285,
+      "normalized_sha256": "bb28c6a1fe9b157b486c101968476d931adc344659d102b6684131ef3b282c43"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/controller/DisinfectController.java": {
+      "role": "index",
+      "sha256": "c6e04cd6599a282f5c0bf4396a22d09156ce68f489959be6ae11f3d143a8dfd4",
+      "size": 3116,
+      "normalized_sha256": "c6e04cd6599a282f5c0bf4396a22d09156ce68f489959be6ae11f3d143a8dfd4"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/controller/InventoryCheckController.java": {
+      "role": "index",
+      "sha256": "9c257cc5ac63056712d0cd488b3ae9f2d576f82d79ae8adf086268e2473e05fe",
+      "size": 3827,
+      "normalized_sha256": "9c257cc5ac63056712d0cd488b3ae9f2d576f82d79ae8adf086268e2473e05fe"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/ActivateDto.java": {
+      "role": "index",
+      "sha256": "98b96f93113cf0881db6b1fd8c63c579553d3b1a931fc8caf4e0d37552857513",
+      "size": 649,
+      "normalized_sha256": "98b96f93113cf0881db6b1fd8c63c579553d3b1a931fc8caf4e0d37552857513"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/BagDetailVo.java": {
+      "role": "index",
+      "sha256": "6f55332fa500a522a064a0f1aa347d95f3db435eb54da21e00914d3494db11c9",
+      "size": 1465,
+      "normalized_sha256": "6f55332fa500a522a064a0f1aa347d95f3db435eb54da21e00914d3494db11c9"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/BagInfoVo.java": {
+      "role": "index",
+      "sha256": "92ca71fbc05d2eb7c3cb0245a6f31ec12961927688df1bd69d5df0266c841ef9",
+      "size": 1861,
+      "normalized_sha256": "92ca71fbc05d2eb7c3cb0245a6f31ec12961927688df1bd69d5df0266c841ef9"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/BagQuery.java": {
+      "role": "index",
+      "sha256": "5907de5c37edd0cfbcc56806e705638c13c2e2bc5814deffb462bc7627165924",
+      "size": 1595,
+      "normalized_sha256": "5907de5c37edd0cfbcc56806e705638c13c2e2bc5814deffb462bc7627165924"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/BagTraceVo.java": {
+      "role": "index",
+      "sha256": "ce2a22064cdb53323375c59bbb62ff248afcd5ad9b7458783e11cb9d1ab79079",
+      "size": 1753,
+      "normalized_sha256": "ce2a22064cdb53323375c59bbb62ff248afcd5ad9b7458783e11cb9d1ab79079"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/BatchGenerateDto.java": {
+      "role": "index",
+      "sha256": "4cb63641ab8d5c12f9b04ba25414a2232477988b6c989b4fcfa2eb468033faa6",
+      "size": 1766,
+      "normalized_sha256": "4cb63641ab8d5c12f9b04ba25414a2232477988b6c989b4fcfa2eb468033faa6"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/CreateBagDto.java": {
+      "role": "index",
+      "sha256": "aefcd8c3b170ba81c1ebfb894eb9f78eacf36535a1d3953c36ed98ae76f7fba7",
+      "size": 1509,
+      "normalized_sha256": "aefcd8c3b170ba81c1ebfb894eb9f78eacf36535a1d3953c36ed98ae76f7fba7"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/CreateDisinfectDto.java": {
+      "role": "index",
+      "sha256": "7cc5f27f1f12a8419b10132dcabff5f501a11add1a63cc072397b0018a7a8c90",
+      "size": 3318,
+      "normalized_sha256": "7cc5f27f1f12a8419b10132dcabff5f501a11add1a63cc072397b0018a7a8c90"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/CreateInventoryCheckDto.java": {
+      "role": "index",
+      "sha256": "633c2d6ba4b34de4c6bd2f3025728ef255cf11903b4881a1ede504a7eb96ae7a",
+      "size": 1459,
+      "normalized_sha256": "633c2d6ba4b34de4c6bd2f3025728ef255cf11903b4881a1ede504a7eb96ae7a"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/DisinfectCreateVo.java": {
+      "role": "index",
+      "sha256": "bcaa628842e7d7fde949f8a58769a8bf1909e432161ac5a96c4acdadbefc8877",
+      "size": 1954,
+      "normalized_sha256": "bcaa628842e7d7fde949f8a58769a8bf1909e432161ac5a96c4acdadbefc8877"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/DisinfectDetailVo.java": {
+      "role": "index",
+      "sha256": "6ed0505f87e1ec868fd472806607cb79baca0834e2b67535ca9028ed1f9823fe",
+      "size": 1383,
+      "normalized_sha256": "6ed0505f87e1ec868fd472806607cb79baca0834e2b67535ca9028ed1f9823fe"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/DisinfectQuery.java": {
+      "role": "index",
+      "sha256": "82d82a4e5c533ed0221b287a97c94a46e9f966e3aea4ea385464bfded6e1724d",
+      "size": 1564,
+      "normalized_sha256": "82d82a4e5c533ed0221b287a97c94a46e9f966e3aea4ea385464bfded6e1724d"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/DisinfectVo.java": {
+      "role": "index",
+      "sha256": "18a30cede13c618700f33a003c92d3e0aead84dd519e5a038cc8f07c28847cfd",
+      "size": 1873,
+      "normalized_sha256": "18a30cede13c618700f33a003c92d3e0aead84dd519e5a038cc8f07c28847cfd"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/InventoryCheckQuery.java": {
+      "role": "index",
+      "sha256": "c842ed068c2cf75dfebbeb7df1bf601ec2d65c761fb3e38efc9beacb8d0748e2",
+      "size": 1579,
+      "normalized_sha256": "c842ed068c2cf75dfebbeb7df1bf601ec2d65c761fb3e38efc9beacb8d0748e2"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/InventoryCheckVo.java": {
+      "role": "index",
+      "sha256": "9e3e74407b47ea242db1ec4694d9997b052963d352491141a5d13019f9cb013c",
+      "size": 2387,
+      "normalized_sha256": "9e3e74407b47ea242db1ec4694d9997b052963d352491141a5d13019f9cb013c"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/LostRecoveryDto.java": {
+      "role": "index",
+      "sha256": "ae14b39ee422e0f6065d539eca482cee48c0b8e7fc9bf6a140c95cd273a16c88",
+      "size": 1032,
+      "normalized_sha256": "ae14b39ee422e0f6065d539eca482cee48c0b8e7fc9bf6a140c95cd273a16c88"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/RepairCompleteDto.java": {
+      "role": "index",
+      "sha256": "9cd25c68d142606a647de6028098258568564aa6cc4c1334be955a48fb180056",
+      "size": 1047,
+      "normalized_sha256": "9cd25c68d142606a647de6028098258568564aa6cc4c1334be955a48fb180056"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/RepairDto.java": {
+      "role": "index",
+      "sha256": "3d17095f732d21ebfc67d095d72358e2b44b064b5d2da245737d8f611c4507c7",
+      "size": 675,
+      "normalized_sha256": "3d17095f732d21ebfc67d095d72358e2b44b064b5d2da245737d8f611c4507c7"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/ScrapDto.java": {
+      "role": "index",
+      "sha256": "60f0f2f4c93ad0a280cd8ce013781929a270720c8ccd80035aa9e08732884475",
+      "size": 827,
+      "normalized_sha256": "60f0f2f4c93ad0a280cd8ce013781929a270720c8ccd80035aa9e08732884475"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/StatusCorrectDto.java": {
+      "role": "index",
+      "sha256": "3c5fd123aeb516c70cd899d44580c08e06b0b42917defba7134d51f70ca5f36e",
+      "size": 1504,
+      "normalized_sha256": "3c5fd123aeb516c70cd899d44580c08e06b0b42917defba7134d51f70ca5f36e"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/StockInDto.java": {
+      "role": "index",
+      "sha256": "dd1de01184bb34db4c1b8914913a1d3a4ab22c438caa593cdbf952eb0ca7af04",
+      "size": 1476,
+      "normalized_sha256": "dd1de01184bb34db4c1b8914913a1d3a4ab22c438caa593cdbf952eb0ca7af04"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/StockOutDto.java": {
+      "role": "index",
+      "sha256": "0c4bbb4b6bf42cf1ea0ff0bd2dc04981d6e6810dce18e352ef94797f15b8e699",
+      "size": 1921,
+      "normalized_sha256": "0c4bbb4b6bf42cf1ea0ff0bd2dc04981d6e6810dce18e352ef94797f15b8e699"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/UnusedReturnDto.java": {
+      "role": "index",
+      "sha256": "8e1b0711e54972812a92d02ecaad1ff56c1e3a724e0c50da0433a386999b2130",
+      "size": 636,
+      "normalized_sha256": "8e1b0711e54972812a92d02ecaad1ff56c1e3a724e0c50da0433a386999b2130"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/dto/VoidInventoryCheckDto.java": {
+      "role": "index",
+      "sha256": "7065f4ff27ce482267ff189440b725df96576a5437ad4a6f7f24e06076e0faa3",
+      "size": 800,
+      "normalized_sha256": "7065f4ff27ce482267ff189440b725df96576a5437ad4a6f7f24e06076e0faa3"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/Bag.java": {
+      "role": "index",
+      "sha256": "ec4f3920cea954ac3dea73ae87ce9d9c4d3a912c59f4df229189e70adfc9c201",
+      "size": 2542,
+      "normalized_sha256": "ec4f3920cea954ac3dea73ae87ce9d9c4d3a912c59f4df229189e70adfc9c201"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/BagTransferLog.java": {
+      "role": "index",
+      "sha256": "965cfd30a70a532cde3e5d03b9a2a18ae43ee3841c1dcf97da46cad62bd42303",
+      "size": 2158,
+      "normalized_sha256": "965cfd30a70a532cde3e5d03b9a2a18ae43ee3841c1dcf97da46cad62bd42303"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/DisinfectDetail.java": {
+      "role": "index",
+      "sha256": "83e66610c81c986881062237f378453a42f515252e8591d08799eae34fef33a3",
+      "size": 1425,
+      "normalized_sha256": "83e66610c81c986881062237f378453a42f515252e8591d08799eae34fef33a3"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/DisinfectRecord.java": {
+      "role": "index",
+      "sha256": "45bed4075542c47f5b26d335722a33c1da57b6cc70b4ed869590ec19798ad617",
+      "size": 1982,
+      "normalized_sha256": "45bed4075542c47f5b26d335722a33c1da57b6cc70b4ed869590ec19798ad617"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/RepairRecord.java": {
+      "role": "index",
+      "sha256": "db776314419dfd173cdb45de77cf766c63a78d4e652d051ed1b9a20556de26f8",
+      "size": 1975,
+      "normalized_sha256": "db776314419dfd173cdb45de77cf766c63a78d4e652d051ed1b9a20556de26f8"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/ScrapRecord.java": {
+      "role": "index",
+      "sha256": "6eda34c0bad20b5f291985f783f821de58d3a26cb800adf36e433d37efc06daa",
+      "size": 1344,
+      "normalized_sha256": "6eda34c0bad20b5f291985f783f821de58d3a26cb800adf36e433d37efc06daa"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/entity/StockRecord.java": {
+      "role": "index",
+      "sha256": "32083a272068ce0db475e1a4800ed78f99163f4159512709d9760d210a94855d",
+      "size": 1648,
+      "normalized_sha256": "32083a272068ce0db475e1a4800ed78f99163f4159512709d9760d210a94855d"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/mapper/BagCodeMapper.java": {
+      "role": "index",
+      "sha256": "4880980cac5823f82026ab7dc23e9f3da0ab2249a23743c8bc11d6ddfb352942",
+      "size": 2014,
+      "normalized_sha256": "4880980cac5823f82026ab7dc23e9f3da0ab2249a23743c8bc11d6ddfb352942"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/mapper/BagMapper.java": {
+      "role": "index",
+      "sha256": "e98850d496028212c95d3f1f0095ca604db5e723d79b68d86037753f13ae95f5",
+      "size": 1144,
+      "normalized_sha256": "e98850d496028212c95d3f1f0095ca604db5e723d79b68d86037753f13ae95f5"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/mapper/BagTransferLogMapper.java": {
+      "role": "index",
+      "sha256": "b3e120d4ddbe5be7ed07fdf1e01614423ba7aae09b1b5ee5c75382e9f4ab2457",
+      "size": 496,
+      "normalized_sha256": "b3e120d4ddbe5be7ed07fdf1e01614423ba7aae09b1b5ee5c75382e9f4ab2457"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/mapper/DisinfectDetailMapper.java": {
+      "role": "index",
+      "sha256": "2c2c6282f207db252c485ff7f897afe74e6156ea00d07a70418bb2fa9250485c",
+      "size": 542,
+      "normalized_sha256": "2c2c6282f207db252c485ff7f897afe74e6156ea00d07a70418bb2fa9250485c"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/mapper/DisinfectRecordMapper.java": {
+      "role": "index",
+      "sha256": "75c55aad50c395af50886627f762d94abf4f40ee259b6a43e1212f2de36d187f",
+      "size": 551,
+      "normalized_sha256": "75c55aad50c395af50886627f762d94abf4f40ee259b6a43e1212f2de36d187f"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/mapper/RepairRecordMapper.java": {
+      "role": "index",
+      "sha256": "ad1593520b7aa0b7f6804d6a7fd41414edcf97eeaa0885d1def7ddb0c99dbd17",
+      "size": 486,
+      "normalized_sha256": "ad1593520b7aa0b7f6804d6a7fd41414edcf97eeaa0885d1def7ddb0c99dbd17"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/mapper/ScrapRecordMapper.java": {
+      "role": "index",
+      "sha256": "6ff489bf8af69da61ce2bce6167f61d1d07ecb96840a2fbf8960d7429f2eccae",
+      "size": 463,
+      "normalized_sha256": "6ff489bf8af69da61ce2bce6167f61d1d07ecb96840a2fbf8960d7429f2eccae"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/mapper/StockRecordMapper.java": {
+      "role": "index",
+      "sha256": "56f2a6fcfbedcc95e4c3ceb8a762de4bf147c156183183728ef460e5669c060c",
+      "size": 460,
+      "normalized_sha256": "56f2a6fcfbedcc95e4c3ceb8a762de4bf147c156183183728ef460e5669c060c"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/package-info.java": {
+      "role": "index",
+      "sha256": "4e7cfa18e4a1b6736a5a2ef17d7f63201d514fa266b4dd78ba2c30afe03ff83f",
+      "size": 122,
+      "normalized_sha256": "4e7cfa18e4a1b6736a5a2ef17d7f63201d514fa266b4dd78ba2c30afe03ff83f"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagCodeGenerator.java": {
+      "role": "index",
+      "sha256": "bb3f476d640a8ea14354d22619b1584797099ca1fcca33fb92413d6c7e2ca4b6",
+      "size": 4546,
+      "normalized_sha256": "bb3f476d640a8ea14354d22619b1584797099ca1fcca33fb92413d6c7e2ca4b6"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/BagService.java": {
+      "role": "index",
+      "sha256": "2174e801c8bce1c90f5c85e07aea3d916cb2a11c3a2ba337d434096890e9e724",
+      "size": 59652,
+      "normalized_sha256": "2174e801c8bce1c90f5c85e07aea3d916cb2a11c3a2ba337d434096890e9e724"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/DisinfectService.java": {
+      "role": "index",
+      "sha256": "29e96170951b250d3795547bfdbdddcb165eec5d1fcc178fd6cefccea501286a",
+      "size": 32070,
+      "normalized_sha256": "29e96170951b250d3795547bfdbdddcb165eec5d1fcc178fd6cefccea501286a"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/InventoryCheckService.java": {
+      "role": "index",
+      "sha256": "e1eac3ec2204ec9b333424c0a4342195fa16135b164574978b7bf020b4ff1cdb",
+      "size": 23036,
+      "normalized_sha256": "e1eac3ec2204ec9b333424c0a4342195fa16135b164574978b7bf020b4ff1cdb"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/QrCodeService.java": {
+      "role": "index",
+      "sha256": "a4ae987c09d29b21fa1c4cb83611d1149efe117622a83647fed1b3f96e222fca",
+      "size": 5403,
+      "normalized_sha256": "a4ae987c09d29b21fa1c4cb83611d1149efe117622a83647fed1b3f96e222fca"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/bag/service/action/BagTransitionActions.java": {
+      "role": "index",
+      "sha256": "2672afba456f5ffe104a5e056004e6d4617893a3ea9aa82153cf52d2d83af5f4",
+      "size": 36474,
+      "normalized_sha256": "2672afba456f5ffe104a5e056004e6d4617893a3ea9aa82153cf52d2d83af5f4"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/controller/BorrowController.java": {
+      "role": "index",
+      "sha256": "3a2c8ac8e27d4ed13488622e4582a26be82563f72c14b92763f17e8b8c6021f1",
+      "size": 3841,
+      "normalized_sha256": "3a2c8ac8e27d4ed13488622e4582a26be82563f72c14b92763f17e8b8c6021f1"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/controller/OrderController.java": {
+      "role": "index",
+      "sha256": "aa844ddf26f0dac21d0ae96ecd99959d298f3d6c350d0c4a186760c88e27927f",
+      "size": 5339,
+      "normalized_sha256": "aa844ddf26f0dac21d0ae96ecd99959d298f3d6c350d0c4a186760c88e27927f"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/dto/BorrowDto.java": {
+      "role": "index",
+      "sha256": "869a8fe63d6330333a55d3932282b8aefdeb21f37e191eee3a0dcc59e445cf40",
+      "size": 1074,
+      "normalized_sha256": "869a8fe63d6330333a55d3932282b8aefdeb21f37e191eee3a0dcc59e445cf40"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/dto/BorrowVo.java": {
+      "role": "index",
+      "sha256": "2e2910164798438a20a531415c55437fbe5cc9cfe2985986119a2c5794c61c9e",
+      "size": 1249,
+      "normalized_sha256": "2e2910164798438a20a531415c55437fbe5cc9cfe2985986119a2c5794c61c9e"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/dto/LostConfirmDto.java": {
+      "role": "index",
+      "sha256": "b1cbf10be7a3359bd85b9d14bb3a7b146148f94211f72f9933e20f6decdaec5c",
+      "size": 1129,
+      "normalized_sha256": "b1cbf10be7a3359bd85b9d14bb3a7b146148f94211f72f9933e20f6decdaec5c"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/dto/OrderDetailVo.java": {
+      "role": "index",
+      "sha256": "de0de29cb5205b413e7e5bbadbd18712b9170f6b81641d324d65cfd60f4ebbe7",
+      "size": 2465,
+      "normalized_sha256": "de0de29cb5205b413e7e5bbadbd18712b9170f6b81641d324d65cfd60f4ebbe7"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/dto/OrderQuery.java": {
+      "role": "index",
+      "sha256": "32cf55fcf24586919edd06969e05863bcf090d472699d70a238fa1b9e62eca91",
+      "size": 2158,
+      "normalized_sha256": "32cf55fcf24586919edd06969e05863bcf090d472699d70a238fa1b9e62eca91"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/dto/OrderVo.java": {
+      "role": "index",
+      "sha256": "cff982ca9f848652921369b2d63b2c22fa653dd37ddbc25f48914c12418cad2e",
+      "size": 1872,
+      "normalized_sha256": "cff982ca9f848652921369b2d63b2c22fa653dd37ddbc25f48914c12418cad2e"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/dto/ReturnMarkDto.java": {
+      "role": "index",
+      "sha256": "411f31a1d76f58b256c3c0b259af55b95077e3026ff1681cf6ec359f2395c14d",
+      "size": 722,
+      "normalized_sha256": "411f31a1d76f58b256c3c0b259af55b95077e3026ff1681cf6ec359f2395c14d"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/dto/ShippingDto.java": {
+      "role": "index",
+      "sha256": "491882e63a09b0a17e187877141b29da12cff1363d3adf9249ae160358c159ae",
+      "size": 1694,
+      "normalized_sha256": "491882e63a09b0a17e187877141b29da12cff1363d3adf9249ae160358c159ae"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/entity/BagOrder.java": {
+      "role": "index",
+      "sha256": "ce0b5c7e4de43442fdc16bb27aac2de1396dcae6519985a43927da00b2e34b7a",
+      "size": 3835,
+      "normalized_sha256": "ce0b5c7e4de43442fdc16bb27aac2de1396dcae6519985a43927da00b2e34b7a"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/entity/LiabilityRecord.java": {
+      "role": "index",
+      "sha256": "96ee38793f2150e916f46b213f29aef161f670c01677f200e8b7194d0d711a9c",
+      "size": 2049,
+      "normalized_sha256": "96ee38793f2150e916f46b213f29aef161f670c01677f200e8b7194d0d711a9c"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/entity/StockCompensationLog.java": {
+      "role": "index",
+      "sha256": "3aed8424b9b237d8e5b5b63059e64b6f3b332e4804b27e527190c58d9ec3927a",
+      "size": 1410,
+      "normalized_sha256": "3aed8424b9b237d8e5b5b63059e64b6f3b332e4804b27e527190c58d9ec3927a"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/mapper/BagOrderMapper.java": {
+      "role": "index",
+      "sha256": "e0369b5b353f3474840636616927a3faac972fda7ecb5810a329e8b0d60b54d9",
+      "size": 3938,
+      "normalized_sha256": "e0369b5b353f3474840636616927a3faac972fda7ecb5810a329e8b0d60b54d9"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/mapper/LiabilityRecordMapper.java": {
+      "role": "index",
+      "sha256": "e7b1c30d78834f0559ecfbb97b60b5d76eb240b5f44b073a036c8e6f3cf94fa1",
+      "size": 603,
+      "normalized_sha256": "e7b1c30d78834f0559ecfbb97b60b5d76eb240b5f44b073a036c8e6f3cf94fa1"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/mapper/StockCompensationLogMapper.java": {
+      "role": "index",
+      "sha256": "cd71fefae24d0be0725f2d9e222ddf06b2c19f3793ef9de1554d74a726eb85a9",
+      "size": 629,
+      "normalized_sha256": "cd71fefae24d0be0725f2d9e222ddf06b2c19f3793ef9de1554d74a726eb85a9"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/package-info.java": {
+      "role": "index",
+      "sha256": "076d0495c887f256fec16a95159da8ef8d92c0413f109ffa785af8e60287c7fb",
+      "size": 126,
+      "normalized_sha256": "076d0495c887f256fec16a95159da8ef8d92c0413f109ffa785af8e60287c7fb"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/BorrowService.java": {
+      "role": "index",
+      "sha256": "d5e842d932d05d4ca8570dc740b5ff47f9245330745e724ee7f0b458ce0d61c6",
+      "size": 38618,
+      "normalized_sha256": "d5e842d932d05d4ca8570dc740b5ff47f9245330745e724ee7f0b458ce0d61c6"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/OrderService.java": {
+      "role": "index",
+      "sha256": "5c21f3143f577c051d711279ff494df13ed97ec4aa27e0b951342f45479b7311",
+      "size": 29084,
+      "normalized_sha256": "5c21f3143f577c051d711279ff494df13ed97ec4aa27e0b951342f45479b7311"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/order/service/action/OrderTransitionActions.java": {
+      "role": "index",
+      "sha256": "1824463da1ec57403c3ded8ed7933383caa0e251d6b78a6a302536ab28a813af",
+      "size": 20088,
+      "normalized_sha256": "1824463da1ec57403c3ded8ed7933383caa0e251d6b78a6a302536ab28a813af"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/push/package-info.java": {
+      "role": "index",
+      "sha256": "860fc435f5989e1413b664a2db78689fbeffffc80ee65969028a9578f0cc2362",
+      "size": 124,
+      "normalized_sha256": "860fc435f5989e1413b664a2db78689fbeffffc80ee65969028a9578f0cc2362"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagEvent.java": {
+      "role": "index",
+      "sha256": "4760ce510c668ab26579241bb4f95528f21708f8125f84d0cee424790c72dac3",
+      "size": 4338,
+      "normalized_sha256": "4760ce510c668ab26579241bb4f95528f21708f8125f84d0cee424790c72dac3"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagStatus.java": {
+      "role": "index",
+      "sha256": "ab72a5450cd9e6e4c660bacd3ca4b8045b6ecc2705870e79e1e2fac1c146d432",
+      "size": 3788,
+      "normalized_sha256": "ab72a5450cd9e6e4c660bacd3ca4b8045b6ecc2705870e79e1e2fac1c146d432"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionContext.java": {
+      "role": "index",
+      "sha256": "a82733838813bc278df71070e66cd16b708ca58f79a3e163411fda2ae0630891",
+      "size": 1791,
+      "normalized_sha256": "a82733838813bc278df71070e66cd16b708ca58f79a3e163411fda2ae0630891"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionResult.java": {
+      "role": "index",
+      "sha256": "f521b1ce915d319641c60a22f60faf5d7ea0df4322f9be992ff1166f5b413997",
+      "size": 1341,
+      "normalized_sha256": "f521b1ce915d319641c60a22f60faf5d7ea0df4322f9be992ff1166f5b413997"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java": {
+      "role": "index",
+      "sha256": "2bf3eb199d035b8c57933bb243eeceba016abc1a71269d0491afb5721eecfb54",
+      "size": 21554,
+      "normalized_sha256": "2bf3eb199d035b8c57933bb243eeceba016abc1a71269d0491afb5721eecfb54"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/OrderStatus.java": {
+      "role": "index",
+      "sha256": "607e46a36b33c6a0fcb55668cd28ca923fbeab16e2e332ad4c85aaa07c1b910e",
+      "size": 2500,
+      "normalized_sha256": "607e46a36b33c6a0fcb55668cd28ca923fbeab16e2e332ad4c85aaa07c1b910e"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/TransitionAction.java": {
+      "role": "index",
+      "sha256": "bbd46ee1854440da790ec9ff71899ef20f340fb945f2d47e43cb9998b45c9db5",
+      "size": 1606,
+      "normalized_sha256": "bbd46ee1854440da790ec9ff71899ef20f340fb945f2d47e43cb9998b45c9db5"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/TransitionCommand.java": {
+      "role": "index",
+      "sha256": "9bb9e1b0dbfe25485a9b2a1de539b3e01eb7c672f8888329c44273e2dc7351de",
+      "size": 2654,
+      "normalized_sha256": "9bb9e1b0dbfe25485a9b2a1de539b3e01eb7c672f8888329c44273e2dc7351de"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/TransitionRegistry.java": {
+      "role": "index",
+      "sha256": "bc91f89f54b52bce104b43f79c700feb2fc1da5e51c0f91cae4139b210439fb4",
+      "size": 8437,
+      "normalized_sha256": "bc91f89f54b52bce104b43f79c700feb2fc1da5e51c0f91cae4139b210439fb4"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/TransitionRule.java": {
+      "role": "index",
+      "sha256": "3023a9863eb3c5e464501f1fd3dd940e71fef46fab5da37576f1dd4fa1fa627f",
+      "size": 832,
+      "normalized_sha256": "3023a9863eb3c5e464501f1fd3dd940e71fef46fab5da37576f1dd4fa1fa627f"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/package-info.java": {
+      "role": "index",
+      "sha256": "ce8552fa23d55c407482f62dbba8e7d6a3afe387b59168b846e302a0fd5d5546",
+      "size": 140,
+      "normalized_sha256": "ce8552fa23d55c407482f62dbba8e7d6a3afe387b59168b846e302a0fd5d5546"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/controller/AllocationController.java": {
+      "role": "index",
+      "sha256": "eaacc4c29ffe8f1d16991a9509763e928891d48f701f201072c6bd0883260a40",
+      "size": 7918,
+      "normalized_sha256": "eaacc4c29ffe8f1d16991a9509763e928891d48f701f201072c6bd0883260a40"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/controller/StationController.java": {
+      "role": "index",
+      "sha256": "e67534e55f793fb8b542f04a3e3a3cebaa00d43f3006affec866224fcc7e8c84",
+      "size": 7837,
+      "normalized_sha256": "e67534e55f793fb8b542f04a3e3a3cebaa00d43f3006affec866224fcc7e8c84"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/AllocationCancelDto.java": {
+      "role": "index",
+      "sha256": "2a493ae2379e10c047fc9f82927d361ab755313d450f1e55c6d1f840224e714f",
+      "size": 907,
+      "normalized_sha256": "2a493ae2379e10c047fc9f82927d361ab755313d450f1e55c6d1f840224e714f"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/AllocationDetailVo.java": {
+      "role": "index",
+      "sha256": "a44988b4a0ff723bfee34f5c829662ac793c7136a4ad8411dbf71b8034fdcd97",
+      "size": 1387,
+      "normalized_sha256": "a44988b4a0ff723bfee34f5c829662ac793c7136a4ad8411dbf71b8034fdcd97"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/AllocationDispatchDto.java": {
+      "role": "index",
+      "sha256": "7cf32060b9c919dbcbbc3832241c3ab132bbe0bda194d8a4d77424ae5af319f5",
+      "size": 1403,
+      "normalized_sha256": "7cf32060b9c919dbcbbc3832241c3ab132bbe0bda194d8a4d77424ae5af319f5"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/AllocationLostDto.java": {
+      "role": "index",
+      "sha256": "f98149d3a57b022236dfcb356209e76d1e4d48c159a6394685033f673e7e3bd4",
+      "size": 2017,
+      "normalized_sha256": "f98149d3a57b022236dfcb356209e76d1e4d48c159a6394685033f673e7e3bd4"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/AllocationQuery.java": {
+      "role": "index",
+      "sha256": "d94af663b8bcc66c601596b2977587886ee46a301272196e447361ca767eaa28",
+      "size": 1693,
+      "normalized_sha256": "d94af663b8bcc66c601596b2977587886ee46a301272196e447361ca767eaa28"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/AllocationReceiveDto.java": {
+      "role": "index",
+      "sha256": "f22a1412e52c420c30b92eb9c1875398eeb1b9577cb8ec313241daf3613ee07e",
+      "size": 1372,
+      "normalized_sha256": "f22a1412e52c420c30b92eb9c1875398eeb1b9577cb8ec313241daf3613ee07e"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/AllocationRemoveDto.java": {
+      "role": "index",
+      "sha256": "7049f0d4d2b77ac8d79790acc7c1bab4a87a2a2e3b875ee41d43994dc48c04e6",
+      "size": 879,
+      "normalized_sha256": "7049f0d4d2b77ac8d79790acc7c1bab4a87a2a2e3b875ee41d43994dc48c04e6"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/AllocationVo.java": {
+      "role": "index",
+      "sha256": "4b66616f31878cad1726daa4fb08de6bb3edfa3640ea0ac30d6281de617401b2",
+      "size": 2052,
+      "normalized_sha256": "4b66616f31878cad1726daa4fb08de6bb3edfa3640ea0ac30d6281de617401b2"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/CreateAllocationDto.java": {
+      "role": "index",
+      "sha256": "6d4b56d13fd261b96a77ef6fd7cbd2fb739daac3f67a87babc960d4cb182a35c",
+      "size": 1332,
+      "normalized_sha256": "6d4b56d13fd261b96a77ef6fd7cbd2fb739daac3f67a87babc960d4cb182a35c"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/CreateStationDto.java": {
+      "role": "index",
+      "sha256": "5937cfdbcf2d47763a658aed36bf2b4e4c5d400c2111b631b20cf299f5403e7e",
+      "size": 1164,
+      "normalized_sha256": "5937cfdbcf2d47763a658aed36bf2b4e4c5d400c2111b631b20cf299f5403e7e"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/NearbyStationVo.java": {
+      "role": "index",
+      "sha256": "9cee60dfa7e0b49cfbf16e25994455cd6329e9f91f9c85ba030e3897b4416a78",
+      "size": 750,
+      "normalized_sha256": "9cee60dfa7e0b49cfbf16e25994455cd6329e9f91f9c85ba030e3897b4416a78"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/RecycleBinVo.java": {
+      "role": "index",
+      "sha256": "9dcb5886f56cb29432ace130b82736da5efcf0ec10ca66ccf4a8b2606e5cb3c1",
+      "size": 1734,
+      "normalized_sha256": "9dcb5886f56cb29432ace130b82736da5efcf0ec10ca66ccf4a8b2606e5cb3c1"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/RecycleConfirmDto.java": {
+      "role": "index",
+      "sha256": "65c93c77f6887cd505e6079495e7c65749388065e6afb7319a88a7dfcc09d521",
+      "size": 866,
+      "normalized_sha256": "65c93c77f6887cd505e6079495e7c65749388065e6afb7319a88a7dfcc09d521"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/RecycleConfirmItemDto.java": {
+      "role": "index",
+      "sha256": "5aa91e59daf90e24416604acb17e9aef0b4071f2066184eea835a1ef1db5f2e5",
+      "size": 1809,
+      "normalized_sha256": "5aa91e59daf90e24416604acb17e9aef0b4071f2066184eea835a1ef1db5f2e5"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/RecycleConfirmVo.java": {
+      "role": "index",
+      "sha256": "1422d0cae348aabfc8ae40a146be3090af6b428fcc80a5fa07a491767bdbd7cb",
+      "size": 2522,
+      "normalized_sha256": "1422d0cae348aabfc8ae40a146be3090af6b428fcc80a5fa07a491767bdbd7cb"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/StationQuery.java": {
+      "role": "index",
+      "sha256": "93b17933330e513ed4b224c94222c196876c9e3c277092b320ce5a0a05f5efad",
+      "size": 1300,
+      "normalized_sha256": "93b17933330e513ed4b224c94222c196876c9e3c277092b320ce5a0a05f5efad"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/StationStatusDto.java": {
+      "role": "index",
+      "sha256": "25bee26c3dbbe5077d5c6bdf63158b1de0da4c5639fe109add18ffe3a1d169cb",
+      "size": 892,
+      "normalized_sha256": "25bee26c3dbbe5077d5c6bdf63158b1de0da4c5639fe109add18ffe3a1d169cb"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/StationStockVo.java": {
+      "role": "index",
+      "sha256": "d6d42060012b24ede7ea3c9c11d7c07f912df1333422a456dd158024fd0711c6",
+      "size": 1357,
+      "normalized_sha256": "d6d42060012b24ede7ea3c9c11d7c07f912df1333422a456dd158024fd0711c6"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/StationVo.java": {
+      "role": "index",
+      "sha256": "276cfe58e7da75a04aff048a524ccaf638ecb78bb0e9a0b3dd07454575647b83",
+      "size": 1104,
+      "normalized_sha256": "276cfe58e7da75a04aff048a524ccaf638ecb78bb0e9a0b3dd07454575647b83"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/dto/UpdateStationDto.java": {
+      "role": "index",
+      "sha256": "4a0a46ec7c49ea80d2f8f6d98a250e56309386d3bc471ae7e52ac182182bc178",
+      "size": 1084,
+      "normalized_sha256": "4a0a46ec7c49ea80d2f8f6d98a250e56309386d3bc471ae7e52ac182182bc178"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/entity/AllocationDetail.java": {
+      "role": "index",
+      "sha256": "8b84a4d2c164ced6238bab13ab942b56c674f6ba826171f7a9bca9b2992869b6",
+      "size": 1689,
+      "normalized_sha256": "8b84a4d2c164ced6238bab13ab942b56c674f6ba826171f7a9bca9b2992869b6"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/entity/AllocationOrder.java": {
+      "role": "index",
+      "sha256": "fb308de930dff941f02e6c01096516990431f87539f866c53ad44585d24cf36b",
+      "size": 2519,
+      "normalized_sha256": "fb308de930dff941f02e6c01096516990431f87539f866c53ad44585d24cf36b"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/entity/InventoryCheck.java": {
+      "role": "index",
+      "sha256": "a886b38b505ae86217e320ac6b3382fc6de87b79a0a3b88b964077a35b2b76b5",
+      "size": 2520,
+      "normalized_sha256": "a886b38b505ae86217e320ac6b3382fc6de87b79a0a3b88b964077a35b2b76b5"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/entity/Station.java": {
+      "role": "index",
+      "sha256": "b5f5c8b59c05b011906b28e08997a7b8f07f27a73e000f004d92d735cb8ed4ee",
+      "size": 1787,
+      "normalized_sha256": "b5f5c8b59c05b011906b28e08997a7b8f07f27a73e000f004d92d735cb8ed4ee"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/mapper/AllocationDetailMapper.java": {
+      "role": "index",
+      "sha256": "52194979e5b6b4da6886b004211739e55204ef8334886bc1dba19a6ee3dd89a9",
+      "size": 619,
+      "normalized_sha256": "52194979e5b6b4da6886b004211739e55204ef8334886bc1dba19a6ee3dd89a9"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/mapper/AllocationOrderMapper.java": {
+      "role": "index",
+      "sha256": "5339785b3757baaf318322fc34ff2e724de935fd679c1cfc9210e647152e3a8e",
+      "size": 644,
+      "normalized_sha256": "5339785b3757baaf318322fc34ff2e724de935fd679c1cfc9210e647152e3a8e"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/mapper/BagStockMapper.java": {
+      "role": "index",
+      "sha256": "4b9a952f1bdb0ababa8b0e278199b9cfd95d86fc2e539f4051e1b7a0c1d948fd",
+      "size": 2356,
+      "normalized_sha256": "4b9a952f1bdb0ababa8b0e278199b9cfd95d86fc2e539f4051e1b7a0c1d948fd"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/mapper/InventoryCheckMapper.java": {
+      "role": "index",
+      "sha256": "1ffdcdd8609ecf59ac3f938e5971cb7cca9299bf75138a90e75c0c405d727272",
+      "size": 625,
+      "normalized_sha256": "1ffdcdd8609ecf59ac3f938e5971cb7cca9299bf75138a90e75c0c405d727272"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/mapper/StationMapper.java": {
+      "role": "index",
+      "sha256": "22ed79f41700c8b6ef1c701908de9529d51f2119b8f55c23fcb4c336888a6d93",
+      "size": 601,
+      "normalized_sha256": "22ed79f41700c8b6ef1c701908de9529d51f2119b8f55c23fcb4c336888a6d93"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/package-info.java": {
+      "role": "index",
+      "sha256": "9bce21408da26b4758a2155e2a165691e932e4be0c16c03ace21f76db9b06e7a",
+      "size": 130,
+      "normalized_sha256": "9bce21408da26b4758a2155e2a165691e932e4be0c16c03ace21f76db9b06e7a"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/AllocationService.java": {
+      "role": "index",
+      "sha256": "fb34be589e00781d907e1936221b5d94bcc91bc8df182576712d3a416c5740b9",
+      "size": 66285,
+      "normalized_sha256": "fb34be589e00781d907e1936221b5d94bcc91bc8df182576712d3a416c5740b9"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/RecycleService.java": {
+      "role": "index",
+      "sha256": "b9345869ecd29b9c2e32a16065a3900b7a926af161c3086519c270d63b5903e4",
+      "size": 34684,
+      "normalized_sha256": "b9345869ecd29b9c2e32a16065a3900b7a926af161c3086519c270d63b5903e4"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/StationService.java": {
+      "role": "index",
+      "sha256": "b6a0d157f93040d70f904d3691f7a1f0dd175027d93f35de2b3b80a206e32841",
+      "size": 22469,
+      "normalized_sha256": "b6a0d157f93040d70f904d3691f7a1f0dd175027d93f35de2b3b80a206e32841"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/StockQueryService.java": {
+      "role": "index",
+      "sha256": "38c92e0056fdce7bfdbc4c278335427bfcffe379c713f930a4203948430d1433",
+      "size": 6097,
+      "normalized_sha256": "38c92e0056fdce7bfdbc4c278335427bfcffe379c713f930a4203948430d1433"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/action/AllocationTransitionActions.java": {
+      "role": "index",
+      "sha256": "d8a5950a7cfffefd4760911029792a6f8b0ddcac0befed6048b38f0f4ad89e9d",
+      "size": 9845,
+      "normalized_sha256": "d8a5950a7cfffefd4760911029792a6f8b0ddcac0befed6048b38f0f4ad89e9d"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/station/service/action/StationTransitionActions.java": {
+      "role": "index",
+      "sha256": "8ddd2edb953e3752cd6cddae553a29d02b1db4a1dc9004150fb0cb8da27bdb36",
+      "size": 17643,
+      "normalized_sha256": "8ddd2edb953e3752cd6cddae553a29d02b1db4a1dc9004150fb0cb8da27bdb36"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/controller/AlertController.java": {
+      "role": "index",
+      "sha256": "3d4391f87ad917a22e7c869af0ae5df5c054931e5e8424929a10330f01a79e4b",
+      "size": 2029,
+      "normalized_sha256": "3d4391f87ad917a22e7c869af0ae5df5c054931e5e8424929a10330f01a79e4b"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/controller/StatsController.java": {
+      "role": "index",
+      "sha256": "c5648a57e35fa25fc42c9ef93b5819c941a32f366d3feeb479653559b3eaa0c3",
+      "size": 3120,
+      "normalized_sha256": "c5648a57e35fa25fc42c9ef93b5819c941a32f366d3feeb479653559b3eaa0c3"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/dto/AlertQuery.java": {
+      "role": "index",
+      "sha256": "aed577c17fe649924969b12e076c348bb3fb9b1bc8eede919af1003ae80db76c",
+      "size": 1931,
+      "normalized_sha256": "aed577c17fe649924969b12e076c348bb3fb9b1bc8eede919af1003ae80db76c"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/dto/AlertVo.java": {
+      "role": "index",
+      "sha256": "aeba1740238789ee6cd2aa45b773f131b576c0061336b6f8eedb9c881effd7c3",
+      "size": 2077,
+      "normalized_sha256": "aeba1740238789ee6cd2aa45b773f131b576c0061336b6f8eedb9c881effd7c3"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/dto/DashboardVo.java": {
+      "role": "index",
+      "sha256": "0f9e1200283d9dd7cd7fd47bb482f7032f7c033e12695c15f22e0987556ae6db",
+      "size": 2804,
+      "normalized_sha256": "0f9e1200283d9dd7cd7fd47bb482f7032f7c033e12695c15f22e0987556ae6db"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/dto/OrderTrendVo.java": {
+      "role": "index",
+      "sha256": "c438602e6584c43cfa24d9fe0c87965150381937da626ba2c4c9e600f219c628",
+      "size": 905,
+      "normalized_sha256": "c438602e6584c43cfa24d9fe0c87965150381937da626ba2c4c9e600f219c628"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/dto/StockDistributionVo.java": {
+      "role": "index",
+      "sha256": "b3b8fc006a5695c076ac2c1afce2c69c0990144de35679ab6eecb6bc3d20b84a",
+      "size": 1508,
+      "normalized_sha256": "b3b8fc006a5695c076ac2c1afce2c69c0990144de35679ab6eecb6bc3d20b84a"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/dto/TurnoverVo.java": {
+      "role": "index",
+      "sha256": "350b54c4ec1c5058b60473e5025f82e52fe70cd3acf5a5b1b7c5226229df943b",
+      "size": 805,
+      "normalized_sha256": "350b54c4ec1c5058b60473e5025f82e52fe70cd3acf5a5b1b7c5226229df943b"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/entity/StatsDaily.java": {
+      "role": "index",
+      "sha256": "65890859dd9dcc0021d2f0a0179189d40b4f1f26fccce91895215ce647e5080a",
+      "size": 1816,
+      "normalized_sha256": "65890859dd9dcc0021d2f0a0179189d40b4f1f26fccce91895215ce647e5080a"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/mapper/StatsDailyMapper.java": {
+      "role": "index",
+      "sha256": "4ea521d52a79e9b3b3aaed2c4239e7b4782a249b937f6b5ea066ca5ff19a615b",
+      "size": 610,
+      "normalized_sha256": "4ea521d52a79e9b3b3aaed2c4239e7b4782a249b937f6b5ea066ca5ff19a615b"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/mapper/StatsQueryMapper.java": {
+      "role": "index",
+      "sha256": "cdf0497739caa31ad4ffbe5519a06b70f4f28b695379d1041ec1e47173b3e43b",
+      "size": 4883,
+      "normalized_sha256": "cdf0497739caa31ad4ffbe5519a06b70f4f28b695379d1041ec1e47173b3e43b"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/package-info.java": {
+      "role": "index",
+      "sha256": "3c26ae821e82b0eb78011f9cf0d49ddaaa4f6996e2f21ad36757df1968f08df1",
+      "size": 126,
+      "normalized_sha256": "3c26ae821e82b0eb78011f9cf0d49ddaaa4f6996e2f21ad36757df1968f08df1"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/AlertService.java": {
+      "role": "index",
+      "sha256": "7e04cf0a38a2cc6f48deb03744dab04a6a4c7d38d109a637dcb27b8f2fbb00bc",
+      "size": 28957,
+      "normalized_sha256": "7e04cf0a38a2cc6f48deb03744dab04a6a4c7d38d109a637dcb27b8f2fbb00bc"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/StatsService.java": {
+      "role": "index",
+      "sha256": "5c05a28bcad8bc1a5f44016e95ab159e19a9e8a8029c46ea2abc02aa467318ec",
+      "size": 21786,
+      "normalized_sha256": "5c05a28bcad8bc1a5f44016e95ab159e19a9e8a8029c46ea2abc02aa467318ec"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/controller/UserController.java": {
+      "role": "index",
+      "sha256": "e89634cbd7291686a9209e2094dff4eab7c2856d46093c650678623ea4a947a6",
+      "size": 10214,
+      "normalized_sha256": "e89634cbd7291686a9209e2094dff4eab7c2856d46093c650678623ea4a947a6"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/dto/BindStationDto.java": {
+      "role": "index",
+      "sha256": "4c90fad4256b023785692d98de705ee91302b7a08b306f61a33c64c1149ab316",
+      "size": 711,
+      "normalized_sha256": "4c90fad4256b023785692d98de705ee91302b7a08b306f61a33c64c1149ab316"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/dto/ChangePasswordDto.java": {
+      "role": "index",
+      "sha256": "f7436dbe147f8f89780c6c4f8e2098a523c147bf1d78ff319333e109823fd659",
+      "size": 1027,
+      "normalized_sha256": "f7436dbe147f8f89780c6c4f8e2098a523c147bf1d78ff319333e109823fd659"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/dto/CreateUserDto.java": {
+      "role": "index",
+      "sha256": "8904e13989a79e14cc4032d2fd29d8a667f467c21d9f757605dc4b07824d733a",
+      "size": 1880,
+      "normalized_sha256": "8904e13989a79e14cc4032d2fd29d8a667f467c21d9f757605dc4b07824d733a"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/dto/RoleVo.java": {
+      "role": "index",
+      "sha256": "7aed510d4c2ea0171aecc6834677f1ae200c66ab9ede4c13cb972b7480baaae0",
+      "size": 723,
+      "normalized_sha256": "7aed510d4c2ea0171aecc6834677f1ae200c66ab9ede4c13cb972b7480baaae0"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/dto/UpdateProfileDto.java": {
+      "role": "index",
+      "sha256": "fa39570c57cdbf67239b4a94f5c99cb7285b38d86fe2e43dbcecae5ae5c934ba",
+      "size": 708,
+      "normalized_sha256": "fa39570c57cdbf67239b4a94f5c99cb7285b38d86fe2e43dbcecae5ae5c934ba"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/dto/UpdateRolesDto.java": {
+      "role": "index",
+      "sha256": "46ed058a6e2f88aa9d4cc29228b5b467e915abcec7db6032e91fd3471d6695c9",
+      "size": 1062,
+      "normalized_sha256": "46ed058a6e2f88aa9d4cc29228b5b467e915abcec7db6032e91fd3471d6695c9"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/dto/UpdateStatusDto.java": {
+      "role": "index",
+      "sha256": "4f298836074234754bb10ea8a5099d22987c0e963046decb23c22e3b8dd65cfd",
+      "size": 805,
+      "normalized_sha256": "4f298836074234754bb10ea8a5099d22987c0e963046decb23c22e3b8dd65cfd"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/dto/UserDetailVo.java": {
+      "role": "index",
+      "sha256": "cafbc9bbd0077112516b46b9b69797ef3d910aa9a57298d90dbc6644495beca1",
+      "size": 1417,
+      "normalized_sha256": "cafbc9bbd0077112516b46b9b69797ef3d910aa9a57298d90dbc6644495beca1"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/dto/UserInfoVo.java": {
+      "role": "index",
+      "sha256": "9feba312cd01becffea88a874c68ab8b97f481982ae9a69167e737b454181bf4",
+      "size": 1106,
+      "normalized_sha256": "9feba312cd01becffea88a874c68ab8b97f481982ae9a69167e737b454181bf4"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/dto/UserQuery.java": {
+      "role": "index",
+      "sha256": "6ec35c0b59a256446e3ff4b3fe160e4c7b6052c2d3fcbac57f863c4a275eb87b",
+      "size": 1364,
+      "normalized_sha256": "6ec35c0b59a256446e3ff4b3fe160e4c7b6052c2d3fcbac57f863c4a275eb87b"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/entity/SysRole.java": {
+      "role": "index",
+      "sha256": "0e82aa66936aa9b9ec7c667cdeec4881e702d2268a22fc0cda5d3d7fb3ec7226",
+      "size": 1458,
+      "normalized_sha256": "0e82aa66936aa9b9ec7c667cdeec4881e702d2268a22fc0cda5d3d7fb3ec7226"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/entity/SysUser.java": {
+      "role": "index",
+      "sha256": "b4dbe9c06142b5786498f26e6d25c73317d2ad10445c727c31478ac6220b3e7c",
+      "size": 2390,
+      "normalized_sha256": "b4dbe9c06142b5786498f26e6d25c73317d2ad10445c727c31478ac6220b3e7c"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/entity/SysUserRole.java": {
+      "role": "index",
+      "sha256": "d336e91c257eb58657c223243dc373479c77c5d81ddd65a4c6be97a113abd9bb",
+      "size": 1081,
+      "normalized_sha256": "d336e91c257eb58657c223243dc373479c77c5d81ddd65a4c6be97a113abd9bb"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/mapper/SysRoleMapper.java": {
+      "role": "index",
+      "sha256": "39a0d37230b389371419d89538a41b8d1c5423c188407716b826b0b0e224a805",
+      "size": 513,
+      "normalized_sha256": "39a0d37230b389371419d89538a41b8d1c5423c188407716b826b0b0e224a805"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/mapper/SysUserMapper.java": {
+      "role": "index",
+      "sha256": "963c4b49c1fb816660355e3557c21d88458a8ac310a9143b9565f86ffa6e18ea",
+      "size": 1624,
+      "normalized_sha256": "963c4b49c1fb816660355e3557c21d88458a8ac310a9143b9565f86ffa6e18ea"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/mapper/SysUserRoleMapper.java": {
+      "role": "index",
+      "sha256": "5ad6082b64f14b2ed535b744f358e670cac1162488268d68f255ab6f0aa7d081",
+      "size": 513,
+      "normalized_sha256": "5ad6082b64f14b2ed535b744f358e670cac1162488268d68f255ab6f0aa7d081"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/package-info.java": {
+      "role": "index",
+      "sha256": "b1e7c8e9c6f31bbf228350ae44966bf19d16ed4ee3453ef7b771a20fe5cb0b2e",
+      "size": 124,
+      "normalized_sha256": "b1e7c8e9c6f31bbf228350ae44966bf19d16ed4ee3453ef7b771a20fe5cb0b2e"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/module/user/service/UserService.java": {
+      "role": "index",
+      "sha256": "ed952f4f583e2a0b9a60bde79496c96dfc1b2b12907f9242940d5db9b759e34d",
+      "size": 27679,
+      "normalized_sha256": "ed952f4f583e2a0b9a60bde79496c96dfc1b2b12907f9242940d5db9b759e34d"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/push/PushService.java": {
+      "role": "index",
+      "sha256": "d57863cbac3cb5388a3387291991900a801ec3d6a52f17f819fa98d120d2b85f",
+      "size": 5007,
+      "normalized_sha256": "d57863cbac3cb5388a3387291991900a801ec3d6a52f17f819fa98d120d2b85f"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/push/SemsWsHandler.java": {
+      "role": "index",
+      "sha256": "0ecb0abd120585e1e6adeac687d592d99c33ec94798ae666ee6647b818c03a74",
+      "size": 12641,
+      "normalized_sha256": "0ecb0abd120585e1e6adeac687d592d99c33ec94798ae666ee6647b818c03a74"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/push/WsMessage.java": {
+      "role": "index",
+      "sha256": "5722085b4971624c07d5d706dab6eb80c3bdf65fdb201d0891ebbb3d840b1a5c",
+      "size": 3828,
+      "normalized_sha256": "5722085b4971624c07d5d706dab6eb80c3bdf65fdb201d0891ebbb3d840b1a5c"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/push/WsSessionManager.java": {
+      "role": "index",
+      "sha256": "4d5331235f643bb100bdcb0d1a42f52cf4e2944a5f4df3cb23330188a1aab921",
+      "size": 19372,
+      "normalized_sha256": "4d5331235f643bb100bdcb0d1a42f52cf4e2944a5f4df3cb23330188a1aab921"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthContext.java": {
+      "role": "index",
+      "sha256": "613004c472347c258a681d4fa4c6d4f830fdb8694c2b9df131a19c07fed8f08e",
+      "size": 3235,
+      "normalized_sha256": "613004c472347c258a681d4fa4c6d4f830fdb8694c2b9df131a19c07fed8f08e"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthInterceptor.java": {
+      "role": "index",
+      "sha256": "86e9979c3c38044a4211b1a65e7e9d2175a5dd23cc0679148ad7545b0798576a",
+      "size": 15361,
+      "normalized_sha256": "86e9979c3c38044a4211b1a65e7e9d2175a5dd23cc0679148ad7545b0798576a"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/security/AuthzInterceptor.java": {
+      "role": "index",
+      "sha256": "40ac4af7de8889f3aa1b65f4093a742665bd6e9418db89add49047bd54d11416",
+      "size": 9062,
+      "normalized_sha256": "40ac4af7de8889f3aa1b65f4093a742665bd6e9418db89add49047bd54d11416"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/security/CurrentUser.java": {
+      "role": "index",
+      "sha256": "1438009e98fa2d8ad5ae5630ca57def5291db094e82a2ae579ab4b3464074201",
+      "size": 933,
+      "normalized_sha256": "1438009e98fa2d8ad5ae5630ca57def5291db094e82a2ae579ab4b3464074201"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/security/JwtService.java": {
+      "role": "index",
+      "sha256": "cc5dd5832ef72536e40f98eff358963d378f5dce30eb6cb112e282dbfd22ead3",
+      "size": 16582,
+      "normalized_sha256": "cc5dd5832ef72536e40f98eff358963d378f5dce30eb6cb112e282dbfd22ead3"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/security/LoginUser.java": {
+      "role": "index",
+      "sha256": "e828d9aa5d94eb4148677af79df031e719ab8abb6f962f36ca8b3ff2f152b9e4",
+      "size": 3241,
+      "normalized_sha256": "e828d9aa5d94eb4148677af79df031e719ab8abb6f962f36ca8b3ff2f152b9e4"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/security/RequireRole.java": {
+      "role": "index",
+      "sha256": "c464b3820a928141b13459f75f8e921b18406f00e3ba411aec94edacf295d40e",
+      "size": 1468,
+      "normalized_sha256": "c464b3820a928141b13459f75f8e921b18406f00e3ba411aec94edacf295d40e"
+    },
+    "Shared Express Mailer System/backend/src/main/java/com/sems/security/package-info.java": {
+      "role": "index",
+      "sha256": "e7ec8b63cbac44c4e2f5d10f7a60bdb3cd42faf8d0afa2315526753194b43533",
+      "size": 118,
+      "normalized_sha256": "e7ec8b63cbac44c4e2f5d10f7a60bdb3cd42faf8d0afa2315526753194b43533"
+    },
+    "Shared Express Mailer System/backend/src/main/resources/application-dev.yml": {
+      "role": "index",
+      "sha256": "a5efa3761b9d02534d251831445123d9f36ed16c5b7d0359db7bf941f07ecf16",
+      "size": 1648,
+      "normalized_sha256": "a5efa3761b9d02534d251831445123d9f36ed16c5b7d0359db7bf941f07ecf16"
+    },
+    "Shared Express Mailer System/backend/src/main/resources/application-prod.yml": {
+      "role": "index",
+      "sha256": "d07f8003c2a73f1e0b289d53a3e77e4d4186f9f9e54b0f88f9d260bcfe6dfdda",
+      "size": 1161,
+      "normalized_sha256": "d07f8003c2a73f1e0b289d53a3e77e4d4186f9f9e54b0f88f9d260bcfe6dfdda"
+    },
+    "Shared Express Mailer System/backend/src/main/resources/application.yml": {
+      "role": "index",
+      "sha256": "373893a78d1b3caf74c9267c6ab17128ba774b3b6359de1e66d2a879a7090d72",
+      "size": 4163,
+      "normalized_sha256": "373893a78d1b3caf74c9267c6ab17128ba774b3b6359de1e66d2a879a7090d72"
+    },
+    "Shared Express Mailer System/backend/src/main/resources/logback-spring.xml": {
+      "role": "index",
+      "sha256": "f52792d1272797b786fcb8f926ff08fd44a07bb6f30082007429ba32b1916ebf",
+      "size": 2728,
+      "normalized_sha256": "f52792d1272797b786fcb8f926ff08fd44a07bb6f30082007429ba32b1916ebf"
+    },
+    "Shared Express Mailer System/backend/src/main/resources/lua/stock_compensate.lua": {
+      "role": "index",
+      "sha256": "827ef59a0fb9da41bda1f284f177a91d1d13ea839ddbaf3d4d765e322691eaca",
+      "size": 831,
+      "normalized_sha256": "827ef59a0fb9da41bda1f284f177a91d1d13ea839ddbaf3d4d765e322691eaca"
+    },
+    "Shared Express Mailer System/backend/src/main/resources/lua/stock_deduct.lua": {
+      "role": "index",
+      "sha256": "420375e634dc7170066f542b68f041dc33bae5eaaa7ea869eba9a573761d75e4",
+      "size": 1559,
+      "normalized_sha256": "420375e634dc7170066f542b68f041dc33bae5eaaa7ea869eba9a573761d75e4"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/common/ErrorCodeMappingTest.java": {
+      "role": "index",
+      "sha256": "01524519a84280057a1cba7406ba597e8bc6d0607a5b8230f09869437c8efbf5",
+      "size": 3945,
+      "normalized_sha256": "01524519a84280057a1cba7406ba597e8bc6d0607a5b8230f09869437c8efbf5"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/infra/StockServiceRecoveryTest.java": {
+      "role": "index",
+      "sha256": "a2b3e5d36bc9aa61959893a295c2f7fc22f1ed9ca4e8724e5e6b5a172c008be7",
+      "size": 8243,
+      "normalized_sha256": "a2b3e5d36bc9aa61959893a295c2f7fc22f1ed9ca4e8724e5e6b5a172c008be7"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/module/bag/service/action/BagTransitionActionsTest.java": {
+      "role": "index",
+      "sha256": "e51e40619c80298be26c097c9e937c0d91aba7421f034291a48b8da1398defd3",
+      "size": 7286,
+      "normalized_sha256": "e51e40619c80298be26c097c9e937c0d91aba7421f034291a48b8da1398defd3"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/push/PushTransactionTest.java": {
+      "role": "index",
+      "sha256": "8441c61709e7303b85bbe13929bfd821f4c56b5b8338b294d92cb606e445c140",
+      "size": 1839,
+      "normalized_sha256": "8441c61709e7303b85bbe13929bfd821f4c56b5b8338b294d92cb606e445c140"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/push/WebSocketSecurityTest.java": {
+      "role": "index",
+      "sha256": "20870ff4cc536946cb1aaf9f29abbf3d23a6165cb178a674e16fca9cc681cf14",
+      "size": 7161,
+      "normalized_sha256": "20870ff4cc536946cb1aaf9f29abbf3d23a6165cb178a674e16fca9cc681cf14"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/aspect/AuditAspectTest.java": {
+      "role": "index",
+      "sha256": "fcfb0c61564baaf72aab50cab9fd602d913f2d2ccedee0894b86eb649530b400",
+      "size": 3945,
+      "normalized_sha256": "fcfb0c61564baaf72aab50cab9fd602d913f2d2ccedee0894b86eb649530b400"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/audit/AuditLogPersistenceTest.java": {
+      "role": "index",
+      "sha256": "30618b11db60f82af91abf873c7056dcc4d9087ef59a9a2d9d33bdb772670ed0",
+      "size": 4283,
+      "normalized_sha256": "30618b11db60f82af91abf873c7056dcc4d9087ef59a9a2d9d33bdb772670ed0"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/audit/AuditQueryServiceTest.java": {
+      "role": "index",
+      "sha256": "f7de1d2bc4b9da059f7469348e0105258c0419dbf56486f12f8a641faa7dfc40",
+      "size": 3488,
+      "normalized_sha256": "f7de1d2bc4b9da059f7469348e0105258c0419dbf56486f12f8a641faa7dfc40"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/auth/AuthenticationServiceTest.java": {
+      "role": "index",
+      "sha256": "4a0e1b84a9ec772cb35f94fb6736192290810398dd90f5793db400e385bd43cc",
+      "size": 8550,
+      "normalized_sha256": "4a0e1b84a9ec772cb35f94fb6736192290810398dd90f5793db400e385bd43cc"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/auth/CaptchaServiceTest.java": {
+      "role": "index",
+      "sha256": "e699abe8e3b1bf20420be456fb7b6eb761d9aba7be063c78cdc67b409a30d419",
+      "size": 2039,
+      "normalized_sha256": "e699abe8e3b1bf20420be456fb7b6eb761d9aba7be063c78cdc67b409a30d419"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/auth/JwtContractTest.java": {
+      "role": "index",
+      "sha256": "04462361f261bdf1a59bfd787d7931885ae3c6d215dc2111caf65988dddb27e1",
+      "size": 4267,
+      "normalized_sha256": "04462361f261bdf1a59bfd787d7931885ae3c6d215dc2111caf65988dddb27e1"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/bag/BagOperationIdempotencyTest.java": {
+      "role": "index",
+      "sha256": "af95845a7f9212391de715bcece76dad34d8ae453b8eee3e48676a7b0eee4b09",
+      "size": 4719,
+      "normalized_sha256": "af95845a7f9212391de715bcece76dad34d8ae453b8eee3e48676a7b0eee4b09"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/bag/BagServiceAccessTest.java": {
+      "role": "index",
+      "sha256": "c39113426466eba7e9a3ff4595a795b726ded355da295cbc09366a8dbe58158f",
+      "size": 5341,
+      "normalized_sha256": "c39113426466eba7e9a3ff4595a795b726ded355da295cbc09366a8dbe58158f"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/bag/BagServiceCreationTest.java": {
+      "role": "index",
+      "sha256": "aaf350e8cf2b7b3ef86f1c58f522f0c4c2563cc6d7b3a0e8b0d604ab9b2f0d37",
+      "size": 14312,
+      "normalized_sha256": "aaf350e8cf2b7b3ef86f1c58f522f0c4c2563cc6d7b3a0e8b0d604ab9b2f0d37"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/bag/DisinfectServiceTest.java": {
+      "role": "index",
+      "sha256": "50eebe933019436683570747e5d3dab10e3d47afa4e9957f404d9c11432169f8",
+      "size": 8833,
+      "normalized_sha256": "50eebe933019436683570747e5d3dab10e3d47afa4e9957f404d9c11432169f8"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/bag/InventoryCheckServiceWorkflowTest.java": {
+      "role": "index",
+      "sha256": "23e0d61046aa236835788d25a723ac3fb8bb5bc026b9547a40ab8cb73222e85b",
+      "size": 8398,
+      "normalized_sha256": "23e0d61046aa236835788d25a723ac3fb8bb5bc026b9547a40ab8cb73222e85b"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/common/GlobalExceptionHandlerTest.java": {
+      "role": "index",
+      "sha256": "f85e7ea28b64995e27f7923e6033bb3a4a0d483a731b496e239b7d8e34884bc0",
+      "size": 10845,
+      "normalized_sha256": "f85e7ea28b64995e27f7923e6033bb3a4a0d483a731b496e239b7d8e34884bc0"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/common/JsonUtilsTest.java": {
+      "role": "index",
+      "sha256": "1e96886e95c2da27228daf65262cc08d25fe9ffb3cd803c743f7974cd10b3207",
+      "size": 2499,
+      "normalized_sha256": "1e96886e95c2da27228daf65262cc08d25fe9ffb3cd803c743f7974cd10b3207"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/common/UtilsTest.java": {
+      "role": "index",
+      "sha256": "67c57e99e2bbc3c986bb5721ff3e11f70f0d810091333779b66276cf2a1ef045",
+      "size": 8688,
+      "normalized_sha256": "67c57e99e2bbc3c986bb5721ff3e11f70f0d810091333779b66276cf2a1ef045"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/controller/AuthUserControllerTest.java": {
+      "role": "index",
+      "sha256": "dc82521684c0459fd910db4779afb64852dd1dddfdb78b2e89ac28241efcca99",
+      "size": 9021,
+      "normalized_sha256": "dc82521684c0459fd910db4779afb64852dd1dddfdb78b2e89ac28241efcca99"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/controller/BagControllerTest.java": {
+      "role": "index",
+      "sha256": "feff0d939d3b1ce1fbb86ee824e95eddac779319892abf66c987567646537fde",
+      "size": 7259,
+      "normalized_sha256": "feff0d939d3b1ce1fbb86ee824e95eddac779319892abf66c987567646537fde"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/controller/ControllerRouteContractTest.java": {
+      "role": "index",
+      "sha256": "3ed67dcce9806043d0e1c0d19efbdcd71037339a328cfb437b3d4172bfe6e241",
+      "size": 12098,
+      "normalized_sha256": "3ed67dcce9806043d0e1c0d19efbdcd71037339a328cfb437b3d4172bfe6e241"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/controller/OperationsControllerTest.java": {
+      "role": "index",
+      "sha256": "6bd97f12536985e0b5d13eae3c4dc457c2936db99c89f4cf6502cbd1857a997d",
+      "size": 10490,
+      "normalized_sha256": "6bd97f12536985e0b5d13eae3c4dc457c2936db99c89f4cf6502cbd1857a997d"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/controller/ReadControllerDelegationTest.java": {
+      "role": "index",
+      "sha256": "829cb6d024940cccd19f43894947beb2efcb61fb524d173e9173af4b0f14d2aa",
+      "size": 7905,
+      "normalized_sha256": "829cb6d024940cccd19f43894947beb2efcb61fb524d173e9173af4b0f14d2aa"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/infra/CounterServiceTest.java": {
+      "role": "index",
+      "sha256": "7bb12c20c3d016fef678482d3147263389dc0a3b235bf9aebad0c954f50db36a",
+      "size": 3924,
+      "normalized_sha256": "7bb12c20c3d016fef678482d3147263389dc0a3b235bf9aebad0c954f50db36a"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/infra/IdempotentServiceTest.java": {
+      "role": "index",
+      "sha256": "baf9f6e266ed8cadaecd436e19beae19b8c88ddcde382b7e3cc45921f4e23d83",
+      "size": 7852,
+      "normalized_sha256": "baf9f6e266ed8cadaecd436e19beae19b8c88ddcde382b7e3cc45921f4e23d83"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/infra/RateLimitServiceTest.java": {
+      "role": "index",
+      "sha256": "5b717c5e324a7ce2f91c3084aa9cac4b6728fc40d4994285bc4cf3381275dcc2",
+      "size": 2058,
+      "normalized_sha256": "5b717c5e324a7ce2f91c3084aa9cac4b6728fc40d4994285bc4cf3381275dcc2"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/job/DailyStatisticsJobTest.java": {
+      "role": "index",
+      "sha256": "c136e1a96d2a5fc50d6826267b46594ba584833bdcc49044efb1eb0147e63f4d",
+      "size": 3093,
+      "normalized_sha256": "c136e1a96d2a5fc50d6826267b46594ba584833bdcc49044efb1eb0147e63f4d"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/job/ReconciliationJobsTest.java": {
+      "role": "index",
+      "sha256": "8064e3b5f10181c6a1e2612e071359245a38224147753d2ec3537c0abc5e5ab3",
+      "size": 7918,
+      "normalized_sha256": "8064e3b5f10181c6a1e2612e071359245a38224147753d2ec3537c0abc5e5ab3"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/job/RecoveryReminderJobTest.java": {
+      "role": "index",
+      "sha256": "c45e3d4cbf0592ac275f07f15184a0a540a2b8c7735d03ef38d75d10288e410c",
+      "size": 3412,
+      "normalized_sha256": "c45e3d4cbf0592ac275f07f15184a0a540a2b8c7735d03ef38d75d10288e410c"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/order/BorrowServiceFlowTest.java": {
+      "role": "index",
+      "sha256": "7c21e4514db0add6a0c9fc9a7f7c7885af437faf4b2875b125b48fa9df223340",
+      "size": 11616,
+      "normalized_sha256": "7c21e4514db0add6a0c9fc9a7f7c7885af437faf4b2875b125b48fa9df223340"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/order/BorrowServiceIdempotencyTest.java": {
+      "role": "index",
+      "sha256": "382443d0331995e03c38a080eb501e5397a376c9b5821d320fb6842857070398",
+      "size": 2114,
+      "normalized_sha256": "382443d0331995e03c38a080eb501e5397a376c9b5821d320fb6842857070398"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/order/OrderServiceAccessTest.java": {
+      "role": "index",
+      "sha256": "31a9df73f176bf4cb19d14931f9d9eced322eaf9a7bb28480e6263caa14a4fef",
+      "size": 8578,
+      "normalized_sha256": "31a9df73f176bf4cb19d14931f9d9eced322eaf9a7bb28480e6263caa14a4fef"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/order/OrderTransitionActionsTest.java": {
+      "role": "index",
+      "sha256": "0942fc213a159d6849cfa737f87a6c1ecf8ce2e70e941c3743f9822a0648ffaf",
+      "size": 8449,
+      "normalized_sha256": "0942fc213a159d6849cfa737f87a6c1ecf8ce2e70e941c3743f9822a0648ffaf"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/security/AuthInterceptorTest.java": {
+      "role": "index",
+      "sha256": "7313f147ab387161ac063293c961f5f89ef85f5b70b106eb1b7753708aaad430",
+      "size": 6547,
+      "normalized_sha256": "7313f147ab387161ac063293c961f5f89ef85f5b70b106eb1b7753708aaad430"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/security/AuthzInterceptorTest.java": {
+      "role": "index",
+      "sha256": "64dd8c992ca2b9b4b17aebe1bf5aeb2dfd6ea1676623b00a215e524c4ddfae13",
+      "size": 5148,
+      "normalized_sha256": "64dd8c992ca2b9b4b17aebe1bf5aeb2dfd6ea1676623b00a215e524c4ddfae13"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/statemachine/BagLifecycleSimplificationTest.java": {
+      "role": "index",
+      "sha256": "dfef3758efbc31374459f9e97b6c60aaafb708a3503b14a60695ddd645ff0a71",
+      "size": 3108,
+      "normalized_sha256": "dfef3758efbc31374459f9e97b6c60aaafb708a3503b14a60695ddd645ff0a71"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/statemachine/BagTransitionServiceTest.java": {
+      "role": "index",
+      "sha256": "ad62a96f30363e0f7c9f8c68bf06506c50318d93e7358ca6eb4dbc50b1d519b8",
+      "size": 17223,
+      "normalized_sha256": "ad62a96f30363e0f7c9f8c68bf06506c50318d93e7358ca6eb4dbc50b1d519b8"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/statemachine/TransitionRegistryTest.java": {
+      "role": "index",
+      "sha256": "13caec9e625c3e1267034a6c401642958dbf182f36024143576d09c128bd5b93",
+      "size": 12137,
+      "normalized_sha256": "13caec9e625c3e1267034a6c401642958dbf182f36024143576d09c128bd5b93"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/station/AllocationServiceTest.java": {
+      "role": "index",
+      "sha256": "efe1db621ee8e54253b374e3558db2decd981f6c8d00142e79da87dfdd34d66c",
+      "size": 23904,
+      "normalized_sha256": "efe1db621ee8e54253b374e3558db2decd981f6c8d00142e79da87dfdd34d66c"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/station/RecycleServiceTest.java": {
+      "role": "index",
+      "sha256": "29b7b7b006c90428b3c4b1f4860084dc7f69480c0264547d68a7efa2e6941f6f",
+      "size": 6485,
+      "normalized_sha256": "29b7b7b006c90428b3c4b1f4860084dc7f69480c0264547d68a7efa2e6941f6f"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/station/StationServiceTest.java": {
+      "role": "index",
+      "sha256": "3563feb80a505eac9862a9b8e113ea04c230465b78e82976952a3c0d31f8da9e",
+      "size": 9143,
+      "normalized_sha256": "3563feb80a505eac9862a9b8e113ea04c230465b78e82976952a3c0d31f8da9e"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/station/StationTransitionActionsTest.java": {
+      "role": "index",
+      "sha256": "97152db57b3b73589c18d6f541bcea26449973a386aac6d5d0c8516e8827c18e",
+      "size": 11582,
+      "normalized_sha256": "582c44b06bfd5fc280fd9729bda8662485d5d833bc0683bfb321bb19a01da8d1"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/station/StockQueryServiceTest.java": {
+      "role": "index",
+      "sha256": "3f4df14cd693c885961b56d661a6ad06e6706fded4c7f7baf7fb6b48178698ad",
+      "size": 2817,
+      "normalized_sha256": "3f4df14cd693c885961b56d661a6ad06e6706fded4c7f7baf7fb6b48178698ad"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/stats/AlertServiceTest.java": {
+      "role": "index",
+      "sha256": "9681bfc630dffe198fefa30f22920d08d494b5071091417927b6ea65d74be59a",
+      "size": 4185,
+      "normalized_sha256": "9681bfc630dffe198fefa30f22920d08d494b5071091417927b6ea65d74be59a"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/stats/StatsServiceTest.java": {
+      "role": "index",
+      "sha256": "f40d0b5a43f8f74ff6b077aceec5c204a3500bc2295a618d7e1dc8a1b49a8b66",
+      "size": 7021,
+      "normalized_sha256": "f40d0b5a43f8f74ff6b077aceec5c204a3500bc2295a618d7e1dc8a1b49a8b66"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/support/MybatisTestMetadata.java": {
+      "role": "index",
+      "sha256": "66700e3dd522218ba37ffecae7ec0cb21fdaccf479a21621ffe3ea4aec35141b",
+      "size": 945,
+      "normalized_sha256": "66700e3dd522218ba37ffecae7ec0cb21fdaccf479a21621ffe3ea4aec35141b"
+    },
+    "Shared Express Mailer System/backend/src/test/java/com/sems/unit/user/UserServiceTest.java": {
+      "role": "index",
+      "sha256": "2d9bd6bacb422f96368789b9e44576b1642c7c850e30e9098c1585c82158838c",
+      "size": 8355,
+      "normalized_sha256": "2d9bd6bacb422f96368789b9e44576b1642c7c850e30e9098c1585c82158838c"
+    },
+    "Shared Express Mailer System/deploy/docker/.env.example": {
+      "role": "index",
+      "sha256": "53d1f6b96eb33877280c5d412a3df77d74181e28a206c3a3063886a1ac6a7dbf",
+      "size": 542,
+      "normalized_sha256": "53d1f6b96eb33877280c5d412a3df77d74181e28a206c3a3063886a1ac6a7dbf"
+    },
+    "Shared Express Mailer System/deploy/docker/docker-compose.yml": {
+      "role": "index",
+      "sha256": "85d39303d7277823b95ebb43480c57a440f4c7ee577d0d9bcb4a417af12dc9a6",
+      "size": 3157,
+      "normalized_sha256": "8ae8647487fb7f818ff268e8f3d0cf0ca195bde0d58480c2d4db9c119ebf52cd"
+    },
+    "Shared Express Mailer System/deploy/nginx/nginx.conf.example": {
+      "role": "index",
+      "sha256": "3e3fb4d5383e17ff616e063be504f3adffa5d5305997818ce3cce865aa69f000",
+      "size": 5857,
+      "normalized_sha256": "acc39d1ba90a6863bf1e39497ba8739424223c64a929291d6757a25fb270e4e9"
+    },
+    "Shared Express Mailer System/deploy/sql/README.md": {
+      "role": "index",
+      "sha256": "057e40f007e0bda434063431bba342609427c2fc85d8d2c5cf95abde45a3aadd",
+      "size": 3040,
+      "normalized_sha256": "057e40f007e0bda434063431bba342609427c2fc85d8d2c5cf95abde45a3aadd"
+    },
+    "Shared Express Mailer System/deploy/sql/V1__init_schema.sql": {
+      "role": "index",
+      "sha256": "041ffd4c42845d5e237c00230b47388a34db75f03faf3aa1e1e60e189580e7d7",
+      "size": 29368,
+      "normalized_sha256": "041ffd4c42845d5e237c00230b47388a34db75f03faf3aa1e1e60e189580e7d7"
+    },
+    "Shared Express Mailer System/deploy/sql/V2__init_data.sql": {
+      "role": "index",
+      "sha256": "364819e9d210b8ba66f4da8044a0dfd11e2faf5760a5815fcad11785226d6ba7",
+      "size": 3738,
+      "normalized_sha256": "1b01d4d5b9e0b69f8a429b14574fceec4358b37eea55c40126153b63eae33801"
+    },
+    "Shared Express Mailer System/deploy/sql/V3__simplify_bag_status.sql": {
+      "role": "index",
+      "sha256": "61ab7c946d16bd9fad3f8d129a42234e9fdb0b17c366c2a22071747355594340",
+      "size": 815,
+      "normalized_sha256": "61ab7c946d16bd9fad3f8d129a42234e9fdb0b17c366c2a22071747355594340"
+    },
+    "Shared Express Mailer System/docs/releases/v0.1.1.md": {
+      "role": "index",
+      "sha256": "05e4e192c0d89b347e323f7a3ede69e2103b9764d54568399fc47ca0bed0b5e0",
+      "size": 2182,
+      "normalized_sha256": "05e4e192c0d89b347e323f7a3ede69e2103b9764d54568399fc47ca0bed0b5e0"
+    },
+    "Shared Express Mailer System/frontend/.gitignore": {
+      "role": "index",
+      "sha256": "4e291409af50198e736ce3a8efdf36922f9ad038c010ce39728304f904f05df3",
+      "size": 317,
+      "normalized_sha256": "4e291409af50198e736ce3a8efdf36922f9ad038c010ce39728304f904f05df3"
+    },
+    "Shared Express Mailer System/frontend/README.md": {
+      "role": "index",
+      "sha256": "634b76bda23779045bd3365ad72ef01e5f60e8d2893cf80e86171f44d2ab3c11",
+      "size": 4922,
+      "normalized_sha256": "634b76bda23779045bd3365ad72ef01e5f60e8d2893cf80e86171f44d2ab3c11"
+    },
+    "Shared Express Mailer System/frontend/index.html": {
+      "role": "index",
+      "sha256": "e807519f8a8d77f9f472df1ce72cc4fc34f225dbdef264ff6d67914d8683914a",
+      "size": 704,
+      "normalized_sha256": "e807519f8a8d77f9f472df1ce72cc4fc34f225dbdef264ff6d67914d8683914a"
+    },
+    "Shared Express Mailer System/frontend/package-lock.json": {
+      "role": "index",
+      "sha256": "0377c4286c3d564d4eb3362034056d5b39bf6b7ec90d7b4888c37bc4872639c3",
+      "size": 72514,
+      "normalized_sha256": "0377c4286c3d564d4eb3362034056d5b39bf6b7ec90d7b4888c37bc4872639c3"
+    },
+    "Shared Express Mailer System/frontend/package.json": {
+      "role": "index",
+      "sha256": "3c99445ee12e39d7da21371d43fe8a275a5303615cfb7452d86a0c91b60d3fb3",
+      "size": 657,
+      "normalized_sha256": "3c99445ee12e39d7da21371d43fe8a275a5303615cfb7452d86a0c91b60d3fb3"
+    },
+    "Shared Express Mailer System/frontend/src/App.vue": {
+      "role": "index",
+      "sha256": "8565a1f12fb07acd684cf50e466cf804e98ea31258960816844f1ab6b285ecee",
+      "size": 1756,
+      "normalized_sha256": "8565a1f12fb07acd684cf50e466cf804e98ea31258960816844f1ab6b285ecee"
+    },
+    "Shared Express Mailer System/frontend/src/api/allocation.js": {
+      "role": "index",
+      "sha256": "a7684d8d4711ebe99e1c655796ba79d07f61574a2233858b3cfcf5988d7e2eb2",
+      "size": 2403,
+      "normalized_sha256": "a7684d8d4711ebe99e1c655796ba79d07f61574a2233858b3cfcf5988d7e2eb2"
+    },
+    "Shared Express Mailer System/frontend/src/api/auth.js": {
+      "role": "index",
+      "sha256": "6434ef2c60c50b90a3d0fc2dbc10b1800a09521ddd8b14df5774666ab06337f7",
+      "size": 1021,
+      "normalized_sha256": "6434ef2c60c50b90a3d0fc2dbc10b1800a09521ddd8b14df5774666ab06337f7"
+    },
+    "Shared Express Mailer System/frontend/src/api/bag.js": {
+      "role": "index",
+      "sha256": "c254bee88230eef6f8caad8a9dc3386988bf3bb8d5e339f68fc0408b917025c4",
+      "size": 4384,
+      "normalized_sha256": "c254bee88230eef6f8caad8a9dc3386988bf3bb8d5e339f68fc0408b917025c4"
+    },
+    "Shared Express Mailer System/frontend/src/api/order.js": {
+      "role": "index",
+      "sha256": "8fe99e247def731605c81fbfd26c633cc65a49ce9b7c3dc7131b240fc9e94e4c",
+      "size": 2353,
+      "normalized_sha256": "8fe99e247def731605c81fbfd26c633cc65a49ce9b7c3dc7131b240fc9e94e4c"
+    },
+    "Shared Express Mailer System/frontend/src/api/station.js": {
+      "role": "index",
+      "sha256": "e8bab6b03d4f6e599b7158743ab1a4280eddb4901952fc8aed93d4c0adf677ba",
+      "size": 1883,
+      "normalized_sha256": "e8bab6b03d4f6e599b7158743ab1a4280eddb4901952fc8aed93d4c0adf677ba"
+    },
+    "Shared Express Mailer System/frontend/src/api/stats.js": {
+      "role": "index",
+      "sha256": "57b53484107c4074e967eac10483f088f9536d3273b18102bdf41926e99d88f9",
+      "size": 2360,
+      "normalized_sha256": "57b53484107c4074e967eac10483f088f9536d3273b18102bdf41926e99d88f9"
+    },
+    "Shared Express Mailer System/frontend/src/api/user.js": {
+      "role": "index",
+      "sha256": "0898a48a2da4fdcb436ba7d2c47c432954ea1e2fe0750532433d442dd7cfeed7",
+      "size": 1613,
+      "normalized_sha256": "0898a48a2da4fdcb436ba7d2c47c432954ea1e2fe0750532433d442dd7cfeed7"
+    },
+    "Shared Express Mailer System/frontend/src/components/BagCodeInput.vue": {
+      "role": "index",
+      "sha256": "c67acd08caa1285b350841e3f5db68c9eb685e87711fc228c8f9af4efb07daa0",
+      "size": 5563,
+      "normalized_sha256": "c67acd08caa1285b350841e3f5db68c9eb685e87711fc228c8f9af4efb07daa0"
+    },
+    "Shared Express Mailer System/frontend/src/components/BagTimeline.vue": {
+      "role": "index",
+      "sha256": "3af847e4ab4d49646b012f2e06b4164b60cd2c1a0822432ed0355e981c82a747",
+      "size": 5082,
+      "normalized_sha256": "3af847e4ab4d49646b012f2e06b4164b60cd2c1a0822432ed0355e981c82a747"
+    },
+    "Shared Express Mailer System/frontend/src/components/BatchResultDialog.vue": {
+      "role": "index",
+      "sha256": "80f6af479cbf8281aa52a187243565c045ca238faeaa197e375d9de63759467b",
+      "size": 8106,
+      "normalized_sha256": "80f6af479cbf8281aa52a187243565c045ca238faeaa197e375d9de63759467b"
+    },
+    "Shared Express Mailer System/frontend/src/components/DataPager.vue": {
+      "role": "index",
+      "sha256": "c0b7c0e0a6e488cd36d5e3c6a9eab49b29916d5d540ade4021c8cce352869c8a",
+      "size": 3423,
+      "normalized_sha256": "c0b7c0e0a6e488cd36d5e3c6a9eab49b29916d5d540ade4021c8cce352869c8a"
+    },
+    "Shared Express Mailer System/frontend/src/components/EmptyState.vue": {
+      "role": "index",
+      "sha256": "1852bf182a44f44e6ad81754ed9462a0e585d59aa3af34b7e9a1aad600ee6897",
+      "size": 1294,
+      "normalized_sha256": "1852bf182a44f44e6ad81754ed9462a0e585d59aa3af34b7e9a1aad600ee6897"
+    },
+    "Shared Express Mailer System/frontend/src/components/PageCard.vue": {
+      "role": "index",
+      "sha256": "431d5286538a0a4980c3ad798feaf89e8bf9d6fe2a5c7255275668c0273dd78d",
+      "size": 1978,
+      "normalized_sha256": "431d5286538a0a4980c3ad798feaf89e8bf9d6fe2a5c7255275668c0273dd78d"
+    },
+    "Shared Express Mailer System/frontend/src/components/PageSkeleton.vue": {
+      "role": "index",
+      "sha256": "b26b2a85bafa89818c71246d83ab9447507aed2eb1564e2833037fe016227a52",
+      "size": 3030,
+      "normalized_sha256": "b26b2a85bafa89818c71246d83ab9447507aed2eb1564e2833037fe016227a52"
+    },
+    "Shared Express Mailer System/frontend/src/components/StatCard.vue": {
+      "role": "index",
+      "sha256": "3b4827b3ef01ff5f41816f0e3c4a2f9a517b5133185868b02dd34b0b956f6399",
+      "size": 2815,
+      "normalized_sha256": "3b4827b3ef01ff5f41816f0e3c4a2f9a517b5133185868b02dd34b0b956f6399"
+    },
+    "Shared Express Mailer System/frontend/src/components/StatusTag.vue": {
+      "role": "index",
+      "sha256": "5220c734c30830cf514ccdd95831b423c95ff69c30dbd706da8868fcbb6d58a4",
+      "size": 4420,
+      "normalized_sha256": "5220c734c30830cf514ccdd95831b423c95ff69c30dbd706da8868fcbb6d58a4"
+    },
+    "Shared Express Mailer System/frontend/src/constants/index.js": {
+      "role": "index",
+      "sha256": "9f1d3f7778796db1e17820cb57f5e814b9799bf328cb72c6f837c94fb104191f",
+      "size": 7194,
+      "normalized_sha256": "9f1d3f7778796db1e17820cb57f5e814b9799bf328cb72c6f837c94fb104191f"
+    },
+    "Shared Express Mailer System/frontend/src/layouts/AdminLayout.vue": {
+      "role": "index",
+      "sha256": "28642436feb30697deb36642651ac5076f3b2848852d8582326c53e0b325e380",
+      "size": 10990,
+      "normalized_sha256": "28642436feb30697deb36642651ac5076f3b2848852d8582326c53e0b325e380"
+    },
+    "Shared Express Mailer System/frontend/src/layouts/UserLayout.vue": {
+      "role": "index",
+      "sha256": "afed9cf6bf204e698b4f27f50830b3bfb86f82e38aed55754e8f18a5b5f70a1e",
+      "size": 6505,
+      "normalized_sha256": "afed9cf6bf204e698b4f27f50830b3bfb86f82e38aed55754e8f18a5b5f70a1e"
+    },
+    "Shared Express Mailer System/frontend/src/main.js": {
+      "role": "index",
+      "sha256": "15de52ffb305aabba22625bf601094737bd40a8b02937f7d39d92787553a0e4b",
+      "size": 1879,
+      "normalized_sha256": "15de52ffb305aabba22625bf601094737bd40a8b02937f7d39d92787553a0e4b"
+    },
+    "Shared Express Mailer System/frontend/src/router/index.js": {
+      "role": "index",
+      "sha256": "fef02935f79e26025dd9ef4655332bf63399bdebb9100cb35e74a05c29a10437",
+      "size": 9103,
+      "normalized_sha256": "fef02935f79e26025dd9ef4655332bf63399bdebb9100cb35e74a05c29a10437"
+    },
+    "Shared Express Mailer System/frontend/src/stores/user.js": {
+      "role": "index",
+      "sha256": "e8475b0de59c243c2f07cb6223acc30bb92adc908957520b27ccfb649c208081",
+      "size": 5016,
+      "normalized_sha256": "e8475b0de59c243c2f07cb6223acc30bb92adc908957520b27ccfb649c208081"
+    },
+    "Shared Express Mailer System/frontend/src/stores/websocket.js": {
+      "role": "index",
+      "sha256": "cd6d2220224edef1245473c4a3592003496c34aa51bc2a1ca4ff71f53ca789ec",
+      "size": 6369,
+      "normalized_sha256": "cd6d2220224edef1245473c4a3592003496c34aa51bc2a1ca4ff71f53ca789ec"
+    },
+    "Shared Express Mailer System/frontend/src/styles/element-override.css": {
+      "role": "index",
+      "sha256": "67dfdab4df3ecf5e90dce8678bef5837e8aaf8916f7c59e43b9024ce9ff987b5",
+      "size": 8163,
+      "normalized_sha256": "67dfdab4df3ecf5e90dce8678bef5837e8aaf8916f7c59e43b9024ce9ff987b5"
+    },
+    "Shared Express Mailer System/frontend/src/styles/index.css": {
+      "role": "index",
+      "sha256": "d9f758caa0fce8b0a0d10fef677cd0ee10051d45a578a183a6525a712b008716",
+      "size": 2228,
+      "normalized_sha256": "d9f758caa0fce8b0a0d10fef677cd0ee10051d45a578a183a6525a712b008716"
+    },
+    "Shared Express Mailer System/frontend/src/styles/tokens.css": {
+      "role": "index",
+      "sha256": "7e8dfed9a3482e614b49e71ce55682c752cc9ecad2ef53b0c03ffd37ca7c956f",
+      "size": 5644,
+      "normalized_sha256": "7e8dfed9a3482e614b49e71ce55682c752cc9ecad2ef53b0c03ffd37ca7c956f"
+    },
+    "Shared Express Mailer System/frontend/src/utils/batch.js": {
+      "role": "index",
+      "sha256": "22f95300be15575d2c480c0a1f608b1d238a9974bced97ad4d0657082e44195b",
+      "size": 2560,
+      "normalized_sha256": "22f95300be15575d2c480c0a1f608b1d238a9974bced97ad4d0657082e44195b"
+    },
+    "Shared Express Mailer System/frontend/src/utils/request.js": {
+      "role": "index",
+      "sha256": "e384bdd5bd9869e679c92e8c9f880d8676b778165d1dd86f374a91ecb28ccb9f",
+      "size": 9212,
+      "normalized_sha256": "e384bdd5bd9869e679c92e8c9f880d8676b778165d1dd86f374a91ecb28ccb9f"
+    },
+    "Shared Express Mailer System/frontend/src/utils/scanner.js": {
+      "role": "index",
+      "sha256": "e10fee7d3949e52ae446a4c2013861fb58f518d2a192786904b3b149022fe4c1",
+      "size": 10640,
+      "normalized_sha256": "e10fee7d3949e52ae446a4c2013861fb58f518d2a192786904b3b149022fe4c1"
+    },
+    "Shared Express Mailer System/frontend/src/utils/validators.js": {
+      "role": "index",
+      "sha256": "63b5c6c169d6e2b9fba6f6c0f038c36cd01367ac368668622b1061d5cdc97bd5",
+      "size": 3953,
+      "normalized_sha256": "63b5c6c169d6e2b9fba6f6c0f038c36cd01367ac368668622b1061d5cdc97bd5"
+    },
+    "Shared Express Mailer System/frontend/src/views/common/ChangePassword.vue": {
+      "role": "index",
+      "sha256": "cfc52e6e232a72e82949b92cb45541336ecaa60d5e3dae8a341e340477b2018a",
+      "size": 7011,
+      "normalized_sha256": "cfc52e6e232a72e82949b92cb45541336ecaa60d5e3dae8a341e340477b2018a"
+    },
+    "Shared Express Mailer System/frontend/src/views/common/Forbidden.vue": {
+      "role": "index",
+      "sha256": "77099a585d1dd464be6ef7c579a273ee3d0bcea7fa62ea950b58c89a0bbd1f54",
+      "size": 1599,
+      "normalized_sha256": "77099a585d1dd464be6ef7c579a273ee3d0bcea7fa62ea950b58c89a0bbd1f54"
+    },
+    "Shared Express Mailer System/frontend/src/views/common/Login.vue": {
+      "role": "index",
+      "sha256": "ef004f4ca88a16f2fa014f73f829c124bdd29c65cfdcf42c7f76f598da52dd7b",
+      "size": 14992,
+      "normalized_sha256": "ef004f4ca88a16f2fa014f73f829c124bdd29c65cfdcf42c7f76f598da52dd7b"
+    },
+    "Shared Express Mailer System/frontend/src/views/common/NotFound.vue": {
+      "role": "index",
+      "sha256": "dde91a08cc35cbc87769790eb86062c2bf63f693203bad8fa652065c46a6eb5e",
+      "size": 1642,
+      "normalized_sha256": "dde91a08cc35cbc87769790eb86062c2bf63f693203bad8fa652065c46a6eb5e"
+    },
+    "Shared Express Mailer System/frontend/src/views/common/Register.vue": {
+      "role": "index",
+      "sha256": "40951c27506e7308b34db8880f12d06f846a5668c791976ecc093adf23dd014e",
+      "size": 13188,
+      "normalized_sha256": "40951c27506e7308b34db8880f12d06f846a5668c791976ecc093adf23dd014e"
+    },
+    "Shared Express Mailer System/frontend/src/views/platform/Alerts.vue": {
+      "role": "index",
+      "sha256": "2c9780cbddaacd234d8631cf0e05034fe6c8d024f515a63c58a8c83753bb2890",
+      "size": 14606,
+      "normalized_sha256": "2c9780cbddaacd234d8631cf0e05034fe6c8d024f515a63c58a8c83753bb2890"
+    },
+    "Shared Express Mailer System/frontend/src/views/platform/AllocationManage.vue": {
+      "role": "index",
+      "sha256": "02bc99dbbbaf36a0e08384067b7d0cd83affde8c557f0a8fb335d5c54ae14b10",
+      "size": 47294,
+      "normalized_sha256": "02bc99dbbbaf36a0e08384067b7d0cd83affde8c557f0a8fb335d5c54ae14b10"
+    },
+    "Shared Express Mailer System/frontend/src/views/platform/AuditLog.vue": {
+      "role": "index",
+      "sha256": "1a3483ff1dab92f1e933fa60a420276117da9475adcc0261abace4eb036f0e6e",
+      "size": 17364,
+      "normalized_sha256": "1a3483ff1dab92f1e933fa60a420276117da9475adcc0261abace4eb036f0e6e"
+    },
+    "Shared Express Mailer System/frontend/src/views/platform/BagDetail.vue": {
+      "role": "index",
+      "sha256": "65e0a1c8813dd48c91fd014fb18aa0e45bdd5c5b88aafb2ca097c7c1708333bd",
+      "size": 21876,
+      "normalized_sha256": "65e0a1c8813dd48c91fd014fb18aa0e45bdd5c5b88aafb2ca097c7c1708333bd"
+    },
+    "Shared Express Mailer System/frontend/src/views/platform/BagLedger.vue": {
+      "role": "index",
+      "sha256": "781cb5518a0ec235db6b618dde63b374ae5945851c9976b246aaf84c039249e3",
+      "size": 38568,
+      "normalized_sha256": "781cb5518a0ec235db6b618dde63b374ae5945851c9976b246aaf84c039249e3"
+    },
+    "Shared Express Mailer System/frontend/src/views/platform/Dashboard.vue": {
+      "role": "index",
+      "sha256": "dc72c91774af565b3143435f941831891411d195754a10420aa1afeb03fcf769",
+      "size": 29113,
+      "normalized_sha256": "dc72c91774af565b3143435f941831891411d195754a10420aa1afeb03fcf769"
+    },
+    "Shared Express Mailer System/frontend/src/views/platform/LoginLog.vue": {
+      "role": "index",
+      "sha256": "c003aaa24fcf37297ae7880049f7b35485f9995799ea6882174be4aa33ef60d4",
+      "size": 11733,
+      "normalized_sha256": "c003aaa24fcf37297ae7880049f7b35485f9995799ea6882174be4aa33ef60d4"
+    },
+    "Shared Express Mailer System/frontend/src/views/platform/OrderManage.vue": {
+      "role": "index",
+      "sha256": "a2e65a8657602f20fe0e92ea1eb2e370cc9623fd135b140a29e2e2be9095280e",
+      "size": 27363,
+      "normalized_sha256": "a2e65a8657602f20fe0e92ea1eb2e370cc9623fd135b140a29e2e2be9095280e"
+    },
+    "Shared Express Mailer System/frontend/src/views/platform/StationManage.vue": {
+      "role": "index",
+      "sha256": "99d71a1839b47c98018ef0d40d2ed34a1c2dcfde9f6970e21f2644cd8bf4777b",
+      "size": 23950,
+      "normalized_sha256": "99d71a1839b47c98018ef0d40d2ed34a1c2dcfde9f6970e21f2644cd8bf4777b"
+    },
+    "Shared Express Mailer System/frontend/src/views/platform/UserManage.vue": {
+      "role": "index",
+      "sha256": "0813ae11b67bf13799d4d6be06fdf7c88f85ad6a5bfc6a4f31edb5be997485f1",
+      "size": 28182,
+      "normalized_sha256": "0813ae11b67bf13799d4d6be06fdf7c88f85ad6a5bfc6a4f31edb5be997485f1"
+    },
+    "Shared Express Mailer System/frontend/src/views/station/Allocation.vue": {
+      "role": "index",
+      "sha256": "fa314040a0375dc49e2648589ce23560864e8470033e976acb1ead7e442238d5",
+      "size": 18819,
+      "normalized_sha256": "fa314040a0375dc49e2648589ce23560864e8470033e976acb1ead7e442238d5"
+    },
+    "Shared Express Mailer System/frontend/src/views/station/BagDetail.vue": {
+      "role": "index",
+      "sha256": "6d3e1ce56cafeb41465942aa32dc2ed418fd4cc304c39db0d246145677171b01",
+      "size": 17809,
+      "normalized_sha256": "6d3e1ce56cafeb41465942aa32dc2ed418fd4cc304c39db0d246145677171b01"
+    },
+    "Shared Express Mailer System/frontend/src/views/station/BagLedger.vue": {
+      "role": "index",
+      "sha256": "512b5e83df25c9ed7eba46a6d936a45a0c198b340fabfd659c10e988364b37a0",
+      "size": 22138,
+      "normalized_sha256": "512b5e83df25c9ed7eba46a6d936a45a0c198b340fabfd659c10e988364b37a0"
+    },
+    "Shared Express Mailer System/frontend/src/views/station/Disinfection.vue": {
+      "role": "index",
+      "sha256": "3bb157aa688080e8573b1aa1db0c681ab6d533edd8db62420e449a9493b51ffc",
+      "size": 28180,
+      "normalized_sha256": "3bb157aa688080e8573b1aa1db0c681ab6d533edd8db62420e449a9493b51ffc"
+    },
+    "Shared Express Mailer System/frontend/src/views/station/InventoryCheck.vue": {
+      "role": "index",
+      "sha256": "9fbf5113b8b933cd29a6534eeafafcba1af783aff4926009a48e109ccaed7ac5",
+      "size": 29136,
+      "normalized_sha256": "9fbf5113b8b933cd29a6534eeafafcba1af783aff4926009a48e109ccaed7ac5"
+    },
+    "Shared Express Mailer System/frontend/src/views/station/RecycleConfirm.vue": {
+      "role": "index",
+      "sha256": "46cb7b973210a3df5b8b7e5e71e4c6ccef9a7b58c523abf08ace20764142813e",
+      "size": 16785,
+      "normalized_sha256": "46cb7b973210a3df5b8b7e5e71e4c6ccef9a7b58c523abf08ace20764142813e"
+    },
+    "Shared Express Mailer System/frontend/src/views/station/RepairScrap.vue": {
+      "role": "index",
+      "sha256": "42da52eac1108353a75c9d9c5e71e3baa02265202569d09a87f59a09f5fb5d55",
+      "size": 14558,
+      "normalized_sha256": "42da52eac1108353a75c9d9c5e71e3baa02265202569d09a87f59a09f5fb5d55"
+    },
+    "Shared Express Mailer System/frontend/src/views/station/StockInOut.vue": {
+      "role": "index",
+      "sha256": "34c0a55b8624c0cc748118e92fd2709b83fcd8cb4f22baef5f2f29aaa77265ce",
+      "size": 8133,
+      "normalized_sha256": "34c0a55b8624c0cc748118e92fd2709b83fcd8cb4f22baef5f2f29aaa77265ce"
+    },
+    "Shared Express Mailer System/frontend/src/views/station/Workbench.vue": {
+      "role": "index",
+      "sha256": "a670d7f6a4718e8db20d5f562f33287bc23f866513310fac7a5bee24fc0e4801",
+      "size": 16726,
+      "normalized_sha256": "a670d7f6a4718e8db20d5f562f33287bc23f866513310fac7a5bee24fc0e4801"
+    },
+    "Shared Express Mailer System/frontend/src/views/user/BagInfo.vue": {
+      "role": "index",
+      "sha256": "37966adee9e8def074628ff28ebb3e6d8d31355899ab8c6d98c798e29423f25c",
+      "size": 11087,
+      "normalized_sha256": "37966adee9e8def074628ff28ebb3e6d8d31355899ab8c6d98c798e29423f25c"
+    },
+    "Shared Express Mailer System/frontend/src/views/user/Home.vue": {
+      "role": "index",
+      "sha256": "f922db0b07c9e4fed8d2e33647ac5a1cc48997b416bb161e353d3a3de600c191",
+      "size": 11433,
+      "normalized_sha256": "f922db0b07c9e4fed8d2e33647ac5a1cc48997b416bb161e353d3a3de600c191"
+    },
+    "Shared Express Mailer System/frontend/src/views/user/MyOrders.vue": {
+      "role": "index",
+      "sha256": "df96002328dde532643ff7acb8ace7f41d73b57c809f01368f7d1016eae66c46",
+      "size": 14806,
+      "normalized_sha256": "df96002328dde532643ff7acb8ace7f41d73b57c809f01368f7d1016eae66c46"
+    },
+    "Shared Express Mailer System/frontend/src/views/user/OrderDetail.vue": {
+      "role": "index",
+      "sha256": "6ccd862b41dadbcab8f82aca324f24c22f8e97ed2b2fb80ae579cc73c2664ab8",
+      "size": 15277,
+      "normalized_sha256": "6ccd862b41dadbcab8f82aca324f24c22f8e97ed2b2fb80ae579cc73c2664ab8"
+    },
+    "Shared Express Mailer System/frontend/src/views/user/Profile.vue": {
+      "role": "index",
+      "sha256": "fec299f3412448e39065394c2bb9a60390669e4e95500dc4ca56485045204d3f",
+      "size": 8950,
+      "normalized_sha256": "fec299f3412448e39065394c2bb9a60390669e4e95500dc4ca56485045204d3f"
+    },
+    "Shared Express Mailer System/frontend/src/views/user/ScanBorrow.vue": {
+      "role": "index",
+      "sha256": "84a58e71c969318597dfaee4a9d41a5618c622fbcc6bb13dd01920ed317c19be",
+      "size": 19390,
+      "normalized_sha256": "84a58e71c969318597dfaee4a9d41a5618c622fbcc6bb13dd01920ed317c19be"
+    },
+    "Shared Express Mailer System/frontend/src/views/user/ShippingForm.vue": {
+      "role": "index",
+      "sha256": "26562d65724d3a79ef53b38bb468b9c7a9d82f69c520d3db4ff70ecc16e579c6",
+      "size": 9432,
+      "normalized_sha256": "26562d65724d3a79ef53b38bb468b9c7a9d82f69c520d3db4ff70ecc16e579c6"
+    },
+    "Shared Express Mailer System/frontend/vite.config.js": {
+      "role": "index",
+      "sha256": "8177c5d23326eebb33f6a9b33c72d6cd7ebfa05113b63c0959d5be78a6cf0763",
+      "size": 2003,
+      "normalized_sha256": "8177c5d23326eebb33f6a9b33c72d6cd7ebfa05113b63c0959d5be78a6cf0763"
+    },
+    "Shared Express Mailer System/scripts/check-env.cmd": {
+      "role": "index",
+      "sha256": "73f9574b063b6bdc3a15f6e423dd8a679e2c4400b179dbad85ac76ef84c94e97",
+      "size": 710,
+      "normalized_sha256": "2f6ef0f3cc630bacfaa20afcc4554927bc043c1d4039ae25a4600673a92c5e48"
+    },
+    "Shared Express Mailer System/scripts/check-md-tables.py": {
+      "role": "index",
+      "sha256": "6dfac1fb3a8b1de1f91e035403cc7a9d4ba3fc6598342ce3d6fb6f47a9d1125f",
+      "size": 2322,
+      "normalized_sha256": "6dfac1fb3a8b1de1f91e035403cc7a9d4ba3fc6598342ce3d6fb6f47a9d1125f"
+    },
+    "Shared Express Mailer System/scripts/db-down.cmd": {
+      "role": "index",
+      "sha256": "4d69998336c8b3daaf61243d05f50288e60c7a9e5ca6ce1d88da949799d6e04d",
+      "size": 266,
+      "normalized_sha256": "dd9062feeb1defca38141ca84273bc80b0bc0bdbe120847d301973f6110a8c61"
+    },
+    "Shared Express Mailer System/scripts/db-navicat-compat.ps1": {
+      "role": "index",
+      "sha256": "b2facc3047866a80d1e9f87330d900f0bbc485a0833b8c0b8a7ca27b6c96a17c",
+      "size": 2811,
+      "normalized_sha256": "b2facc3047866a80d1e9f87330d900f0bbc485a0833b8c0b8a7ca27b6c96a17c"
+    },
+    "Shared Express Mailer System/scripts/db-reset.cmd": {
+      "role": "index",
+      "sha256": "46b1b3f5d126cda9f2bf999187666e006afb18433a188523370e168418b43cc2",
+      "size": 780,
+      "normalized_sha256": "f807122e5635ad807537c87e2d7ed14849289bbe2e304a935a01d1ca59b071c8"
+    },
+    "Shared Express Mailer System/scripts/db-up.cmd": {
+      "role": "index",
+      "sha256": "4b1f2860375260d55733a9e5d18db3f44087f24b53d5b1e006fa788f9afd8782",
+      "size": 2372,
+      "normalized_sha256": "141943a31545219a5879a833c0e343db8f70eb6bcb785ddb9ca4d603b53e7805"
+    },
+    "Shared Express Mailer System/scripts/remote-access.mjs": {
+      "role": "index",
+      "sha256": "0d8639bac9d4e9454772be5f3a74a780fab47c682fc6507226d0965cb3157565",
+      "size": 7700,
+      "normalized_sha256": "0d8639bac9d4e9454772be5f3a74a780fab47c682fc6507226d0965cb3157565"
+    },
+    "Shared Express Mailer System/scripts/远程手机访问说明.md": {
+      "role": "index",
+      "sha256": "8a88bd033c1504b422c2ef15ac91e3520f847a441f4b7a002e518e57320f699c",
+      "size": 1668,
+      "normalized_sha256": "8a88bd033c1504b422c2ef15ac91e3520f847a441f4b7a002e518e57320f699c"
+    },
+    "aoci.code.txt": {
+      "role": "index",
+      "sha256": "685ca857e1d35dd986c3f89dd6e65a0522d1729b37d1b8e9b37c51c1757e5164",
+      "size": 150856,
+      "normalized_sha256": "685ca857e1d35dd986c3f89dd6e65a0522d1729b37d1b8e9b37c51c1757e5164"
+    },
+    "aoci.database.txt": {
+      "role": "index",
+      "sha256": "f8be40bf17d2c72c3c603da54cb1bb779f91378086d77b11951d4d699955dbfd",
+      "size": 9026,
+      "normalized_sha256": "f8be40bf17d2c72c3c603da54cb1bb779f91378086d77b11951d4d699955dbfd"
+    },
+    "aoci.meta.txt": {
+      "role": "index",
+      "sha256": "fbc304fa05182547e96f1f8404c7c30ad6c366bba9589523f1019c2c1da0427c",
+      "size": 1989,
+      "normalized_sha256": "fbc304fa05182547e96f1f8404c7c30ad6c366bba9589523f1019c2c1da0427c"
+    },
+    "aoci.txt": {
+      "role": "index",
+      "sha256": "8dcd14a2f99867739b041f6710cc3e7f46dca5d9c79033031a040fc27425dac3",
+      "size": 423,
+      "normalized_sha256": "8dcd14a2f99867739b041f6710cc3e7f46dca5d9c79033031a040fc27425dac3"
+    },
+    "文档/任务书/2240241121_曾攀 本科毕业设计任务书.doc": {
+      "role": "index",
+      "sha256": "fadd0e70216b9266defa3bb179b46f3842104e39bc3c5c2974db8125b79fc6b3",
+      "size": 45056
+    },
+    "文档/任务书/_extracted.txt": {
+      "role": "index",
+      "sha256": "a8330789566ed27b1859639b23c99697ed5dea78c5ac3b1eb3e5df29b0c9da48",
+      "size": 10192,
+      "normalized_sha256": "a8330789566ed27b1859639b23c99697ed5dea78c5ac3b1eb3e5df29b0c9da48"
+    },
+    "文档/归档/全量合规审计意见_2026-10-06.md": {
+      "role": "index",
+      "sha256": "9bd76700befc6e4a8ad0585f7fd614351d484ff33f10ef99a3e5c3e80a7de8e8",
+      "size": 46456,
+      "normalized_sha256": "c4be53cb81bc01bba24df7e6d24d9ddd9e0d310cc3d96a30293801c21730399b"
+    },
+    "文档/归档/全量合规审计意见_处理记录_2026-10-06.md": {
+      "role": "index",
+      "sha256": "ec7c0426a4ebdb9b9b876ea5fc011d4c074bfce33044d9db97499330125e7f04",
+      "size": 31854,
+      "normalized_sha256": "a0c92f49d1b19f57b797788febc0e7462013136a6416933b531c8692779d226f"
+    },
+    "文档/归档/四态模型回归测试记录_2026-10-07.md": {
+      "role": "index",
+      "sha256": "de3421d8faa8b753c18a8e49dd8280af384601c9d1071da1ab541558404314bc",
+      "size": 2754,
+      "normalized_sha256": "de3421d8faa8b753c18a8e49dd8280af384601c9d1071da1ab541558404314bc"
+    },
+    "文档/归档/系统设计说明书_审核意见.md": {
+      "role": "index",
+      "sha256": "cd3f107ceba56f5b5e0003d465eeabdf328ba723e3aef4de6115683bc0b44406",
+      "size": 33574,
+      "normalized_sha256": "cd3f107ceba56f5b5e0003d465eeabdf328ba723e3aef4de6115683bc0b44406"
+    },
+    "文档/归档/系统设计说明书_审核意见处理记录.md": {
+      "role": "index",
+      "sha256": "1ecae4d0f24fa82b2550570bde72227fcafc55ebf6f9efe7e02fdbe34c64cfe7",
+      "size": 13038,
+      "normalized_sha256": "1ecae4d0f24fa82b2550570bde72227fcafc55ebf6f9efe7e02fdbe34c64cfe7"
+    },
+    "文档/归档/编码实现合规审计意见_2026-10-06.md": {
+      "role": "index",
+      "sha256": "52b7a31d64d00e76abb933f3ca0c0f5f059a2ac2e3448896c6e49ce6446f9744",
+      "size": 66166,
+      "normalized_sha256": "52b7a31d64d00e76abb933f3ca0c0f5f059a2ac2e3448896c6e49ce6446f9744"
+    },
+    "文档/归档/编码实现合规审计意见_处理记录_2026-10-06.md": {
+      "role": "index",
+      "sha256": "877ceead87d117563f64db0a60ae586370c9e463159f11ae9e5d19f373b32610",
+      "size": 41814,
+      "normalized_sha256": "877ceead87d117563f64db0a60ae586370c9e463159f11ae9e5d19f373b32610"
+    },
+    "文档/数据库设计说明书.md": {
+      "role": "index",
+      "sha256": "5e27c4d6c730e3e8dce24f82680038a66bbd4dec755899c09e6087907061761c",
+      "size": 69072,
+      "normalized_sha256": "5e27c4d6c730e3e8dce24f82680038a66bbd4dec755899c09e6087907061761c"
+    },
+    "文档/测试报告.md": {
+      "role": "index",
+      "sha256": "4fc3608eea0491723aa237424c086ed1341ee5bb6540c831d756181cb9875aa5",
+      "size": 5094,
+      "normalized_sha256": "4fc3608eea0491723aa237424c086ed1341ee5bb6540c831d756181cb9875aa5"
+    },
+    "文档/测试附件/v0.1.1/接口与并发回归.json": {
+      "role": "index",
+      "sha256": "d2c70260f007a1f478bc0bd51b3f963d68284249229502d397b197bee05c2478",
+      "size": 2558,
+      "normalized_sha256": "59f5975c930635abef48dc4decf01e1194a06cb2605c426566a828e88aef0019"
+    },
+    "文档/测试附件/v0.1.1/覆盖率摘要.json": {
+      "role": "index",
+      "sha256": "fbeca7cebad5246743851c5616305acc640537ba0296ed77d87ce164bbf3127b",
+      "size": 645,
+      "normalized_sha256": "fbeca7cebad5246743851c5616305acc640537ba0296ed77d87ce164bbf3127b"
+    },
+    "文档/系统设计说明书.md": {
+      "role": "index",
+      "sha256": "1d04a6d809e750953370ffe0aa1327c6851ee74ae7c8ddaa27c1de4fc7a4d283",
+      "size": 191453,
+      "normalized_sha256": "1d04a6d809e750953370ffe0aa1327c6851ee74ae7c8ddaa27c1de4fc7a4d283"
+    },
+    "文档/需求规格说明书.md": {
+      "role": "index",
+      "sha256": "e40b524d2c8ad10b053d198d351318618b69cb54b6c8a734e06696930b012b11",
+      "size": 189179,
+      "normalized_sha256": "e40b524d2c8ad10b053d198d351318618b69cb54b6c8a734e06696930b012b11"
+    }
+  },
+  "managed_scope": {
+    "version": "managed-scope-baseline/v1",
+    "policy_identity": "c81414aa1ad20edc6cdd8c9d904678ca476240ca1a991b5d31759dcae114efd1",
+    "observe_change_policy": "review_required",
+    "budget_policy_identity": "15e9b37a6c57e9bf03c9df3d0d049eb5b9a7f5540f9d34960408114e2538a32d",
+    "budget_policy": {
+      "version": "cognition-budget-policy/v1",
+      "mode": "enforce",
+      "whole_index": {
+        "target_tokens": 200000,
+        "warning_tokens": 300000,
+        "max_tokens": 400000
+      },
+      "r": [
+        {
+          "min_c": 1,
+          "max_c": 4,
+          "target_tokens": 25,
+          "max_tokens": 50
+        },
+        {
+          "min_c": 5,
+          "max_c": 7,
+          "target_tokens": 45,
+          "max_tokens": 90
+        },
+        {
+          "min_c": 8,
+          "max_c": 8,
+          "target_tokens": 70,
+          "max_tokens": 140
+        },
+        {
+          "min_c": 9,
+          "max_c": 9,
+          "target_tokens": 90,
+          "max_tokens": 180
+        }
+      ],
+      "s": [
+        {
+          "min_c": 1,
+          "max_c": 4,
+          "target_tokens": 20,
+          "max_tokens": 40
+        },
+        {
+          "min_c": 5,
+          "max_c": 7,
+          "target_tokens": 40,
+          "max_tokens": 80
+        },
+        {
+          "min_c": 8,
+          "max_c": 8,
+          "target_tokens": 70,
+          "max_tokens": 140
+        },
+        {
+          "min_c": 9,
+          "max_c": 9,
+          "target_tokens": 100,
+          "max_tokens": 200
+        }
+      ]
+    },
+    "apply_authorization_mode": "auto"
+  },
+  "database_cognition": {
+    "version": "database-cognition-binding/v1",
+    "entries": [
+      {
+        "object_ref": "database://sems-local/sems/allocation_detail",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "6b53764608a6e0d7550b7598ff3d7008d9fb5f218e4ac97890ab08829f849d13",
+        "entry_sha256": "12db97d393621e4b1fbd64210404456f0d94cda6ed0d113fd49ec8131e1c6352"
+      },
+      {
+        "object_ref": "database://sems-local/sems/allocation_order",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "1fbdc6a99d7d80f56e313e94fc40cec3cbec363312caa33a4ad6d8dd094914eb",
+        "entry_sha256": "7ae8117e561fe597d0113e18c73a0f6f5767c789516e8ffb3c03a24c9478beaf"
+      },
+      {
+        "object_ref": "database://sems-local/sems/audit_log",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "e2a5eae5651ca0ca6d58a2f460c48e4920d444ec9dcf876670c34a78be4e56fa",
+        "entry_sha256": "c0574b2851db78b8c571129ceba7bc32eec6d6926794e4221ab93bc20d63beb8"
+      },
+      {
+        "object_ref": "database://sems-local/sems/bag",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "a8645501f27bfecc5aed5e556f3fe80ccf4837fa2b125146f719d9bec50498e2",
+        "entry_sha256": "fc95db006690f9b4553143b03155bd6d0dc919f7c4c31ee8a3a05d61042a9a11"
+      },
+      {
+        "object_ref": "database://sems-local/sems/bag_order",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "7d6ed08e23775b3b965b68ec29afddc04fea849742c80cd669c94dd69fe16fb7",
+        "entry_sha256": "b20ee49de4b11b18d1787785172ead4f5acc61733916f248553370fb5ef97955"
+      },
+      {
+        "object_ref": "database://sems-local/sems/bag_transfer_log",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "bee8b84322df55f74353b4f155cf54c33d3c0520ba3417fe504fc2eac6524d44",
+        "entry_sha256": "598ea2fb7f1f8cdce434b62084f43240e39424eae3d4d487b67ea5a6c33cc3e5"
+      },
+      {
+        "object_ref": "database://sems-local/sems/disinfect_detail",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "89e126ad67de37eca37cd3a6c2eef10391aa70782ae7a465b3559037351794a2",
+        "entry_sha256": "689890f8fb01a7606943714ab87efc8ee016a17c32b265bde956a4734facd86e"
+      },
+      {
+        "object_ref": "database://sems-local/sems/disinfect_record",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "91757529937e5fa51f02fefa07dd4473be960fa20ab488bf77ccb7976c0d3902",
+        "entry_sha256": "6f5e7601e3ac50857e6cfa0b1908eebf69b022f9c45652e1581a73ce16ea7def"
+      },
+      {
+        "object_ref": "database://sems-local/sems/inventory_check",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "87806898157ba2f436dca734a7fb496124cf10bd8e0757cb3a215aa87c8e0034",
+        "entry_sha256": "419fcb0de9da3443bff57005302272e9701f7fd46963ef33bd7678b54c49d7df"
+      },
+      {
+        "object_ref": "database://sems-local/sems/liability_record",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "a55f630432cafb9d3edfe0e8cabff469410c0bac4581c7e458b85def92782d56",
+        "entry_sha256": "0c552daeafaa7c2af3a5dfd325c3851b07800550a938b606d6360dedbd4dfe33"
+      },
+      {
+        "object_ref": "database://sems-local/sems/login_log",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "605bff1f161d692b8cfeab0c8e8c37ff3bece1274e26aa35859465f4d6d0d430",
+        "entry_sha256": "3a616345c70987968c9db139dfdbbd578148fc7ba190c4ac6f761dbdacdeb2c8"
+      },
+      {
+        "object_ref": "database://sems-local/sems/repair_record",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "18a04cac8f321880f7393970c7e6b023a088a6b35300a35e6cd7b6875fee818d",
+        "entry_sha256": "c7932e4550292da00564e75780e5ea1cf94cc91bfba6179035b42e64b6c6d336"
+      },
+      {
+        "object_ref": "database://sems-local/sems/scrap_record",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "7d62b047d52c6588b5e60997012e3507899abca4155d272f056bc8e7228423e0",
+        "entry_sha256": "ea27e3c272361ebafe673be334efc408ebe20e85dc9222d5f92aae1e8dd3846c"
+      },
+      {
+        "object_ref": "database://sems-local/sems/station",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "ddc95976a004c054f216929b9e3b978d3e5a331313e27c3f0456346714e39958",
+        "entry_sha256": "b6ab6ec42f8e17fb4f50356c1262611cd0d665289aa74d124f56b2abff664df5"
+      },
+      {
+        "object_ref": "database://sems-local/sems/stats_daily",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "7f806901c89d656c74fa6efff38938fc86512d0d66c2d3b865b7309d15bbeb6d",
+        "entry_sha256": "c09feaa658bd914ba6cb772908ba36ca3c96b2d4871c4aa92758ae61bf8b0616"
+      },
+      {
+        "object_ref": "database://sems-local/sems/stock_compensation_log",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "f3ca09f2934449cf3a41f499c8a0b0ab5e9f7c4bc043b8eb1ee7b2c682fa0ab3",
+        "entry_sha256": "51f0ae1eb5ea515230dafab9fe7b17306ad463c7cd5849db90602038aad96b1c"
+      },
+      {
+        "object_ref": "database://sems-local/sems/stock_record",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "fc8e85c144eafa73cc6ce3c53b108b01f59b124d3dcd0c59255be61b741afc5c",
+        "entry_sha256": "1278dc704ee2b84e432595d21b6bcd96fd9a2ac503ef4e27bf482e806ac676cc"
+      },
+      {
+        "object_ref": "database://sems-local/sems/sys_metric",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "d7bfe6632244448eae4aac0065dae1b1b9ca3324f2efa2ab2966e8b8ad99ed2f",
+        "entry_sha256": "ce1d254195680628322a8cf0d5d33379146a3474d4ef0d295354c7c32c9366e7"
+      },
+      {
+        "object_ref": "database://sems-local/sems/sys_role",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "461437c8288b025bab2bf799a35754514c9bde1d737c3ac7677bf01988ad1c19",
+        "entry_sha256": "97f2255759501b94b7f8b54b7d99ba116cb882fbceca0212d037ab84ee767166"
+      },
+      {
+        "object_ref": "database://sems-local/sems/sys_user",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "18544170ee5716ba520202ed46c09351652dd45e85dbc19b6dc22e7e13acc873",
+        "entry_sha256": "c2ccadd29b30d4edea6263c164bc006d1a838ea611054ccc67738756dfaf730c"
+      },
+      {
+        "object_ref": "database://sems-local/sems/sys_user_role",
+        "source_id": "sems-local",
+        "evidence_version": "database-evidence/v1",
+        "table_evidence_sha256": "2ebf3281d4fb1787e463691420294927243ae9bee8475761795ab9f4693cc229",
+        "entry_sha256": "833f1c14033103c78739cdcd2115a5c40917bc6787ccecb13204b6b2bcd7cc25"
+      }
+    ]
+  }
+}
