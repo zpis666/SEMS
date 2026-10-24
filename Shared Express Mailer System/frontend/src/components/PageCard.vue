@@ -32,8 +32,9 @@ defineProps({
 
 <style scoped>
 .page-card {
-  padding: var(--sems-space-4);
+  padding: var(--sems-space-5);
   background-color: var(--sems-bg-card);
+  border: 1px solid var(--sems-border);
   border-radius: var(--sems-radius-card);
   box-shadow: var(--sems-shadow-card);
 }
@@ -55,6 +56,7 @@ defineProps({
   font-size: var(--sems-font-size-lg);
   font-weight: var(--sems-font-weight-bold);
   color: var(--sems-text-primary);
+  letter-spacing: -0.01em;
 }
 
 .page-card__subtitle {
@@ -63,6 +65,9 @@ defineProps({
   color: var(--sems-text-secondary);
 }
 
+@media (max-width: 767px) {
+  .page-card { padding: var(--sems-space-4); }
+}
 .page-card__extra {
   display: flex;
   flex: none;

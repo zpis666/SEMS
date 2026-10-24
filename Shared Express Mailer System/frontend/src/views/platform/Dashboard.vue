@@ -626,13 +626,21 @@ onUnmounted(() => {
 
 <template>
   <div class="dashboard">
-    <!-- 工具栏：最近更新时间 + 手动刷新（WS 不可用时的兜底入口） -->
-    <div class="dashboard__toolbar">
-      <span class="sems-text-muted">
-        数据更新于 <span class="dashboard__time">{{ updatedAt || '—' }}</span>
-      </span>
-      <el-button :loading="refreshing" @click="refreshAll()">刷新</el-button>
-    </div>
+    <section class="dashboard__hero">
+      <div class="dashboard__hero-copy">
+        <p class="dashboard__eyebrow"><span class="dashboard__live-dot" /> CIRCULAR OPERATIONS</p>
+        <h2>让每一次循环，都清晰可见。</h2>
+        <p>聚合取袋、归还与站点库存，以数据驱动更高效的绿色运营。</p>
+      </div>
+      <div class="dashboard__hero-cycle" aria-hidden="true">
+        <span><el-icon :size="30"><Refresh /></el-icon></span>
+        <div><strong>取 · 用 · 还 · 洗 · 调</strong><small>一袋一码，全程可追溯</small></div>
+      </div>
+      <div class="dashboard__toolbar">
+        <span><el-icon><Clock /></el-icon>更新于 <span class="dashboard__time">{{ updatedAt || '—' }}</span></span>
+        <el-button class="dashboard__refresh" :loading="refreshing" @click="refreshAll()"><el-icon v-if="!refreshing"><Refresh /></el-icon>刷新数据</el-button>
+      </div>
+    </section>
 
     <!-- 告警位：审计队列丢弃 / 库存对账差异，有值才显示，点击跳转异常与风控告警 -->
     <div v-if="alerts.length" class="dashboard__alerts">
@@ -666,10 +674,10 @@ onUnmounted(() => {
         </EmptyState>
       </div>
       <template v-else>
-        <StatCard label="在用袋数" :value="kpi.inUse" unit="只" />
-        <StatCard label="在循环袋数" :value="kpi.inCycle" unit="只" />
-        <StatCard label="今日取袋" :value="kpi.todayBorrow" unit="单" />
-        <StatCard label="今日归还" :value="kpi.todayReturn" unit="单" />
+        <StatCard label="在用袋数" :value="kpi.inUse" unit="只" icon="Box" hint="正在为用户提供服务" />
+        <StatCard label="在循环袋数" :value="kpi.inCycle" unit="只" icon="Refresh" accent="blue" hint="持续流转的快递袋" />
+        <StatCard label="今日取袋" :value="kpi.todayBorrow" unit="单" icon="Download" accent="amber" hint="今日累计取袋订单" />
+        <StatCard label="今日归还" :value="kpi.todayReturn" unit="单" icon="Upload" accent="green" hint="今日累计归还订单" />
       </template>
     </section>
 
@@ -746,16 +754,43 @@ onUnmounted(() => {
   gap: var(--sems-space-5);
 }
 
-/* ---------------- 工具栏 ---------------- */
-.dashboard__toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sems-space-3);
+/* ---------------- 运营概览 ---------------- */
+.dashboard__hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(260px, 1fr);
+  gap: var(--sems-space-5);
+  padding: var(--sems-space-6);
+  overflow: hidden;
+  color: var(--sems-text-inverse);
+  background: var(--sems-bg-hero);
+  border-radius: var(--sems-radius-card);
+  box-shadow: var(--sems-shadow-card);
 }
-.dashboard__time {
-  font-variant-numeric: tabular-nums;
+.dashboard__hero::after {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  right: -110px;
+  top: -160px;
+  border: 1px solid color-mix(in srgb, var(--sems-text-inverse) 14%, transparent);
+  border-radius: 50%;
+  content: '';
 }
+.dashboard__eyebrow { display: flex; align-items: center; gap: var(--sems-space-2); margin: 0 0 var(--sems-space-3); color: var(--sems-text-on-brand-soft); font-size: var(--sems-font-size-xs); letter-spacing: 0.15em; }
+.dashboard__live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sems-text-on-brand-soft); }
+.dashboard__hero h2 { margin: 0; font-size: var(--sems-font-size-kpi); font-weight: var(--sems-font-weight-bold); letter-spacing: -0.03em; }
+.dashboard__hero-copy > p:last-child { margin: var(--sems-space-3) 0 0; color: var(--sems-text-on-brand-soft); line-height: 1.8; }
+.dashboard__hero-cycle { display: flex; align-items: center; justify-content: flex-end; gap: var(--sems-space-4); z-index: 1; }
+.dashboard__hero-cycle > span { display: inline-flex; align-items: center; justify-content: center; width: 68px; height: 68px; border: 1px solid color-mix(in srgb, var(--sems-text-inverse) 20%, transparent); border-radius: 50%; background: color-mix(in srgb, var(--sems-text-inverse) 8%, transparent); }
+.dashboard__hero-cycle div { display: flex; flex-direction: column; gap: var(--sems-space-2); }
+.dashboard__hero-cycle strong { font-weight: var(--sems-font-weight-medium); letter-spacing: 0.08em; }
+.dashboard__hero-cycle small { color: var(--sems-text-on-brand-soft); font-size: var(--sems-font-size-xs); }
+.dashboard__toolbar { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: var(--sems-space-3); padding-top: var(--sems-space-4); border-top: 1px solid color-mix(in srgb, var(--sems-text-inverse) 14%, transparent); }
+.dashboard__toolbar > span { display: flex; align-items: center; gap: var(--sems-space-2); color: var(--sems-text-on-brand-soft); font-size: var(--sems-font-size-xs); }
+.dashboard__time { font-variant-numeric: tabular-nums; }
+.dashboard__refresh.el-button { min-height: 34px; color: var(--sems-text-inverse); border-color: color-mix(in srgb, var(--sems-text-inverse) 24%, transparent); background: color-mix(in srgb, var(--sems-text-inverse) 10%, transparent); box-shadow: none; }
+.dashboard__refresh.el-button:hover { background: color-mix(in srgb, var(--sems-text-inverse) 16%, transparent); }
 
 /* ---------------- 告警位 ---------------- */
 .dashboard__alerts {
@@ -852,10 +887,12 @@ onUnmounted(() => {
 
 /* 768px 以下：全站单列 */
 @media (max-width: 767px) {
-  .dashboard__kpi,
-  .dashboard__charts {
-    grid-template-columns: 1fr;
-  }
+  .dashboard__hero { grid-template-columns: 1fr; padding: var(--sems-space-5); }
+  .dashboard__hero h2 { font-size: var(--sems-font-size-xl); }
+  .dashboard__hero-cycle { justify-content: flex-start; }
+  .dashboard__hero-cycle > span { width: 48px; height: 48px; }
+  .dashboard__kpi { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sems-space-3); }
+  .dashboard__charts { grid-template-columns: 1fr; }
   .dashboard__chart-wide,
   .dashboard__chart-full {
     grid-column: auto;

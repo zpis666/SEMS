@@ -1,6 +1,6 @@
 # sems-frontend — 共享快递袋系统前端
 
-共享快递袋系统（Shared Express Mailer System，SEMS）前端工程，对应系统版本 **SEMS v0.1.1**。
+共享快递袋系统（Shared Express Mailer System，SEMS）前端工程，对应系统版本 **SEMS v0.1.2**。
 页面清单与视觉规范的**唯一出处**是《系统设计说明书》10.2 与 10.5；接口清单见 5.x；
 校验规则与错误提示约定的唯一出处是 6.6 与 10.4。
 

@@ -88,8 +88,9 @@ onMounted(load)
 <template>
   <div class="home">
     <header class="home__greeting">
+      <p class="sems-eyebrow">绿色循环 · 从一只袋开始</p>
       <h2 class="home__hello">{{ greeting }}，{{ nickname }}</h2>
-      <p class="home__slogan sems-text-muted">扫码取袋、循环使用，让快递袋留在循环里</p>
+      <p class="home__slogan sems-text-muted">今天也让快递包装，多一次循环。</p>
     </header>
 
     <PageCard v-if="loadError" title="加载失败">
@@ -113,32 +114,43 @@ onMounted(load)
     </template>
 
     <template v-else>
-      <PageCard title="在持袋数" subtitle="归还闭环完成后释放额度">
-        <div class="home-held">
-          <p class="home-held__metric">
-            <span class="home-held__value">{{ heldCount }}</span>
-            <span class="home-held__limit">/ {{ OPEN_LIMIT }}</span>
-          </p>
-          <div
-            class="home-held__bar"
-            role="progressbar"
-            :aria-valuenow="heldCount"
-            aria-valuemin="0"
-            :aria-valuemax="OPEN_LIMIT"
-          >
-            <span
-              class="home-held__bar-fill"
-              :class="{ 'is-warning': atLimit }"
-              :style="{ width: `${heldPercent}%` }"
-            />
+      <section class="home-hero">
+        <div class="home-hero__top">
+          <div class="home-held">
+            <p class="home-hero__eyebrow">我的在持额度</p>
+            <p class="home-held__metric">
+              <span class="home-held__value">{{ heldCount }}</span>
+              <span class="home-held__limit">/ {{ OPEN_LIMIT }} 只</span>
+            </p>
           </div>
-          <p v-if="atLimit" class="home-held__tip is-warning">
-            <el-icon><WarningFilled /></el-icon>
-            <span>已到在持上限，请先归还手上的袋</span>
-          </p>
-          <p v-else class="home-held__tip sems-text-muted">还可申领 {{ OPEN_LIMIT - heldCount }} 只</p>
+          <span class="home-hero__icon" aria-hidden="true"><el-icon :size="30"><Box /></el-icon></span>
         </div>
-      </PageCard>
+        <div
+          class="home-held__bar"
+          role="progressbar"
+          :aria-valuenow="heldCount"
+          aria-valuemin="0"
+          :aria-valuemax="OPEN_LIMIT"
+        >
+          <span
+            class="home-held__bar-fill"
+            :class="{ 'is-warning': atLimit }"
+            :style="{ width: `${heldPercent}%` }"
+          />
+        </div>
+        <div class="home-hero__footer">
+          <p v-if="atLimit" class="home-held__tip">
+            <el-icon><WarningFilled /></el-icon>
+            <span>已到在持上限，归还闭环后释放额度</span>
+          </p>
+          <p v-else class="home-held__tip">还可申领 {{ OPEN_LIMIT - heldCount }} 只，轻装出发</p>
+          <button class="home-scan" type="button" @click="router.push('/m/scan')">
+            <el-icon><FullScreen /></el-icon>
+            <span>扫码取袋</span>
+            <el-icon><ArrowRight /></el-icon>
+          </button>
+        </div>
+      </section>
 
       <PageCard title="附近站点" :subtitle="`共 ${stations.length} 个开放站点`">
         <EmptyState v-if="!stations.length" description="附近暂未开放站点">
@@ -146,21 +158,24 @@ onMounted(load)
         </EmptyState>
         <ul v-else class="home-stations">
           <li v-for="station in stations" :key="station.id" class="home-station">
-            <div class="home-station__top">
-              <span class="home-station__name">{{ station.name }}</span>
-              <span v-if="station.availableStock > 0" class="home-station__stock">
-                可用 {{ station.availableStock }} 只
-              </span>
-              <span v-else class="home-station__stock is-none">暂无可用袋</span>
+            <span class="home-station__marker" :class="{ 'is-empty': station.availableStock <= 0 }" aria-hidden="true">
+              <el-icon :size="21"><Location /></el-icon>
+            </span>
+            <div class="home-station__body">
+              <div class="home-station__top">
+                <span class="home-station__name">{{ station.name }}</span>
+                <span v-if="station.availableStock > 0" class="home-station__stock">
+                  <span class="home-station__stock-value">{{ station.availableStock }}</span>
+                  <span>只可用</span>
+                </span>
+                <span v-else class="home-station__stock is-none">暂无可用袋</span>
+              </div>
+              <p class="home-station__line">{{ station.address || '地址待完善' }}</p>
+              <p class="home-station__line">
+                <el-icon><Clock /></el-icon>
+                <span>{{ station.openTime || '开放时段以站点公告为准' }}</span>
+              </p>
             </div>
-            <p class="home-station__line">
-              <el-icon><Location /></el-icon>
-              <span>{{ station.address || '地址待完善' }}</span>
-            </p>
-            <p class="home-station__line">
-              <el-icon><Clock /></el-icon>
-              <span>开放时段：{{ station.openTime || '以站点公告为准' }}</span>
-            </p>
           </li>
         </ul>
       </PageCard>
@@ -179,13 +194,16 @@ onMounted(load)
               class="home-order"
               @click="router.push(`/m/orders/${order.orderNo}`)"
             >
-              <span class="home-order__top">
-                <StatusTag kind="order" :value="order.status" size="small" />
-                <span class="sems-text-muted">{{ formatShortTime(order.createdAt) }}</span>
-              </span>
-              <span class="home-order__bottom">
-                <span class="home-order__bag sems-mono">{{ order.bagCode }}</span>
-                <el-icon class="home-order__arrow"><ArrowRight /></el-icon>
+              <span class="home-order__icon" aria-hidden="true"><el-icon><Box /></el-icon></span>
+              <span class="home-order__content">
+                <span class="home-order__top">
+                  <span class="home-order__bag sems-mono">{{ order.bagCode }}</span>
+                  <el-icon class="home-order__arrow"><ArrowRight /></el-icon>
+                </span>
+                <span class="home-order__bottom">
+                  <StatusTag kind="order" :value="order.status" size="small" />
+                  <span class="sems-text-muted">{{ formatShortTime(order.createdAt) }}</span>
+                </span>
               </span>
             </button>
           </li>
@@ -202,12 +220,20 @@ onMounted(load)
   gap: var(--sems-space-4);
 }
 
+.home :deep(.page-card) {
+  border: 1px solid var(--sems-border-soft);
+}
+
 .home__greeting {
-  padding: var(--sems-space-1) var(--sems-space-1) 0;
+  padding: var(--sems-space-2) var(--sems-space-1) var(--sems-space-1);
+}
+
+.home__greeting .sems-eyebrow {
+  margin-bottom: var(--sems-space-2);
 }
 
 .home__hello {
-  margin: 0 0 var(--sems-space-1);
+  margin: 0 0 var(--sems-space-2);
   font-size: var(--sems-font-size-xl);
   font-weight: var(--sems-font-weight-bold);
   color: var(--sems-text-primary);
@@ -235,11 +261,42 @@ onMounted(load)
   color: var(--sems-color-warning);
 }
 
-/* ---------- 在持袋数 ---------- */
-.home-held {
+/* ---------- 在持额度与扫码主卡 ---------- */
+.home-hero {
   display: flex;
   flex-direction: column;
+  gap: var(--sems-space-4);
+  padding: var(--sems-space-5);
+  overflow: hidden;
+  border-radius: var(--sems-radius-card);
+  background: var(--sems-bg-hero);
+  box-shadow: var(--sems-shadow-button);
+  color: var(--sems-text-inverse);
+}
+
+.home-hero__top,
+.home-hero__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: var(--sems-space-3);
+}
+
+.home-hero__eyebrow {
+  margin: 0 0 var(--sems-space-2);
+  color: var(--sems-text-on-brand-soft);
+  font-size: var(--sems-font-size-sm);
+}
+
+.home-hero__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--sems-btn-height-touch);
+  height: var(--sems-btn-height-touch);
+  border-radius: var(--sems-radius-card);
+  background-color: color-mix(in srgb, var(--sems-text-inverse) 10%, transparent);
+  color: var(--sems-text-inverse);
 }
 
 .home-held__metric {
@@ -250,36 +307,36 @@ onMounted(load)
 }
 
 .home-held__value {
-  font-size: var(--sems-font-size-kpi);
+  color: var(--sems-text-inverse);
+  font-size: var(--sems-font-size-display);
   font-weight: var(--sems-font-weight-bold);
-  line-height: 1;
-  color: var(--sems-text-primary);
   font-variant-numeric: tabular-nums;
+  line-height: 1;
 }
 
 .home-held__limit {
-  font-size: var(--sems-font-size-lg);
-  color: var(--sems-text-secondary);
+  color: var(--sems-text-on-brand-soft);
+  font-size: var(--sems-font-size-base);
   font-variant-numeric: tabular-nums;
 }
 
 .home-held__bar {
-  height: 10px;
+  height: var(--sems-space-2);
   overflow: hidden;
   border-radius: var(--sems-radius-tag);
-  background-color: var(--sems-bg-hover);
+  background-color: color-mix(in srgb, var(--sems-text-inverse) 16%, transparent);
 }
 
 .home-held__bar-fill {
   display: block;
   height: 100%;
   border-radius: var(--sems-radius-tag);
-  background-color: var(--sems-color-primary);
-  transition: width var(--sems-duration-base);
+  background-color: var(--sems-text-inverse);
+  transition: width var(--sems-duration-base) var(--sems-ease);
 }
 
 .home-held__bar-fill.is-warning {
-  background-color: var(--sems-color-warning);
+  background-color: var(--sems-color-accent-soft);
 }
 
 .home-held__tip {
@@ -287,32 +344,83 @@ onMounted(load)
   align-items: center;
   gap: var(--sems-space-1);
   margin: 0;
-  font-size: var(--sems-font-size-sm);
+  color: var(--sems-text-on-brand-soft);
+  font-size: var(--sems-font-size-xs);
 }
 
-.home-held__tip.is-warning {
-  color: var(--sems-color-warning);
+.home-scan {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sems-space-2);
+  min-height: var(--sems-touch-target);
+  padding: 0 var(--sems-space-4);
+  border: none;
+  border-radius: var(--sems-radius-base);
+  background-color: var(--sems-bg-card);
+  color: var(--sems-color-primary-deep);
+  font-size: var(--sems-font-size-sm);
+  font-weight: var(--sems-font-weight-bold);
+  cursor: pointer;
+  transition: transform var(--sems-duration-fast) var(--sems-ease);
+}
+
+.home-scan:active {
+  transform: scale(0.97);
+}
+
+@media (max-width: 380px) {
+  .home-hero__footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .home-scan {
+    width: 100%;
+  }
 }
 
 /* ---------- 附近站点 ---------- */
 .home-stations {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sems-space-3);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .home-station {
-  padding: var(--sems-space-3) 0;
-  border-bottom: 1px solid var(--sems-border);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sems-space-3);
+  padding: var(--sems-space-3);
+  border: 1px solid var(--sems-border-soft);
+  border-radius: var(--sems-radius-base);
+  background-color: var(--sems-bg-soft);
 }
 
-.home-station:first-child {
-  padding-top: 0;
+.home-station__marker {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--sems-touch-target);
+  height: var(--sems-touch-target);
+  border-radius: var(--sems-radius-base);
+  background-color: var(--sems-color-primary-bg);
+  color: var(--sems-color-primary);
 }
 
-.home-station:last-child {
-  padding-bottom: 0;
-  border-bottom: none;
+.home-station__marker.is-empty {
+  background-color: var(--sems-color-warning-bg);
+  color: var(--sems-color-warning);
+}
+
+.home-station__body {
+  flex: 1;
+  min-width: 0;
 }
 
 .home-station__top {
@@ -320,21 +428,37 @@ onMounted(load)
   align-items: center;
   justify-content: space-between;
   gap: var(--sems-space-2);
+  min-height: var(--sems-space-5);
 }
 
 .home-station__name {
-  font-size: var(--sems-font-size-lg);
-  font-weight: var(--sems-font-weight-medium);
+  min-width: 0;
   color: var(--sems-text-primary);
+  font-size: var(--sems-font-size-base);
+  font-weight: var(--sems-font-weight-bold);
 }
 
 .home-station__stock {
+  display: inline-flex;
   flex: none;
-  font-size: var(--sems-font-size-sm);
-  color: var(--sems-color-success);
+  align-items: baseline;
+  gap: var(--sems-space-1);
+  padding: var(--sems-space-1) var(--sems-space-2);
+  border-radius: var(--sems-radius-tag);
+  background-color: var(--sems-color-primary-bg);
+  color: var(--sems-color-primary);
+  font-size: var(--sems-font-size-xs);
+  font-weight: var(--sems-font-weight-medium);
+}
+
+.home-station__stock-value {
+  font-size: var(--sems-font-size-lg);
+  font-weight: var(--sems-font-weight-bold);
+  font-variant-numeric: tabular-nums;
 }
 
 .home-station__stock.is-none {
+  background-color: var(--sems-color-warning-bg);
   color: var(--sems-color-warning);
 }
 
@@ -343,12 +467,16 @@ onMounted(load)
   align-items: center;
   gap: var(--sems-space-1);
   margin: var(--sems-space-1) 0 0;
-  font-size: var(--sems-font-size-sm);
   color: var(--sems-text-secondary);
+  font-size: var(--sems-font-size-xs);
+  line-height: 1.5;
 }
 
 /* ---------- 进行中订单 ---------- */
 .home-orders {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sems-space-2);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -356,19 +484,43 @@ onMounted(load)
 
 .home-order {
   display: flex;
-  flex-direction: column;
-  gap: var(--sems-space-2);
+  align-items: center;
+  gap: var(--sems-space-3);
   width: 100%;
-  min-height: var(--sems-touch-target);
-  padding: var(--sems-space-3) 0;
-  border: none;
-  background: transparent;
+  min-height: 64px;
+  padding: var(--sems-space-3);
+  border: 1px solid var(--sems-border-soft);
+  border-radius: var(--sems-radius-base);
+  background-color: var(--sems-bg-card);
   text-align: left;
   cursor: pointer;
+  transition: background-color var(--sems-duration-fast), border-color var(--sems-duration-fast);
 }
 
-.home-orders li + li .home-order {
-  border-top: 1px solid var(--sems-border);
+.home-order:active {
+  border-color: var(--sems-border-strong);
+  background-color: var(--sems-bg-soft);
+}
+
+.home-order__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--sems-touch-target);
+  height: var(--sems-touch-target);
+  border-radius: var(--sems-radius-base);
+  background-color: var(--sems-color-primary-bg);
+  color: var(--sems-color-primary);
+  font-size: var(--sems-font-size-xl);
+}
+
+.home-order__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--sems-space-2);
+  min-width: 0;
 }
 
 .home-order__top,
@@ -380,8 +532,13 @@ onMounted(load)
 }
 
 .home-order__bag {
-  font-size: var(--sems-font-size-base);
+  min-width: 0;
+  overflow: hidden;
   color: var(--sems-text-primary);
+  font-size: var(--sems-font-size-sm);
+  font-weight: var(--sems-font-weight-medium);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .home-order__arrow {

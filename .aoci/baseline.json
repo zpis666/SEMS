@@ -1,7 +1,7 @@
 {
   "version": 1,
   "created_at": "2026-10-08T08:11:32Z",
-  "updated_at": "2026-10-14T03:58:31Z",
+  "updated_at": "2026-10-24T10:29:41Z",
   "files": {
     ".editorconfig": {
       "role": "index",
@@ -21,6 +21,42 @@
       "size": 832,
       "normalized_sha256": "2a51a684b8842926b4a256e7dc0e1d67dcee4441e1868894b0f5ddee052ca2eb"
     },
+    ".playwright-cli/page-2026-10-24T10-04-09-510Z.yml": {
+      "role": "index",
+      "sha256": "06a84b8200058bebd43873af116ed1a0caa28d5a5008324718496886851abad7",
+      "size": 1896,
+      "normalized_sha256": "06a84b8200058bebd43873af116ed1a0caa28d5a5008324718496886851abad7"
+    },
+    ".playwright-cli/page-2026-10-24T10-04-15-455Z.yml": {
+      "role": "index",
+      "sha256": "ace54ac7e4e99cc7e1eb1f9329cd6a3453f23aa6039eaacb718b0e705a1b4f9a",
+      "size": 2075,
+      "normalized_sha256": "ace54ac7e4e99cc7e1eb1f9329cd6a3453f23aa6039eaacb718b0e705a1b4f9a"
+    },
+    ".playwright-cli/page-2026-10-24T10-04-53-547Z.yml": {
+      "role": "index",
+      "sha256": "744dde0db4fea01db4b3694d5f7f997414990f9ed544ba48613e1381a84500fd",
+      "size": 2539,
+      "normalized_sha256": "744dde0db4fea01db4b3694d5f7f997414990f9ed544ba48613e1381a84500fd"
+    },
+    ".playwright-cli/page-2026-10-24T10-05-00-744Z.yml": {
+      "role": "index",
+      "sha256": "fe909dfbf2ef75ccc452a59599b75ca6759caaed3753d6772e43bc7408b7987e",
+      "size": 2752,
+      "normalized_sha256": "fe909dfbf2ef75ccc452a59599b75ca6759caaed3753d6772e43bc7408b7987e"
+    },
+    ".playwright-cli/page-2026-10-24T10-05-38-789Z.yml": {
+      "role": "index",
+      "sha256": "3666c84112f4ebab874d8b596f49a276b92c4153a0325ee7ee914b9ef51ab3fc",
+      "size": 2752,
+      "normalized_sha256": "3666c84112f4ebab874d8b596f49a276b92c4153a0325ee7ee914b9ef51ab3fc"
+    },
+    ".playwright-cli/page-2026-10-24T10-07-12-282Z.yml": {
+      "role": "index",
+      "sha256": "07f531f0398bd928913efb46ee259de78a10af6a113a09b794d435bece3eaf33",
+      "size": 1776,
+      "normalized_sha256": "07f531f0398bd928913efb46ee259de78a10af6a113a09b794d435bece3eaf33"
+    },
     ".zcodeignore": {
       "role": "index",
       "sha256": "3426215d05709084139224c813f4ce85c368786902e6ca9b1ac2663f6d7b759e",
@@ -35,15 +71,15 @@
     },
     "README.md": {
       "role": "index",
-      "sha256": "7df45886b359ef55f174a6bbe4b70e45f31906a561b60166dda64e10b7c2eeee",
-      "size": 44292,
-      "normalized_sha256": "7df45886b359ef55f174a6bbe4b70e45f31906a561b60166dda64e10b7c2eeee"
+      "sha256": "84b265200c06ed134a868422610dc0dba81c07e3dd659deafeb5ff264d0fd996",
+      "size": 51818,
+      "normalized_sha256": "84b265200c06ed134a868422610dc0dba81c07e3dd659deafeb5ff264d0fd996"
     },
     "Shared Express Mailer System/README.md": {
       "role": "index",
-      "sha256": "9e1654a7c09378dccfa9e39e460b97136fbcb0789cb3e03dd680fcf6cc0767eb",
-      "size": 9616,
-      "normalized_sha256": "eaabcf87162eaf26db8fd7b8aa20cc27f94b76461067ec2163c38da53990d84e"
+      "sha256": "557e5d36ba3f8e9025c2d7c97dcdab01bd2be18527af0f0e0d9fc1351d8f0eb2",
+      "size": 9808,
+      "normalized_sha256": "5940f0a42a1913a2dbff9891d33ea2d333fed6b9427bdde464ea72948d59442d"
     },
     "Shared Express Mailer System/backend/.gitignore": {
       "role": "index",
@@ -59,9 +95,9 @@
     },
     "Shared Express Mailer System/backend/README.md": {
       "role": "index",
-      "sha256": "539402f4e4516bf79df61bd2b52b79fcbafad7728bd017e62635f2f474374d18",
+      "sha256": "a981dab167788b8a79606fdfd54d7bfddc0cdceb8221ff2b9d43698ed74b991e",
       "size": 8780,
-      "normalized_sha256": "539402f4e4516bf79df61bd2b52b79fcbafad7728bd017e62635f2f474374d18"
+      "normalized_sha256": "a981dab167788b8a79606fdfd54d7bfddc0cdceb8221ff2b9d43698ed74b991e"
     },
     "Shared Express Mailer System/backend/mvnw": {
       "role": "index",
@@ -77,9 +113,9 @@
     },
     "Shared Express Mailer System/backend/pom.xml": {
       "role": "index",
-      "sha256": "6c3e7789a79dde2ed6aefa14963411f881370c1cc24bf3a5a64b78a01b0d61d1",
+      "sha256": "bddcb72d711914757f6fffd3986b80ec8c37abc1db4c17942fec69b5239765f0",
       "size": 15646,
-      "normalized_sha256": "6c3e7789a79dde2ed6aefa14963411f881370c1cc24bf3a5a64b78a01b0d61d1"
+      "normalized_sha256": "bddcb72d711914757f6fffd3986b80ec8c37abc1db4c17942fec69b5239765f0"
     },
     "Shared Express Mailer System/backend/src/main/java/com/sems/SemsApplication.java": {
       "role": "index",
@@ -155,9 +191,9 @@
     },
     "Shared Express Mailer System/backend/src/main/java/com/sems/common/SemsVersion.java": {
       "role": "index",
-      "sha256": "bd2e4c57c13a2cf933b1cec8294958eba966cb07e9e6119916ae8bfd79e068b8",
+      "sha256": "57a127ed5217b5ae3893c261683aac45a49e6216efe6ec1c933e505a57adaf41",
       "size": 647,
-      "normalized_sha256": "bd2e4c57c13a2cf933b1cec8294958eba966cb07e9e6119916ae8bfd79e068b8"
+      "normalized_sha256": "57a127ed5217b5ae3893c261683aac45a49e6216efe6ec1c933e505a57adaf41"
     },
     "Shared Express Mailer System/backend/src/main/java/com/sems/common/event/AuditEvent.java": {
       "role": "index",
@@ -1821,6 +1857,12 @@
       "size": 2182,
       "normalized_sha256": "05e4e192c0d89b347e323f7a3ede69e2103b9764d54568399fc47ca0bed0b5e0"
     },
+    "Shared Express Mailer System/docs/releases/v0.1.2.md": {
+      "role": "index",
+      "sha256": "323ce3f0c6d85d6b5cf3a09c96273ae8db2b6411bebffb06bac393a78f5baafa",
+      "size": 3432,
+      "normalized_sha256": "323ce3f0c6d85d6b5cf3a09c96273ae8db2b6411bebffb06bac393a78f5baafa"
+    },
     "Shared Express Mailer System/frontend/.gitignore": {
       "role": "index",
       "sha256": "4e291409af50198e736ce3a8efdf36922f9ad038c010ce39728304f904f05df3",
@@ -1829,27 +1871,33 @@
     },
     "Shared Express Mailer System/frontend/README.md": {
       "role": "index",
-      "sha256": "634b76bda23779045bd3365ad72ef01e5f60e8d2893cf80e86171f44d2ab3c11",
+      "sha256": "c90ce602242d81b571713cb265a61bf1d77f7642329c7ccfe84be7a6a1b9d5b1",
       "size": 4922,
-      "normalized_sha256": "634b76bda23779045bd3365ad72ef01e5f60e8d2893cf80e86171f44d2ab3c11"
+      "normalized_sha256": "c90ce602242d81b571713cb265a61bf1d77f7642329c7ccfe84be7a6a1b9d5b1"
     },
     "Shared Express Mailer System/frontend/index.html": {
       "role": "index",
-      "sha256": "e807519f8a8d77f9f472df1ce72cc4fc34f225dbdef264ff6d67914d8683914a",
-      "size": 704,
-      "normalized_sha256": "e807519f8a8d77f9f472df1ce72cc4fc34f225dbdef264ff6d67914d8683914a"
+      "sha256": "337d2d4b47a5e5b187df12d6cc4a59204c75aa9d5085ddd40e4f765b932c84be",
+      "size": 902,
+      "normalized_sha256": "337d2d4b47a5e5b187df12d6cc4a59204c75aa9d5085ddd40e4f765b932c84be"
     },
     "Shared Express Mailer System/frontend/package-lock.json": {
       "role": "index",
-      "sha256": "0377c4286c3d564d4eb3362034056d5b39bf6b7ec90d7b4888c37bc4872639c3",
+      "sha256": "1ca548f47df92a65935284bf70fb734d71649b50a6c1176402eea7ea0d645423",
       "size": 72514,
-      "normalized_sha256": "0377c4286c3d564d4eb3362034056d5b39bf6b7ec90d7b4888c37bc4872639c3"
+      "normalized_sha256": "1ca548f47df92a65935284bf70fb734d71649b50a6c1176402eea7ea0d645423"
     },
     "Shared Express Mailer System/frontend/package.json": {
       "role": "index",
-      "sha256": "3c99445ee12e39d7da21371d43fe8a275a5303615cfb7452d86a0c91b60d3fb3",
+      "sha256": "7c5429334f0368166dd3c4ab5f7ed7d185d911cb4cbc70339906d4cb9635e247",
       "size": 657,
-      "normalized_sha256": "3c99445ee12e39d7da21371d43fe8a275a5303615cfb7452d86a0c91b60d3fb3"
+      "normalized_sha256": "7c5429334f0368166dd3c4ab5f7ed7d185d911cb4cbc70339906d4cb9635e247"
+    },
+    "Shared Express Mailer System/frontend/public/favicon.svg": {
+      "role": "index",
+      "sha256": "9643c8d4e12596f7097b253bc2cfdd46ac8fac5be2b67cc55994728bf9c4c277",
+      "size": 402,
+      "normalized_sha256": "9643c8d4e12596f7097b253bc2cfdd46ac8fac5be2b67cc55994728bf9c4c277"
     },
     "Shared Express Mailer System/frontend/src/App.vue": {
       "role": "index",
@@ -1899,6 +1947,18 @@
       "size": 1613,
       "normalized_sha256": "0898a48a2da4fdcb436ba7d2c47c432954ea1e2fe0750532433d442dd7cfeed7"
     },
+    "Shared Express Mailer System/frontend/src/components/AppBrand.vue": {
+      "role": "index",
+      "sha256": "5601ae3681cbca794befac8b988ba7b1f4d489832d69c609d115746a327b0cbf",
+      "size": 2762,
+      "normalized_sha256": "5601ae3681cbca794befac8b988ba7b1f4d489832d69c609d115746a327b0cbf"
+    },
+    "Shared Express Mailer System/frontend/src/components/AuthCycleVisual.vue": {
+      "role": "index",
+      "sha256": "b8a33246f2bf7975fb672c6d20fc0d77d04489839c8542beb5ed6261e6a94164",
+      "size": 4575,
+      "normalized_sha256": "b8a33246f2bf7975fb672c6d20fc0d77d04489839c8542beb5ed6261e6a94164"
+    },
     "Shared Express Mailer System/frontend/src/components/BagCodeInput.vue": {
       "role": "index",
       "sha256": "c67acd08caa1285b350841e3f5db68c9eb685e87711fc228c8f9af4efb07daa0",
@@ -1925,15 +1985,15 @@
     },
     "Shared Express Mailer System/frontend/src/components/EmptyState.vue": {
       "role": "index",
-      "sha256": "1852bf182a44f44e6ad81754ed9462a0e585d59aa3af34b7e9a1aad600ee6897",
-      "size": 1294,
-      "normalized_sha256": "1852bf182a44f44e6ad81754ed9462a0e585d59aa3af34b7e9a1aad600ee6897"
+      "sha256": "6282e9746868b6640357179eae4d33be1c63b7613c363fb86d41979f0c2d65dd",
+      "size": 1474,
+      "normalized_sha256": "6282e9746868b6640357179eae4d33be1c63b7613c363fb86d41979f0c2d65dd"
     },
     "Shared Express Mailer System/frontend/src/components/PageCard.vue": {
       "role": "index",
-      "sha256": "431d5286538a0a4980c3ad798feaf89e8bf9d6fe2a5c7255275668c0273dd78d",
-      "size": 1978,
-      "normalized_sha256": "431d5286538a0a4980c3ad798feaf89e8bf9d6fe2a5c7255275668c0273dd78d"
+      "sha256": "501872b246841cb0791af7fcb3dbb433298a741c6085285f292bc53211ba77a6",
+      "size": 2122,
+      "normalized_sha256": "501872b246841cb0791af7fcb3dbb433298a741c6085285f292bc53211ba77a6"
     },
     "Shared Express Mailer System/frontend/src/components/PageSkeleton.vue": {
       "role": "index",
@@ -1943,9 +2003,9 @@
     },
     "Shared Express Mailer System/frontend/src/components/StatCard.vue": {
       "role": "index",
-      "sha256": "3b4827b3ef01ff5f41816f0e3c4a2f9a517b5133185868b02dd34b0b956f6399",
-      "size": 2815,
-      "normalized_sha256": "3b4827b3ef01ff5f41816f0e3c4a2f9a517b5133185868b02dd34b0b956f6399"
+      "sha256": "d2c1a042df11782e4414866b0034ff2b0f0d4b08702324c5118e0456dd0b7f73",
+      "size": 4009,
+      "normalized_sha256": "d2c1a042df11782e4414866b0034ff2b0f0d4b08702324c5118e0456dd0b7f73"
     },
     "Shared Express Mailer System/frontend/src/components/StatusTag.vue": {
       "role": "index",
@@ -1961,15 +2021,15 @@
     },
     "Shared Express Mailer System/frontend/src/layouts/AdminLayout.vue": {
       "role": "index",
-      "sha256": "28642436feb30697deb36642651ac5076f3b2848852d8582326c53e0b325e380",
-      "size": 10990,
-      "normalized_sha256": "28642436feb30697deb36642651ac5076f3b2848852d8582326c53e0b325e380"
+      "sha256": "61530a419982d3ae9e8c8feb46a205d5bced22d74fe59cf1fcfb250ba2b5e81e",
+      "size": 17445,
+      "normalized_sha256": "61530a419982d3ae9e8c8feb46a205d5bced22d74fe59cf1fcfb250ba2b5e81e"
     },
     "Shared Express Mailer System/frontend/src/layouts/UserLayout.vue": {
       "role": "index",
-      "sha256": "afed9cf6bf204e698b4f27f50830b3bfb86f82e38aed55754e8f18a5b5f70a1e",
-      "size": 6505,
-      "normalized_sha256": "afed9cf6bf204e698b4f27f50830b3bfb86f82e38aed55754e8f18a5b5f70a1e"
+      "sha256": "5902947acaf2efaa9ab234f017eb26efcbf2d51b33a25cb86d4a121a38b8dbba",
+      "size": 6986,
+      "normalized_sha256": "5902947acaf2efaa9ab234f017eb26efcbf2d51b33a25cb86d4a121a38b8dbba"
     },
     "Shared Express Mailer System/frontend/src/main.js": {
       "role": "index",
@@ -1979,9 +2039,9 @@
     },
     "Shared Express Mailer System/frontend/src/router/index.js": {
       "role": "index",
-      "sha256": "fef02935f79e26025dd9ef4655332bf63399bdebb9100cb35e74a05c29a10437",
-      "size": 9103,
-      "normalized_sha256": "fef02935f79e26025dd9ef4655332bf63399bdebb9100cb35e74a05c29a10437"
+      "sha256": "f26b2977da64f49a329b53c85d1b7f3bfce25658aaa3a0769d65d6c149303f32",
+      "size": 10141,
+      "normalized_sha256": "f26b2977da64f49a329b53c85d1b7f3bfce25658aaa3a0769d65d6c149303f32"
     },
     "Shared Express Mailer System/frontend/src/stores/user.js": {
       "role": "index",
@@ -1997,21 +2057,21 @@
     },
     "Shared Express Mailer System/frontend/src/styles/element-override.css": {
       "role": "index",
-      "sha256": "67dfdab4df3ecf5e90dce8678bef5837e8aaf8916f7c59e43b9024ce9ff987b5",
-      "size": 8163,
-      "normalized_sha256": "67dfdab4df3ecf5e90dce8678bef5837e8aaf8916f7c59e43b9024ce9ff987b5"
+      "sha256": "2983f36f52aefd0f108b8030c68cb60fac19009d9a7b5b79a3596e8c6d47b170",
+      "size": 9844,
+      "normalized_sha256": "2983f36f52aefd0f108b8030c68cb60fac19009d9a7b5b79a3596e8c6d47b170"
     },
     "Shared Express Mailer System/frontend/src/styles/index.css": {
       "role": "index",
-      "sha256": "d9f758caa0fce8b0a0d10fef677cd0ee10051d45a578a183a6525a712b008716",
-      "size": 2228,
-      "normalized_sha256": "d9f758caa0fce8b0a0d10fef677cd0ee10051d45a578a183a6525a712b008716"
+      "sha256": "e6deb3157724a8e2d2ae104872b0a6914fd14bb23cfc693619d94db5cc059d19",
+      "size": 3144,
+      "normalized_sha256": "e6deb3157724a8e2d2ae104872b0a6914fd14bb23cfc693619d94db5cc059d19"
     },
     "Shared Express Mailer System/frontend/src/styles/tokens.css": {
       "role": "index",
-      "sha256": "7e8dfed9a3482e614b49e71ce55682c752cc9ecad2ef53b0c03ffd37ca7c956f",
-      "size": 5644,
-      "normalized_sha256": "7e8dfed9a3482e614b49e71ce55682c752cc9ecad2ef53b0c03ffd37ca7c956f"
+      "sha256": "29da191f975f8b1ecc83d6dd99a9729be74474cfdcc65016d9f93a4b66115614",
+      "size": 4213,
+      "normalized_sha256": "29da191f975f8b1ecc83d6dd99a9729be74474cfdcc65016d9f93a4b66115614"
     },
     "Shared Express Mailer System/frontend/src/utils/batch.js": {
       "role": "index",
@@ -2051,9 +2111,9 @@
     },
     "Shared Express Mailer System/frontend/src/views/common/Login.vue": {
       "role": "index",
-      "sha256": "ef004f4ca88a16f2fa014f73f829c124bdd29c65cfdcf42c7f76f598da52dd7b",
-      "size": 14992,
-      "normalized_sha256": "ef004f4ca88a16f2fa014f73f829c124bdd29c65cfdcf42c7f76f598da52dd7b"
+      "sha256": "a07772c01150380c78f7dd0233685a11f7e3b0578386cfc05b847f1c5732f26f",
+      "size": 16433,
+      "normalized_sha256": "a07772c01150380c78f7dd0233685a11f7e3b0578386cfc05b847f1c5732f26f"
     },
     "Shared Express Mailer System/frontend/src/views/common/NotFound.vue": {
       "role": "index",
@@ -2063,9 +2123,9 @@
     },
     "Shared Express Mailer System/frontend/src/views/common/Register.vue": {
       "role": "index",
-      "sha256": "40951c27506e7308b34db8880f12d06f846a5668c791976ecc093adf23dd014e",
-      "size": 13188,
-      "normalized_sha256": "40951c27506e7308b34db8880f12d06f846a5668c791976ecc093adf23dd014e"
+      "sha256": "aad81a681d9bd77b4728dcf630c2abcd765e5f97ab8eaf71c9175fdc63ec1749",
+      "size": 13606,
+      "normalized_sha256": "aad81a681d9bd77b4728dcf630c2abcd765e5f97ab8eaf71c9175fdc63ec1749"
     },
     "Shared Express Mailer System/frontend/src/views/platform/Alerts.vue": {
       "role": "index",
@@ -2099,9 +2159,9 @@
     },
     "Shared Express Mailer System/frontend/src/views/platform/Dashboard.vue": {
       "role": "index",
-      "sha256": "dc72c91774af565b3143435f941831891411d195754a10420aa1afeb03fcf769",
-      "size": 29113,
-      "normalized_sha256": "dc72c91774af565b3143435f941831891411d195754a10420aa1afeb03fcf769"
+      "sha256": "6d935fa582414712acc7dda4243833daf0255d70d86958dfdc8d5486e57d73c2",
+      "size": 32874,
+      "normalized_sha256": "6d935fa582414712acc7dda4243833daf0255d70d86958dfdc8d5486e57d73c2"
     },
     "Shared Express Mailer System/frontend/src/views/platform/LoginLog.vue": {
       "role": "index",
@@ -2177,9 +2237,9 @@
     },
     "Shared Express Mailer System/frontend/src/views/station/Workbench.vue": {
       "role": "index",
-      "sha256": "a670d7f6a4718e8db20d5f562f33287bc23f866513310fac7a5bee24fc0e4801",
-      "size": 16726,
-      "normalized_sha256": "a670d7f6a4718e8db20d5f562f33287bc23f866513310fac7a5bee24fc0e4801"
+      "sha256": "7567fba1747ee760ba77182a11d6918a08c3feb18d48f6535f87d4bba78c79f0",
+      "size": 18863,
+      "normalized_sha256": "7567fba1747ee760ba77182a11d6918a08c3feb18d48f6535f87d4bba78c79f0"
     },
     "Shared Express Mailer System/frontend/src/views/user/BagInfo.vue": {
       "role": "index",
@@ -2189,9 +2249,9 @@
     },
     "Shared Express Mailer System/frontend/src/views/user/Home.vue": {
       "role": "index",
-      "sha256": "f922db0b07c9e4fed8d2e33647ac5a1cc48997b416bb161e353d3a3de600c191",
-      "size": 11433,
-      "normalized_sha256": "f922db0b07c9e4fed8d2e33647ac5a1cc48997b416bb161e353d3a3de600c191"
+      "sha256": "3e489eb80f0a136dc596f9d8d4b9e6aa427b5715b2b28a3d6090f549ff15ff2f",
+      "size": 16152,
+      "normalized_sha256": "3e489eb80f0a136dc596f9d8d4b9e6aa427b5715b2b28a3d6090f549ff15ff2f"
     },
     "Shared Express Mailer System/frontend/src/views/user/MyOrders.vue": {
       "role": "index",
@@ -2207,9 +2267,9 @@
     },
     "Shared Express Mailer System/frontend/src/views/user/Profile.vue": {
       "role": "index",
-      "sha256": "fec299f3412448e39065394c2bb9a60390669e4e95500dc4ca56485045204d3f",
-      "size": 8950,
-      "normalized_sha256": "fec299f3412448e39065394c2bb9a60390669e4e95500dc4ca56485045204d3f"
+      "sha256": "80585d82058978c8e1c19f8429bf378cdadafef706ead94aa994f4de051ae7ef",
+      "size": 14954,
+      "normalized_sha256": "80585d82058978c8e1c19f8429bf378cdadafef706ead94aa994f4de051ae7ef"
     },
     "Shared Express Mailer System/frontend/src/views/user/ScanBorrow.vue": {
       "role": "index",
@@ -2279,9 +2339,9 @@
     },
     "aoci.code.txt": {
       "role": "index",
-      "sha256": "18828d8d08547f67a5f2be42561eb274659c846fe82e86efb5fdd538fdc9c41e",
-      "size": 151386,
-      "normalized_sha256": "18828d8d08547f67a5f2be42561eb274659c846fe82e86efb5fdd538fdc9c41e"
+      "sha256": "bc349e137c7c446827d8a1d934e23459317273b7f994ad375c3c3d80151c6eb1",
+      "size": 156449,
+      "normalized_sha256": "bc349e137c7c446827d8a1d934e23459317273b7f994ad375c3c3d80151c6eb1"
     },
     "aoci.database.txt": {
       "role": "index",
@@ -2380,9 +2440,9 @@
     },
     "文档/系统设计说明书.md": {
       "role": "index",
-      "sha256": "1d04a6d809e750953370ffe0aa1327c6851ee74ae7c8ddaa27c1de4fc7a4d283",
-      "size": 191453,
-      "normalized_sha256": "1d04a6d809e750953370ffe0aa1327c6851ee74ae7c8ddaa27c1de4fc7a4d283"
+      "sha256": "5285ed7bd3ec17afe2cd2158d247b3f4258ba540f5a9bbde0fe80b26c902f6d3",
+      "size": 193172,
+      "normalized_sha256": "5285ed7bd3ec17afe2cd2158d247b3f4258ba540f5a9bbde0fe80b26c902f6d3"
     },
     "文档/需求规格说明书.md": {
       "role": "index",

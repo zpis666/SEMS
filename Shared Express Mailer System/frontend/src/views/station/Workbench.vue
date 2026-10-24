@@ -289,6 +289,14 @@ function goHome() {
     </PageCard>
 
     <template v-else>
+      <section class="workbench__welcome">
+        <div>
+          <p class="sems-eyebrow">STATION OPERATIONS</p>
+          <h2>今天，也让每一只袋高效流转。</h2>
+          <p>实时掌握库存状态，从回收到消毒，完成站点内的每一次绿色接力。</p>
+        </div>
+        <button class="workbench__scan-entry" @click="goRecycle"><el-icon :size="22"><FullScreen /></el-icon><span>扫码回收<small>快速确认投回袋</small></span><el-icon><ArrowRight /></el-icon></button>
+      </section>
       <!-- 预警区：可用库存低于阈值时置顶提示 -->
       <el-alert
         v-if="warned"
@@ -307,7 +315,7 @@ function goHome() {
           class="workbench__kpi"
           :style="kpiStyle(card.status)"
         >
-          <StatCard :label="card.label" :value="statusCounts[card.status]" unit="只" />
+          <StatCard :label="card.label" :value="statusCounts[card.status]" unit="只" :icon="card.status === 'IDLE' ? 'Box' : card.status === 'IN_USE' ? 'Van' : 'MagicStick'" hint="本站实时库存" />
         </div>
       </div>
 
@@ -391,14 +399,18 @@ function goHome() {
   margin-top: var(--sems-space-4);
 }
 
-.workbench__alert {
-  flex: none;
-}
+.workbench__alert { flex: none; }
+.workbench__welcome { display: flex; align-items: center; justify-content: space-between; gap: var(--sems-space-5); padding: var(--sems-space-5) var(--sems-space-6); background: var(--sems-bg-soft); border: 1px solid var(--sems-border); border-radius: var(--sems-radius-card); }
+.workbench__welcome h2 { margin: var(--sems-space-2) 0; color: var(--sems-text-primary); font-size: var(--sems-font-size-xl); font-weight: var(--sems-font-weight-bold); }
+.workbench__welcome p:last-child { margin: 0; color: var(--sems-text-secondary); line-height: 1.7; }
+.workbench__scan-entry { display: flex; align-items: center; gap: var(--sems-space-3); flex: none; min-height: 64px; padding: var(--sems-space-3) var(--sems-space-5); color: var(--sems-text-inverse); background: var(--sems-bg-button); border: none; border-radius: var(--sems-radius-base); box-shadow: var(--sems-shadow-button); cursor: pointer; text-align: left; }
+.workbench__scan-entry > span { display: flex; flex-direction: column; gap: var(--sems-space-1); font-weight: var(--sems-font-weight-bold); }
+.workbench__scan-entry small { color: var(--sems-text-on-brand-soft); font-size: var(--sems-font-size-xs); font-weight: normal; }
 
 /* ---------------- KPI 四卡 ---------------- */
 .workbench__kpis {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--sems-space-4);
 }
 .workbench__kpi {
@@ -494,6 +506,7 @@ function goHome() {
 }
 
 /* ---------------- 响应式 ---------------- */
+@media (max-width: 1000px) { .workbench__welcome { align-items: flex-start; flex-direction: column; } }
 @media (max-width: 1199px) {
   .workbench__kpis {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -504,8 +517,10 @@ function goHome() {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--sems-space-3);
   }
-  .workbench__grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
+  .workbench__grid { grid-template-columns: minmax(0, 1fr); }
+  .workbench__welcome { padding: var(--sems-space-5); }
+  .workbench__welcome h2 { font-size: var(--sems-font-size-lg); }
+  .workbench__scan-entry { width: 100%; }
+  .workbench__scan-entry > span { flex: 1; }
 }
 </style>

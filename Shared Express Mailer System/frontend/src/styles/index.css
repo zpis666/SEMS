@@ -1,90 +1,72 @@
-/**
- * 全局样式入口 —— 只做三件事：引令牌、引 Element Plus 覆盖、定义极少量全局基线。
- * 页面级样式一律写在各自 <style scoped> 里，不要在全局文件里堆页面规则。
- */
-
+/* 全局基础、令牌与通用可读性。页面细节仍留在各自 scoped 样式。 */
 @import './tokens.css';
 @import './element-override.css';
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html,
-body,
-#app {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
+*, *::before, *::after { box-sizing: border-box; }
+html, body, #app { min-height: 100%; margin: 0; padding: 0; }
 body {
   background-color: var(--sems-bg-page);
   color: var(--sems-text-regular);
+  font-family: var(--sems-font-family);
   font-size: var(--sems-font-size-base);
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
-    'Microsoft YaHei', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
+button, input, select, textarea { font: inherit; }
+button, a, [role='button'] { -webkit-tap-highlight-color: transparent; }
+button { touch-action: manipulation; }
+::selection { background-color: var(--sems-color-primary-bg); color: var(--sems-text-primary); }
+:focus-visible { outline: 2px solid var(--sems-color-primary); outline-offset: 3px; }
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
 
-/* 页面标题：全站统一一档，避免各页自己定字号 */
-.sems-page-title {
+.sems-page-title, .sems-section-title {
   margin: 0;
-  font-size: var(--sems-font-size-xl);
-  font-weight: var(--sems-font-weight-bold);
   color: var(--sems-text-primary);
-}
-
-/* 卡片区块标题 */
-.sems-section-title {
-  margin: 0;
-  font-size: var(--sems-font-size-lg);
   font-weight: var(--sems-font-weight-bold);
-  color: var(--sems-text-primary);
+  letter-spacing: -0.02em;
 }
-
-/* 次要说明文字 */
-.sems-text-muted {
-  color: var(--sems-text-secondary);
-  font-size: var(--sems-font-size-sm);
-}
-
-/* 等宽字体：袋码展示与复制用（设计书 10.5「袋码用等宽字体展示」） */
+.sems-page-title { font-size: var(--sems-font-size-xl); }
+.sems-section-title { font-size: var(--sems-font-size-lg); }
+.sems-text-muted { color: var(--sems-text-secondary); font-size: var(--sems-font-size-sm); }
 .sems-mono {
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.02em;
 }
-
-/* 滚动条：避免各页系统默认样式不一致 */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-thumb {
-  background-color: var(--sems-border);
-  border-radius: var(--sems-radius-tag);
-}
-::-webkit-scrollbar-track {
-  background-color: transparent;
+.sems-eyebrow {
+  margin: 0;
+  color: var(--sems-color-primary);
+  font-size: var(--sems-font-size-xs);
+  font-weight: var(--sems-font-weight-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
-/**
- * 响应式：<768px 全站单列，表格一律转为卡片列表（设计书 10.5 明确禁止横向滚动）。
- * 页面用 .sems-table-cards 包裹表格，并在移动端用 .sems-card-only 展示卡片版。
- */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background-color: var(--sems-border-strong); border-radius: var(--sems-radius-base); }
+::-webkit-scrollbar-track { background-color: transparent; }
+
+/* 所有通用卡片共享同一层级的轻边框与克制投影。 */
+.el-card, .el-dialog, .el-drawer { border-color: var(--sems-border); }
+.el-dialog { border-radius: var(--sems-radius-card); }
+.el-input__wrapper, .el-select__wrapper, .el-textarea__inner {
+  box-shadow: 0 0 0 1px var(--sems-border) inset;
+  transition: box-shadow var(--sems-duration-fast), background-color var(--sems-duration-fast);
+}
+.el-input__wrapper:hover, .el-select__wrapper:hover { box-shadow: 0 0 0 1px var(--sems-border-strong) inset; }
+.el-form-item__label { color: var(--sems-text-regular); font-weight: var(--sems-font-weight-medium); }
+.el-table { --el-table-header-bg-color: var(--sems-bg-soft); }
+.el-table th.el-table__cell { border-bottom-color: var(--sems-border); }
+
 @media (max-width: 767px) {
-  .sems-desktop-only {
-    display: none !important;
-  }
-  .sems-page-title {
-    font-size: var(--sems-font-size-lg);
-  }
+  .sems-desktop-only { display: none !important; }
+  .sems-page-title { font-size: var(--sems-font-size-lg); }
+  .el-dialog { width: calc(100% - 32px) !important; }
 }
 @media (min-width: 768px) {
-  .sems-mobile-only {
-    display: none !important;
-  }
+  .sems-mobile-only { display: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }

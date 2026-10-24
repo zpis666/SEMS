@@ -6,17 +6,17 @@
 .gitignore[FC6T]: F:排除依赖、构建、运行数据、密钥及机器绑定配置 | R:code:.aoci/config.json | A:Git忽略规则 | S:.env.example与Maven Wrapper例外保留；生产密钥和本机覆盖配置不得入库
 .zcodeignore[XC3T]: F:限定ZCode文件搜索的候选范围 | R:code:.gitignore | A:搜索忽略模式 | S:规则只影响搜索，不限制Agent访问
 AGENTS.md[SG9S]: F:规定毕业设计范围、技术栈、业务模型、环境及AOCI治理合同 | R:code:文档/任务书/_extracted.txt | A:开发边界,交付要求,AOCI工作流 | S:正式提交只读；SJB-为实体袋码不得随包名修改；构建使用JAVA_HOME的JDK21和pwsh中的mvnw.cmd
-README.md[SG7L]: F:全面介绍SEMS功能角色、业务闭环、架构安全、数据接口、启动部署、测试范围及研发计划 | R:code:Shared Express Mailer System/README.md,code:文档/系统设计说明书.md,code:文档/数据库设计说明书.md,code:文档/测试报告.md | A:系统介绍,业务与架构,配置部署,验证与计划 | S:测试数字仅为2026-10-07的v0.1.1快照，不代表性能压测；首次种子仅预置平台管理员、三角色和两站点；Maven开发profile不适用于JAR启动
+README.md[SG7L]: F:全面介绍SEMS功能角色、业务闭环、架构安全、数据接口、启动部署、测试范围及研发计划 | R:code:Shared Express Mailer System/README.md,code:文档/系统设计说明书.md,code:文档/数据库设计说明书.md,code:文档/测试报告.md,code:Shared Express Mailer System/docs/releases/v0.1.2.md | A:系统介绍,业务与架构,配置部署,验证与计划 | S:当前工程版本v0.1.2仅涉前端视觉，后端接口未改；测试数字仍为2026-10-07的v0.1.1快照；首次种子仅预置平台管理员、三角色和两站点；Maven开发profile不适用于JAR启动
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/===
-README.md[SG7S]: F:介绍SEMS工程布局、实现范围、启动步骤、本地数据库连接和里程碑 | R:code:文档/系统设计说明书.md,code:Shared Express Mailer System/scripts/db-navicat-compat.ps1 | A:本地启动,演示账号,Navicat连接,开发约定 | S:实现计数需对照源码；初始化SQL不创建其余演示账号；旧账号需单独切换认证，禁止为兼容Navicat清空数据卷
+README.md[SG7S]: F:介绍SEMS工程布局、v0.1.2实现范围、启动步骤、本地数据库连接、发布说明入口和里程碑 | R:code:文档/系统设计说明书.md,code:Shared Express Mailer System/scripts/db-navicat-compat.ps1,code:Shared Express Mailer System/docs/releases/v0.1.2.md | A:本地启动,演示账号,Navicat连接,开发约定 | S:实现计数需对照源码；初始化SQL不创建其余演示账号；旧账号需单独切换认证，禁止为兼容Navicat清空数据卷
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/===
 .gitignore[FC4T]: F:排除后端编译产物、IDE配置与本地运行残留 | R:code:.gitignore | A:target,日志,application-local.yml | S:-
-README.md[SV6S]: F:说明后端构建、分层约定、配置与测试门禁 | R:code:Shared Express Mailer System/backend/pom.xml | A:Wrapper构建,profile选择,覆盖率验证 | S:文中测试数与覆盖率是旧快照，当前结果应读测试报告和附件；application.yml不设默认dev
+README.md[SV6S]: F:说明后端构建产物、分层约定、配置与测试门禁 | R:code:Shared Express Mailer System/backend/pom.xml | A:Wrapper构建,profile选择,覆盖率验证 | S:构建产物名为sems-backend-0.1.2.jar；文中测试数与覆盖率是v0.1.1旧快照，当前结果应读测试报告和附件；application.yml不设默认dev
 mvnw[RV5M]: F:在POSIX环境下载缓存Maven发行版并执行构建参数 | R:code:Shared Express Mailer System/backend/.mvn/wrapper/maven-wrapper.properties | A:Wrapper命令行,MVNW_REPOURL,MAVEN_USER_HOME | S:MSYS_NO_PATHCONV会破坏Git Bash的Java类路径转换
 mvnw.cmd[RV6S]: F:以Windows批处理与内嵌PowerShell下载缓存Maven并转发构建参数 | R:code:Shared Express Mailer System/backend/.mvn/wrapper/maven-wrapper.properties | A:Wrapper命令行,MVNW_REPOURL,MAVEN_USER_HOME | S:脚本内部仍调用powershell命令；外部使用pwsh时必须显式执行mvnw.cmd
-pom.xml[FV8M]: F:锁定JDK21、SpringBoot3.5与SEMS依赖，配置打包、测试覆盖率及依赖安全门禁 | R:code:Shared Express Mailer System/backend/src/main/resources/application.yml | A:Maven生命周期,security-scan | S:dev仅作用于spring-boot:run；JaCoCo数据放ASCII临时路径且Surefire延迟求值argLine；覆盖率门禁在verify，安全扫描需显式profile
+pom.xml[FV8M]: F:锁定JDK21、SpringBoot3.5与SEMS依赖，声明工程版本0.1.2并配置打包、测试覆盖率及依赖安全门禁 | R:code:Shared Express Mailer System/backend/src/main/resources/application.yml,code:Shared Express Mailer System/backend/src/main/java/com/sems/common/SemsVersion.java | A:Maven生命周期,project.version,security-scan | S:project.version须与SemsVersion.VERSION同步递增；dev仅作用于spring-boot:run；JaCoCo数据放ASCII临时路径且Surefire延迟求值argLine；覆盖率门禁在verify，安全扫描需显式profile
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/.mvn/wrapper/===
 maven-wrapper.properties[FV6T]: F:指定only-script Wrapper和Maven3.9.11下载发行地址 | R:code:Shared Express Mailer System/backend/mvnw.cmd | A:wrapperVersion,distributionType,distributionUrl | S:Maven本体从阿里云下载，依赖镜像由仓库外settings.xml控制
@@ -38,7 +38,7 @@ GlobalExceptionHandler.java[CG9M]: F:将业务、参数和系统异常转换为�
 HealthController.java[EO6T]: F:提供无需JWT的/api/health存活探针并只返回UP状态 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/config/WebMvcConfig.java | A:GET /api/health | S:探针不得暴露数据库或Redis连接状态、版本、主机名和构建信息；依赖健康度应由内网监控承担
 PageResult.java[CG6T]: F:承载分页records与total并集中计算页数 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/common/Result.java | A:of,getRecords,getTotal,getPages | S:size小于等于0时pages为0；构造器公式为向上取整，且公开setPages允许调用方覆盖该值
 Result.java[CG9T]: F:定义API统一响应的code、message、data字段及成功和失败构造工厂 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/common/ErrorCode.java,code:Shared Express Mailer System/backend/src/main/java/com/sems/common/PageResult.java | A:ok,fail,getCode,getData | S:批量生成二维码ZIP使用原始二进制流响应，不套此JSON结构；分页数据契约嵌套于data.records/total/pages
-SemsVersion.java[FV3T]: F:集中声明后端版本号供启动日志与接口文档使用 | R:code:Shared Express Mailer System/backend/pom.xml | A:VERSION | S:版本与pom同步；健康探针不暴露版本
+SemsVersion.java[FV3T]: F:集中声明后端版本号0.1.2供启动日志与OpenAPI文档使用 | R:code:Shared Express Mailer System/backend/pom.xml,code:Shared Express Mailer System/backend/src/main/java/com/sems/config/OpenApiConfig.java | A:VERSION | S:须与pom的project.version同步；健康探针不暴露版本
 package-info.java[SG1T]: F:声明统一响应与异常类型的公共包 | R:- | A:- | S:-
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/common/event/===
@@ -285,8 +285,8 @@ AllocationTransitionActions.java[DB8M]: F:承接调拨出库、入库和在途�
 StationTransitionActions.java[DB9M]: F:承接回收事件的订单闭环、复用计数、库存计数和推送 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/statemachine/BagTransitionService.java | A:RECOVER_UNUSED,RECOVER_CONFIRM,RECOVER_DIRECT | S:不改袋状态或重复写流转日志；use_count仅在真实回收确认路径递增
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/controller/===
-AlertController.java[EA7T]: F:开放平台告警分页、类型与时间筛选接口 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/AlertService.java | A:/alerts,listAlerts | S:-
-StatsController.java[EA7T]: F:开放看板汇总、趋势、周转率及库存分布查询 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/StatsService.java | A:/stats/dashboard,order-trend,bag-turnover,stock-distribution | S:-
+AlertController.java[EA7T]: F:开放平台告警分页、类型与时间筛选接口 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/AlertService.java | A:/alerts,listAlerts,类型与时间区间筛选 | S:类型非七类白名单抛3001不静默返回空表；单类实时扫描上限500条；分页默认10最大100；清单无本站或本人维度
+StatsController.java[EA7T]: F:开放看板汇总、趋势、周转率及库存分布查询 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/StatsService.java | A:/stats/dashboard,order-trend,bag-turnover,stock-distribution,days参数 | S:天数超1-90抛3001不截断；趋势默认7周转率默认30；周转率分母为当前在循环袋数，为0返回0；审计丢弃数只经AuditLogService读
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/dto/===
 AlertQuery.java[EA5T]: F:定义告警类型、发生时间闭区间及分页参数 | R:code:Shared Express Mailer System/backend/src/main/java/com/sems/module/stats/service/AlertService.java | A:type,beginTime,endTime,pageSize | S:-
@@ -468,13 +468,14 @@ V3__simplify_bag_status.sql[PD8T]: F:迁移旧袋状态为四态循环并递增�
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/docs/releases/===
 v0.1.1.md[SV6T]: F:发布v0.1.1四态循环、状态修正兼容变更与并发防护说明 | R:code:文档/测试报告.md | A:版本变更,兼容性,验证结果 | S:历史ref_check_no列继续保留；5轮竞争只验证正确性，不代表性能压测
+v0.1.2.md[SV4T]: F:发布v0.1.2前端视觉升级的范围、兼容性与验证结论 | R:code:文档/系统设计说明书.md,code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:版本重点,变更内容,兼容性,验证 | S:仅前端与文档变更，无数据库迁移；令牌变量名兼容但色值已变；后端测试未重跑
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/===
 .gitignore[FV3T]: F:排除前端依赖、构建产物、本地配置、日志及IDE临时文件 | R:code:Shared Express Mailer System/frontend/package.json | A:node_modules,dist,dist-ssr,*.local | S:-
-README.md[SV5T]: F:说明SEMS前端安装运行、开发代理、目录职责、状态交互与校验约定 | R:code:Shared Express Mailer System/frontend/vite.config.js | A:dev,build,preview,proxy | S:页面清单和视觉规则以系统设计说明书10.2/10.5为准；批量结果只认data.items，前端校验不替代后端
-index.html[EU5T]: F:提供中文SPA静态宿主页、移动端viewport与#app挂载容器 | R:code:Shared Express Mailer System/frontend/src/main.js | A:lang,viewport,#app,main.js | S:只声明light色彩模式，项目不提供整站深色模式
-package-lock.json[FV5L]: F:锁定npm解析的前端依赖图及包完整性信息以复现安装 | R:code:Shared Express Mailer System/frontend/package.json | A:lockfileVersion,packages,requires | S:根包依赖声明须与package.json一致；锁文件由npm维护，不手工拼接自动解析的传递依赖项
-package.json[FV8T]: F:定义sems-frontend工程元信息、Node版本范围、构建脚本和Vue/Vite/Element Plus等依赖 | R:code:Shared Express Mailer System/frontend/package-lock.json | A:scripts,dependencies,devDependencies,engines | S:Pinia 4要求Vue 3.5.11以上且Vite 8要求Node 20.19以上；版本基线变化需同步设计书
+README.md[SV5T]: F:说明SEMS v0.1.2前端安装运行、开发代理、目录职责、状态交互与校验约定 | R:code:Shared Express Mailer System/frontend/vite.config.js,code:Shared Express Mailer System/frontend/package.json | A:dev,build,preview,proxy | S:页面清单和视觉规则以系统设计说明书10.2/10.5为准；批量结果只认data.items，前端校验不替代后端；视觉升级未改变接口路径与鉴权行为
+index.html[EU5T]: F:提供中文SPA宿主页、移动视口、主题色、SEO描述、品牌图标和#app挂载入口 | R:code:Shared Express Mailer System/frontend/src/main.js,code:Shared Express Mailer System/frontend/public/favicon.svg | A:lang,viewport,theme-color,favicon,main.js | S:viewport-fit=cover配合布局安全区；只声明light色彩模式
+package-lock.json[FV5L]: F:锁定sems-frontend 0.1.2解析的前端依赖图及包完整性信息以复现安装 | R:code:Shared Express Mailer System/frontend/package.json | A:lockfileVersion,packages,requires | S:根包版本须与package.json一致；锁文件由npm维护，不手工拼接自动解析的传递依赖项
+package.json[FV8T]: F:定义sems-frontend 0.1.2工程元信息、Node版本范围、构建脚本和Vue/Vite/Element Plus等依赖 | R:code:Shared Express Mailer System/frontend/package-lock.json | A:scripts,dependencies,devDependencies,engines | S:工程版本须与package-lock根包同步；Pinia 4要求Vue 3.5.11以上且Vite 8要求Node 20.19以上；版本基线变化需同步设计书
 vite.config.js[FV8T]: F:配置Vue插件、@源码别名、5173开发端口、/api与/ws代理及构建分包 | R:code:Shared Express Mailer System/frontend/src/utils/request.js | A:alias,proxy,manualChunks,build | S:开发期代理固定指向8090；业务API保持同源相对路径，生产反代由Nginx承担
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/===
@@ -495,30 +496,32 @@ BagCodeInput.vue[EU7M]: F:统一袋码v-model输入、即时大写、扫码按�
 BagTimeline.vue[EU8S]: F:将袋流转记录呈现为含事件、状态变化、操作人、站点、时间和备注的时间线 | R:code:Shared Express Mailer System/frontend/src/constants/index.js | A:isDanger,nodeColor,eventLabel,formatTime | S:输入记录按时间正序，最后一条即当前状态；遗失与报废节点突出显示
 BatchResultDialog.vue[EU7M]: F:统一展示批量操作成功/失败计数、逐袋原因并复制可见失败清单 | R:code:Shared Express Mailer System/frontend/src/utils/batch.js | A:successCount,failedCount,totalCount,copyFailed | S:批次总数和失败数优先使用后端信封，因为items明细可能被截断
 DataPager.vue[EU6S]: F:统一分页双向绑定、移动端布局和页码/页大小变化事件 | R:code:Shared Express Mailer System/frontend/src/constants/index.js | A:handleSizeChange,handleCurrentChange,layout | S:改变每页条数回到第1页且只派发一次change；移动端只保留上一页/页码/下一页
-EmptyState.vue[EU5T]: F:统一展示空态图标、说明文字和可选主操作插槽 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:icon,description,default slot | S:-
-PageCard.vue[EU5T]: F:提供可选标题、副标题和extra插槽的页面卡片容器 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:title,subtitle,extra | S:-
+EmptyState.vue[EU5T]: F:以圆形青绿图标底、说明文字和可选操作槽统一页面空态 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:icon,description,default slot | S:图标名依赖main.js全局注册
+PageCard.vue[EU5T]: F:提供可选标题、副标题和extra插槽的统一轻量页面卡片容器 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:title,subtitle,extra,default slot | S:不依赖el-card，标题与副标题均为空且无extra时不渲染头部
 PageSkeleton.vue[EU6S]: F:提供表格行、卡片块和16:9图表三种加载占位并限制占位数量 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:tableRows,cardBlocks,type | S:占位尺寸需与真实内容一致以免加载完成时跳版
-StatCard.vue[EU5S]: F:统一展示指标标题、数值、单位及带方向文字的环比变化 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:trendIcon,trendText | S:趋势同时用箭头、升降文字和颜色表达，不单独依赖颜色
+StatCard.vue[EU5S]: F:统一展示实时指标、图标、数值单位及趋势方向或辅助说明 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:label,value,accent,trend,trendText | S:趋势以箭头和升降文字辅助颜色；非有限趋势值只显示方向不显示百分比
 StatusTag.vue[EU8S]: F:统一渲染袋、订单、调拨、盘点、账号与结果状态的文案和令牌颜色 | R:code:Shared Express Mailer System/frontend/src/constants/index.js | A:META_MAP,meta,colorVar,showCheckIcon | S:状态必须同时有颜色与文字；success绿色标签带对勾，颜色仅来自CSS令牌
+AppBrand.vue[EU5T]: F:统一展示SEMS袋形循环标识、品牌名和标语并支持紧凑、小尺寸与反色 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:compact,inverse,small | S:small隐藏英文与标语；inverse用于深色品牌背景，颜色均来自令牌
+AuthCycleVisual.vue[EU5T]: F:以可访问SVG插画呈现取袋、寄件、归还、消毒的循环旅程 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:cycle-route,SVG title/desc,figcaption | S:路线虚线动画在prefers-reduced-motion下停用
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/constants/===
 index.js[CD8S]: F:集中定义袋/订单/调拨/盘点/角色/告警枚举、展示映射、分页与批量上限 | R:code:Shared Express Mailer System/frontend/src/components/StatusTag.vue | A:BAG_STATUS,ORDER_STATUS,ROLE_LABEL,ALERT_TYPE_META,PAGE_SIZES,BATCH_MAX_SIZE | S:状态码须与后端契约一致；颜色只引用CSS令牌，超时是标记而非订单状态
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/layouts/===
-AdminLayout.vue[EU8M]: F:按route scope区分站点/平台菜单并响应侧栏折叠、移动端底部导航和用户退出 | R:code:Shared Express Mailer System/frontend/src/router/index.js | A:STATION_MENUS,PLATFORM_MENUS,syncLayout,handleLogout | S:菜单显示不构成授权边界；访问控制由router守卫和后端接口共同执行
-UserLayout.vue[EU7M]: F:承载用户端H5页面、底部首页/订单/个人中心Tab、扫码主按钮和WebSocket状态 | R:code:Shared Express Mailer System/frontend/src/router/index.js | A:activeTab,goScan,showBack,wsConnected | S:移动端安全区与44px触控热区属于布局约束；实时断开不阻断业务
+AdminLayout.vue[EU8M]: F:按路由scope呈现品牌管理框架、角色菜单、响应侧栏、移动导航、用户菜单和WS状态 | R:code:Shared Express Mailer System/frontend/src/router/index.js,code:Shared Express Mailer System/frontend/src/components/AppBrand.vue | A:STATION_MENUS,PLATFORM_MENUS,syncLayout,handleLogout | S:移动底部只取前四项并另给全部功能入口；菜单展示不替代路由守卫和后端授权
+UserLayout.vue[EU7M]: F:承载品牌H5窄栏页面、三Tab与居中扫码按钮、返回头部及WebSocket状态 | R:code:Shared Express Mailer System/frontend/src/router/index.js,code:Shared Express Mailer System/frontend/src/components/AppBrand.vue | A:activeTab,goScan,showBack,wsConnected | S:五列底部网格中间保留扫码主按钮；安全区、44px触控与100dvh为布局约束
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/router/===
-index.js[EI9M]: F:定义用户/站点/平台路由和全局守卫，按token、强制改密及角色等级控制导航 | R:code:Shared Express Mailer System/frontend/src/stores/user.js | A:routes,beforeEach,afterEach,ROLE_LEVEL | S:客户端路由守卫只约束导航，实际角色和数据权限仍须由后端接口执行
+index.js[EI9M]: F:定义用户/站点/平台三块角色分区路由与全局守卫，按token、强制改密及角色等级控制导航，根路径按角色分流 | R:code:Shared Express Mailer System/frontend/src/stores/user.js,code:Shared Express Mailer System/frontend/src/views/common/Login.vue,code:Shared Express Mailer System/frontend/src/layouts/AdminLayout.vue | A:routes,beforeEach,afterEach,ROLE_LEVEL,Root.beforeEnter | S:根路径不能写静态redirect，它在路由解析阶段早于守卫执行，会让未登录者的登录链接带上?redirect=/m/home，登录后把平台或站点管理员送进用户端H5竖版；改用无界面占位组件+beforeEnter按isLogin分流；客户端守卫只约束导航，实际权限仍由后端接口执行
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/stores/===
 user.js[MI9S]: F:以Pinia管理会话token、角色和站点信息，恢复用户资料并按到期时间静默续签 | R:code:Shared Express Mailer System/frontend/src/utils/request.js | A:applySession,scheduleRenew,bootstrap,changePassword,logout | S:token以内存为主并以sessionStorage兜底；改密清空会话，续签会影响旧jti并需与WebSocket重连协调
 websocket.js[MN9M]: F:管理WebSocket首帧JWT认证、主题订阅、心跳响应与退避重连 | R:code:Shared Express Mailer System/frontend/src/stores/user.js | A:connect,ensureConnected,subscribe,unsubscribe,disconnect | S:JWT放首帧而非URL；退避connect复用当前token，ensureConnected另有续签流程；断开清理订阅，页面在认证恢复后须重建订阅
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/styles/===
-element-override.css[CC8S]: F:将Element Plus颜色、文本、边框、填充、圆角、字号和阴影映射到SEMS令牌 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:--el-color-primary,.el-table,.el-button,.sems-num | S:必须覆盖Element亮阶避免默认色回流；此文件随tokens.css作为色值定义例外；样式引入顺序由main.js保证
-index.css[CC6T]: F:作为全局样式入口加载令牌与Element覆盖并定义基线、通用文字工具类和移动端显示规则 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:@import,.sems-page-title,.sems-mono,@media | S:页面样式留在scoped区；小屏表格须使用卡片布局而非横向滚动
-tokens.css[CC9S]: F:定义SEMS全站颜色、文字、字号、间距、圆角、阴影、状态色、图表色与布局令牌 | R:code:Shared Express Mailer System/frontend/src/styles/element-override.css | A:--sems-color, --sems-bag, --sems-order, --sems-space, --sems-sidebar-width | S:本文件是颜色等设计令牌唯一出处，页面不得写死色值；令牌变更须同步设计说明书10.5
+element-override.css[CC8M]: F:将Element Plus变量、表格、按钮、输入与反馈组件映射到SEMS青绿令牌 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css | A:--el-color-primary,light色阶,.el-button,.el-table,.sems-num | S:error须跟随danger且亮阶全量覆盖防默认蓝回流；主按钮渐变与hover使用独立令牌
+index.css[CC6T]: F:加载令牌与Element覆盖并定义排版基线、文字工具类、表单细节和响应式显示规则 | R:code:Shared Express Mailer System/frontend/src/styles/tokens.css,code:Shared Express Mailer System/frontend/src/styles/element-override.css | A:@import,.sems-eyebrow,.sems-mono,@media | S:导入顺序保持令牌先于Element覆盖；小屏对话框与桌面/移动工具类在此统一控制
+tokens.css[CC9S]: F:定义SEMS青绿品牌、表面、文字、状态、图表、间距、圆角、阴影及H5布局令牌 | R:code:Shared Express Mailer System/frontend/src/styles/element-override.css | A:--sems-color,--sems-bg-hero,--sems-bg-button,--sems-h5-gutter | S:本文件是颜色与设计令牌唯一出处；品牌渐变和辅助文字须供深色Hero反色使用，变更须同步设计书10.5
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/utils/===
 batch.js[CU8T]: F:统一解析逐袋批量接口的total/success/failed/items信封并在格式异常时告警 | R:code:Shared Express Mailer System/frontend/src/components/BatchResultDialog.vue | A:extractBatch,emptyEnvelope,resolveCount | S:明细只认data.items，不兼容results/records/details或裸数组，避免掩盖契约漂移
@@ -529,9 +532,9 @@ validators.js[CS8S]: F:集中提供袋码/手机号/运单号/UUID正则、密�
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/views/common/===
 ChangePassword.vue[ES8M]: F:提交旧密码和新密码并展示强度，成功后提示重新登录 | R:code:Shared Express Mailer System/frontend/src/stores/user.js | A:handleSubmit,passwordStrength | S:改密会递增token_version并使当前凭证失效；成功后必须回登录页，前端密码规则不替代服务端校验
 Forbidden.vue[EU5T]: F:显示无权限说明并按登录态返回角色首页或登录页 | R:code:Shared Express Mailer System/frontend/src/stores/user.js | A:homePath,goHome | S:-
-Login.vue[EI8L]: F:完成手机号密码登录、按需图形验证码、错误提示和按角色/回跳地址导航 | R:code:Shared Express Mailer System/frontend/src/stores/user.js | A:readRedirect,refreshCaptcha,needsCaptcha,handleLogin | S:回跳地址拒绝//外部地址；验证码一次性失败后换图；账号锁定与验证码要求由后端返回
+Login.vue[EI8L]: F:以青绿品牌叙事区、原创循环插画和手机号密码表单完成登录，并按需展示图形验证码与错误提示 | R:code:Shared Express Mailer System/frontend/src/stores/user.js,code:Shared Express Mailer System/frontend/src/router/index.js,code:Shared Express Mailer System/frontend/src/components/AuthCycleVisual.vue,code:Shared Express Mailer System/frontend/src/components/AppBrand.vue | A:readRedirect,redirectMatchesRole,refreshCaptcha,needsCaptcha,handleLogin,fillDemo | S:回跳地址须落在本角色分区内（SECTION_BY_ROLE），跨区如遗留的?redirect=/m/home一律改走homePath，否则管理员会落到用户端竖版；//外部地址拒绝；验证码一次性失败后换图；账号锁定与验证码要求由后端返回；演示口令仅用于本地答辩，不得视为生产凭证
 NotFound.vue[EU4T]: F:呈现未匹配路由说明并提供返回角色首页或登录页入口 | R:code:Shared Express Mailer System/frontend/src/router/index.js | A:homePath,goHome | S:-
-Register.vue[EI7L]: F:以图形验证码、手机号、强密码、确认密码和昵称创建普通用户账号 | R:code:Shared Express Mailer System/frontend/src/stores/user.js | A:refreshCaptcha,handleRegister,passwordStrength | S:注册失败即刷新一次性验证码；输入校验只是体验层，账号创建由后端校验
+Register.vue[EI7L]: F:以品牌循环叙事版式和图形验证码、手机号、强密码、确认密码与昵称创建普通用户账号 | R:code:Shared Express Mailer System/frontend/src/stores/user.js,code:Shared Express Mailer System/frontend/src/components/AuthCycleVisual.vue | A:refreshCaptcha,handleRegister,passwordStrength | S:注册进页即取一次性验证码，任何失败后都换图；输入校验只是体验层，账号创建和角色授予由后端校验；自助注册只能得到普通用户，客户端不能提交角色或站点
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/views/platform/===
 Alerts.vue[AO8L]: F:按类型和时间分页浏览系统/业务告警，展示汇总并跳转对应订单、调拨、看板或审计处置页 | R:code:Shared Express Mailer System/frontend/src/api/stats.js | A:load,summaryValue,kpiItems,goHandle | S:缺少后端summary时顶部数量只统计当前页；告警跳转不等同于完成处置，数据仍由服务端判定
@@ -539,7 +542,7 @@ AllocationManage.vue[EB9L]: F:平台管理全站调拨单，创建并锁定袋�
 AuditLog.vue[EO9L]: F:按操作者/模块/动作/时间查询审计日志，展示脱敏参数并逐条受控查看完整IP | R:code:Shared Express Mailer System/frontend/src/api/stats.js | A:load,paramsText,maskIp,openIp,QUICK_ACTIONS | S:列表只展示ipMasked，完整IP必须调用逐条端点且查看本身被审计；关键动作筛选与脱敏语义不可绕过
 BagDetail.vue[EB9L]: F:展示全站袋资料、二维码和流转日志，并办理状态修正或遗失找回 | R:code:Shared Express Mailer System/frontend/src/components/BagTimeline.vue | A:load,loadQrcode,submitCorrect,submitRecovery | S:二维码blob/objectURL须在切换和卸载时释放；修正/找回由后端校验并留痕
 BagLedger.vue[EB9L]: F:平台管理员检索全站袋、建档/批量生成并下载二维码，执行状态修正或遗失找回 | R:code:Shared Express Mailer System/frontend/src/api/bag.js | A:buildQuery,submitCreate,submitBatch,submitCorrect,submitRecovery | S:批量生成整批原子且上限500；修正目标只允许IDLE/REPAIRING/LOST/SCRAPPED；修正需审计确认
-Dashboard.vue[AO9L]: F:聚合呈现平台KPI、告警位、订单趋势、库存分布和站点周转率ECharts图表 | R:code:Shared Express Mailer System/frontend/src/api/stats.js | A:loadAll,refreshAll,normalizeTrend,normalizeDistribution,normalizeTurnover,disposeCharts | S:统计公式以服务端口径为准，页面仅兼容字段并绘图；分布饼图最多三类；推送刷新需复订阅并释放图表资源
+Dashboard.vue[AO9L]: F:以循环运营导语、带图标KPI卡和ECharts图表聚合呈现平台指标、告警位、订单趋势、库存分布与站点周转率 | R:code:Shared Express Mailer System/frontend/src/api/stats.js,code:Shared Express Mailer System/frontend/src/components/StatCard.vue | A:loadAll,refreshAll,normalizeTrend,normalizeDistribution,normalizeTurnover,disposeCharts | S:统计公式与字段口径以服务端为准，页面只做兼容读取；分布饼图最多三类并在超出时合并其他；实时推送刷新需退订重订，图表实例和ResizeObserver必须在卸载时释放
 LoginLog.vue[ES8M]: F:按结果/手机号掩码/时间分页查询登录日志并显示失败原因、IP和UA | R:code:Shared Express Mailer System/frontend/src/api/stats.js | A:buildParams,load,maskIp,openIp | S:当前完整IP对话框只读取行内ipFull/fullIp/ip字段，不调用受控逐条IP端点；隐私展示变更需核对后端列表出参与审计接口
 OrderManage.vue[EB9L]: F:按状态/站点/时间查询全量订单或超时订单，并二次确认遗失处置和责任用户 | R:code:Shared Express Mailer System/frontend/src/api/order.js | A:loadAll,loadTimeout,overdueText,submitLost | S:超时只作标记展示不改订单状态；遗失时限由后端判定且会写责任记录
 StationManage.vue[EB8L]: F:平台管理员分页维护站点和预警阈值，停用时可指定接收站并展示低库存站点 | R:code:Shared Express Mailer System/frontend/src/api/station.js | A:submitForm,submitDisable,enableStation,loadWarnings | S:停用前置条件由后端权威判定且失败后保留对话框；接收站排除自身和停用站
@@ -554,14 +557,14 @@ InventoryCheck.vue[ED8L]: F:读取本站账面库存并录入实盘数、展示�
 RecycleConfirm.vue[EB9L]: F:扫码建立去重回收清单、逐袋标记曾寄出并提交回收确认与结果明细 | R:code:Shared Express Mailer System/frontend/src/api/station.js | A:addBag,loadBagStatus,handleSubmit,loadBin | S:状态查询只是尽力展示且失败不阻止提交；路径路由和袋状态变更由后端按订单决定
 RepairScrap.vue[EB8L]: F:提供单袋维修登记、维修结果提交和直接报废，最近操作记录保存在当前页面状态 | R:code:Shared Express Mailer System/frontend/src/api/bag.js | A:submitRepair,submitComplete,submitScrap,pushRecord | S:修复转待消毒、无法修复转报废；最近操作列表刷新即清空且不是审计记录；报废前二次确认并由后端留痕
 StockInOut.vue[EW7M]: F:扫码累加袋码并按必填备注提交实物出库，展示逐袋部分成功结果 | R:code:Shared Express Mailer System/frontend/src/api/bag.js | A:appendBag,handleStockOut,extractBatch | S:当前页面只实现stock-out标签和stockOut请求，路由标题中的入库能力不在此实现；操作状态以后端校验
-Workbench.vue[ED8L]: F:展示本站各状态库存、可用库存预警及回收箱待办并订阅库存/回收推送 | R:code:Shared Express Mailer System/frontend/src/api/station.js | A:loadStock,loadRecycle,evaluateWarning,handleMessage | S:站点管理员不调用平台专属预警列表；KPI_CARDS当前列出三项，不能按注释假定四项
+Workbench.vue[ED8L]: F:以运营欢迎区、三张状态KPI卡、全状态库存明细与回收待办展示本站工作台并订阅库存/回收推送 | R:code:Shared Express Mailer System/frontend/src/api/station.js,code:Shared Express Mailer System/frontend/src/components/StatCard.vue | A:loadStock,loadRecycle,evaluateWarning,handleMessage,goRecycle | S:站点管理员不调用平台专属预警列表；KPI_CARDS当前仅空闲、使用中、待消毒三项，不能按注释假定四项；WS断线或推送异常时保留上次快照，不打断在岗操作
 
 ===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/src/views/user/===
 BagInfo.vue[EB6M]: F:按路由袋码展示用户可见袋信息、复制袋码、流转日志和可领用入口 | R:code:Shared Express Mailer System/frontend/src/components/BagTimeline.vue | A:load,loadTrace,copyBagCode,goBorrow | S:用户页不调用仅管理员可用的二维码端点；流转接口可能因权限返回拒绝并单独呈现
-Home.vue[EU6M]: F:展示用户在持袋数、附近站点库存和最近三条进行中订单并提供扫码入口 | R:code:Shared Express Mailer System/frontend/src/api/order.js | A:load,HELD_STATUSES,heldCount,ongoingOrders | S:在持数按三类订单分页total求和，权限额度与实际扣减以后端为准
+Home.vue[EU6M]: F:以在持额度主卡、附近站点清单和最近三条进行中订单构建用户端首页，并提供扫码取袋入口 | R:code:Shared Express Mailer System/frontend/src/api/order.js,code:Shared Express Mailer System/frontend/src/api/station.js | A:load,HELD_STATUSES,heldCount,ongoingOrders,atLimit | S:在持数按待寄件、使用中、待回收确认三类订单分页total求和，额度与实际扣减以后端为准；撤回和超时取消不释放额度；站点库存为零时必须明确标注暂无可用袋
 MyOrders.vue[EW8L]: F:分页筛选本人订单，支持待寄件撤回/寄件、使用中选站标记归还并监听订单推送 | R:code:Shared Express Mailer System/frontend/src/api/order.js | A:load,confirmCancel,submitReturn,subscribeOrderTopic | S:撤回不释放额度且袋仍由站点回收；标记归还不改变袋状态
 OrderDetail.vue[EW8L]: F:查询本人订单详情并以订单节点时间构造时间线，提供寄件/撤回/标记归还操作 | R:code:Shared Express Mailer System/frontend/src/components/BagTimeline.vue | A:load,timelineRecords,confirmCancel,submitReturn | S:此时间线由订单时间戳合成，不是袋级完整trace；非本人订单由后端2002拒绝
-Profile.vue[EI7M]: F:展示脱敏账号/角色/绑定站点，编辑昵称、修改密码/退出并查看或重连WebSocket | R:code:Shared Express Mailer System/frontend/src/stores/user.js | A:loadProfile,saveNickname,confirmLogout,reconnect | S:手机号只读且依赖后端脱敏；改密会使全部旧凭证失效
+Profile.vue[EI7M]: F:以个人信息品牌卡展示脱敏账号与角色，支持编辑昵称、修改密码、退出登录及查看或重连WebSocket | R:code:Shared Express Mailer System/frontend/src/stores/user.js,code:Shared Express Mailer System/frontend/src/stores/websocket.js | A:loadProfile,saveNickname,confirmLogout,reconnect | S:手机号只读且依赖后端脱敏；改密会使全部旧凭证失效并需重新登录；实时推送断开不影响页面手动刷新，不能据此阻断业务操作
 ScanBorrow.vue[EB9L]: F:支持扫码/手输查袋、二次确认申领并定义成功/失败结果卡视图 | R:code:Shared Express Mailer System/frontend/src/api/order.js | A:handleScanInput,queryBag,confirmBorrow,retryBorrow | S:库存扣减、在持额度与重复申领由后端原子校验；当前成功/失败处理未设置stage=result，结果卡模板不会自动出现
 ShippingForm.vue[EB7M]: F:仅为待寄件订单提交快递公司、运单号和收件人手机号并回显服务端字段错误 | R:code:Shared Express Mailer System/frontend/src/api/order.js | A:load,applyServerFieldErrors,onTrackingInput,submit | S:收件人手机号由后端脱敏并哈希保存，前端不存明文处理结果；订单状态冲突以服务端4105为准
 
@@ -590,9 +593,12 @@ _extracted.txt[SG9T]: F:提供权威任务书文本提取，定义范围、固�
 ===E:/AI/DSH/毕设-共享快递袋系统/文档/===
 数据库设计说明书.md[SD9L]: F:展开21表字段、索引、完整性、Redis键空间与敏感数据授权设计 | R:code:Shared Express Mailer System/deploy/sql/V1__init_schema.sql | A:表结构,键空间,初始化数据,最小授权 | S:无逻辑删除、无物理外键；ref_check_no仅兼容旧日志；收件人号码只存掩码与HMAC；审计表最小授权是设计要求，须核对部署实际权限
 测试报告.md[TQ7T]: F:记录v0.1.1四态、盘点、调拨竞争、接口与覆盖率阶段验证 | R:code:文档/测试附件/v0.1.1/接口与并发回归.json,code:文档/测试附件/v0.1.1/覆盖率摘要.json | A:294单元测试,48接口检查,5轮竞争,未覆盖事项 | S:2026-10-07结果是版本快照；5轮双请求竞争验证正确性，不能当作正式并发性能压测
-系统设计说明书.md[SG9L]: F:规定SEMS架构、状态机、REST契约、权限、库存补偿、安全与部署设计 | R:code:文档/数据库设计说明书.md | A:版本基线,接口与错误码,时限口径,Redis键,视觉规范 | S:袋状态是权威且订单联动；标记归还不改袋状态；DB为库存权威；盘点差异需人工核验；写事务幂等结果仅提交后缓存
+系统设计说明书.md[SG9L]: F:规定SEMS架构、状态机、REST契约、权限、库存补偿、安全部署及青绿循环视觉规范，并修订至V2.3 | R:code:文档/数据库设计说明书.md,code:Shared Express Mailer System/frontend/src/styles/tokens.css,code:Shared Express Mailer System/docs/releases/v0.1.2.md | A:版本基线与修订历史,接口与错误码,时限口径,Redis键,视觉规范 | S:袋状态是权威且订单联动；标记归还不改袋状态；DB为库存权威；盘点差异需人工核验；写事务幂等结果仅提交后缓存；视觉令牌变更必须同步10.5令牌表且语义色与袋状态映射不得调换
 需求规格说明书.md[SB9L]: F:定义六模块需求、角色用例、业务规则、非功能验收及任务追溯 | R:code:文档/系统设计说明书.md | A:FR-M1至M6,BR规则,NFR,验收矩阵 | S:撤回和超时取消不释放在持袋额度；持有数按袋状态而非未完成订单数；单机部署且不对接物流支付，责任记录不自动执行资金赔付
 
 ===E:/AI/DSH/毕设-共享快递袋系统/文档/测试附件/v0.1.1/===
 接口与并发回归.json[TQ5T]: F:保存48项接口检查、测试袋与5轮调拨和修正竞争结果 | R:code:文档/测试报告.md | A:checks,fixtures,races,balancedCheckNo | S:各轮调拨成功且修正返回4110，是历史回归结果
 覆盖率摘要.json[TQ5T]: F:保存v0.1.1的JaCoCo各类覆盖计数和测试数 | R:code:文档/测试报告.md | A:JaCoCo,测试数量,状态机分支覆盖率 | S:既有排除口径未扩大；数据为2026-10-07快照
+
+===E:/AI/DSH/毕设-共享快递袋系统/Shared Express Mailer System/frontend/public/===
+favicon.svg[FU3T]: F:提供青绿方形袋形循环标识作为浏览器站点图标 | R:code:Shared Express Mailer System/frontend/index.html | A:svg,favicon | S:静态资源直接使用内嵌色值，不参与运行时CSS令牌计算

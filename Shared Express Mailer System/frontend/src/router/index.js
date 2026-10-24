@@ -17,7 +17,27 @@ import { useUserStore } from '@/stores/user'
 const ROLE_LEVEL = { USER: 1, STATION_ADMIN: 2, PLATFORM_ADMIN: 3 }
 
 const routes = [
-  { path: '/', redirect: '/m/home' },
+  {
+    /*
+     * 根路径按角色分流，**不能**写成静态 redirect: '/m/home'。
+     *
+     * 原因：静态 redirect 在路由解析阶段就发生，早于全局守卫。未登录访问 '/' 时守卫看到的是
+     * 已经变成 /m/home 的目标，于是登录链接被带上 ?redirect=/m/home；登录成功后 Login.vue
+     * 优先回跳 redirect，平台/站点管理员就会落进用户端 H5（底部 Tab + 480px 窄栏）。
+     *
+     * 改为无界面占位组件 + beforeEnter：未登录先进登录页且不带 redirect，已登录按角色回各自首页。
+     */
+    path: '/',
+    name: 'Root',
+    component: { render: () => null },
+    // public：让全局守卫直接放行，交给下面的 beforeEnter 决定去哪。
+    // 否则守卫会先命中「未登录」分支，给登录链接塞上 ?redirect=/（虽能兜回角色首页，但链接脏）。
+    meta: { public: true },
+    beforeEnter: () => {
+      const userStore = useUserStore()
+      return userStore.isLogin ? userStore.homePath : { path: '/login' }
+    },
+  },
   {
     path: '/login',
     name: 'Login',

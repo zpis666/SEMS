@@ -15,36 +15,36 @@
 :root {
   /* ---------- 主色及其亮阶 ---------- */
   --el-color-primary: var(--sems-color-primary);
-  --el-color-primary-light-3: color-mix(in srgb, var(--sems-color-primary) 70%, #fff);
-  --el-color-primary-light-5: color-mix(in srgb, var(--sems-color-primary) 50%, #fff);
-  --el-color-primary-light-7: color-mix(in srgb, var(--sems-color-primary) 30%, #fff);
-  --el-color-primary-light-8: color-mix(in srgb, var(--sems-color-primary) 20%, #fff);
-  --el-color-primary-light-9: color-mix(in srgb, var(--sems-color-primary) 10%, #fff);
+  --el-color-primary-light-3: color-mix(in srgb, var(--sems-color-primary) 70%, var(--sems-color-white));
+  --el-color-primary-light-5: color-mix(in srgb, var(--sems-color-primary) 50%, var(--sems-color-white));
+  --el-color-primary-light-7: color-mix(in srgb, var(--sems-color-primary) 30%, var(--sems-color-white));
+  --el-color-primary-light-8: color-mix(in srgb, var(--sems-color-primary) 20%, var(--sems-color-white));
+  --el-color-primary-light-9: color-mix(in srgb, var(--sems-color-primary) 10%, var(--sems-color-white));
   --el-color-primary-dark-2: color-mix(in srgb, var(--sems-color-primary) 80%, #000);
 
   /* ---------- 语义色及其亮阶 ---------- */
   --el-color-success: var(--sems-color-success);
-  --el-color-success-light-3: color-mix(in srgb, var(--sems-color-success) 70%, #fff);
-  --el-color-success-light-5: color-mix(in srgb, var(--sems-color-success) 50%, #fff);
-  --el-color-success-light-7: color-mix(in srgb, var(--sems-color-success) 30%, #fff);
-  --el-color-success-light-8: color-mix(in srgb, var(--sems-color-success) 20%, #fff);
-  --el-color-success-light-9: color-mix(in srgb, var(--sems-color-success) 10%, #fff);
+  --el-color-success-light-3: color-mix(in srgb, var(--sems-color-success) 70%, var(--sems-color-white));
+  --el-color-success-light-5: color-mix(in srgb, var(--sems-color-success) 50%, var(--sems-color-white));
+  --el-color-success-light-7: color-mix(in srgb, var(--sems-color-success) 30%, var(--sems-color-white));
+  --el-color-success-light-8: color-mix(in srgb, var(--sems-color-success) 20%, var(--sems-color-white));
+  --el-color-success-light-9: color-mix(in srgb, var(--sems-color-success) 10%, var(--sems-color-white));
   --el-color-success-dark-2: color-mix(in srgb, var(--sems-color-success) 80%, #000);
 
   --el-color-warning: var(--sems-color-warning);
-  --el-color-warning-light-3: color-mix(in srgb, var(--sems-color-warning) 70%, #fff);
-  --el-color-warning-light-5: color-mix(in srgb, var(--sems-color-warning) 50%, #fff);
-  --el-color-warning-light-7: color-mix(in srgb, var(--sems-color-warning) 30%, #fff);
-  --el-color-warning-light-8: color-mix(in srgb, var(--sems-color-warning) 20%, #fff);
-  --el-color-warning-light-9: color-mix(in srgb, var(--sems-color-warning) 10%, #fff);
+  --el-color-warning-light-3: color-mix(in srgb, var(--sems-color-warning) 70%, var(--sems-color-white));
+  --el-color-warning-light-5: color-mix(in srgb, var(--sems-color-warning) 50%, var(--sems-color-white));
+  --el-color-warning-light-7: color-mix(in srgb, var(--sems-color-warning) 30%, var(--sems-color-white));
+  --el-color-warning-light-8: color-mix(in srgb, var(--sems-color-warning) 20%, var(--sems-color-white));
+  --el-color-warning-light-9: color-mix(in srgb, var(--sems-color-warning) 10%, var(--sems-color-white));
   --el-color-warning-dark-2: color-mix(in srgb, var(--sems-color-warning) 80%, #000);
 
   --el-color-danger: var(--sems-color-danger);
-  --el-color-danger-light-3: color-mix(in srgb, var(--sems-color-danger) 70%, #fff);
-  --el-color-danger-light-5: color-mix(in srgb, var(--sems-color-danger) 50%, #fff);
-  --el-color-danger-light-7: color-mix(in srgb, var(--sems-color-danger) 30%, #fff);
-  --el-color-danger-light-8: color-mix(in srgb, var(--sems-color-danger) 20%, #fff);
-  --el-color-danger-light-9: color-mix(in srgb, var(--sems-color-danger) 10%, #fff);
+  --el-color-danger-light-3: color-mix(in srgb, var(--sems-color-danger) 70%, var(--sems-color-white));
+  --el-color-danger-light-5: color-mix(in srgb, var(--sems-color-danger) 50%, var(--sems-color-white));
+  --el-color-danger-light-7: color-mix(in srgb, var(--sems-color-danger) 30%, var(--sems-color-white));
+  --el-color-danger-light-8: color-mix(in srgb, var(--sems-color-danger) 20%, var(--sems-color-white));
+  --el-color-danger-light-9: color-mix(in srgb, var(--sems-color-danger) 10%, var(--sems-color-white));
   --el-color-danger-dark-2: color-mix(in srgb, var(--sems-color-danger) 80%, #000);
 
   /* Element Plus 内部错误态读 --el-color-error，必须与 danger 同值，否则表单校验红字与危险按钮不同色 */
@@ -57,11 +57,11 @@
   --el-color-error-dark-2: var(--el-color-danger-dark-2);
 
   --el-color-info: var(--sems-color-info);
-  --el-color-info-light-3: color-mix(in srgb, var(--sems-color-info) 70%, #fff);
-  --el-color-info-light-5: color-mix(in srgb, var(--sems-color-info) 50%, #fff);
-  --el-color-info-light-7: color-mix(in srgb, var(--sems-color-info) 30%, #fff);
-  --el-color-info-light-8: color-mix(in srgb, var(--sems-color-info) 20%, #fff);
-  --el-color-info-light-9: color-mix(in srgb, var(--sems-color-info) 10%, #fff);
+  --el-color-info-light-3: color-mix(in srgb, var(--sems-color-info) 70%, var(--sems-color-white));
+  --el-color-info-light-5: color-mix(in srgb, var(--sems-color-info) 50%, var(--sems-color-white));
+  --el-color-info-light-7: color-mix(in srgb, var(--sems-color-info) 30%, var(--sems-color-white));
+  --el-color-info-light-8: color-mix(in srgb, var(--sems-color-info) 20%, var(--sems-color-white));
+  --el-color-info-light-9: color-mix(in srgb, var(--sems-color-info) 10%, var(--sems-color-white));
   --el-color-info-dark-2: color-mix(in srgb, var(--sems-color-info) 80%, #000);
 
   /* ---------- 文字 ---------- */
@@ -69,7 +69,7 @@
   --el-text-color-regular: var(--sems-text-regular);
   --el-text-color-secondary: var(--sems-text-secondary);
   --el-text-color-placeholder: var(--sems-text-secondary);
-  --el-text-color-disabled: color-mix(in srgb, var(--sems-text-secondary) 55%, #fff);
+  --el-text-color-disabled: color-mix(in srgb, var(--sems-text-secondary) 55%, var(--sems-color-white));
   --el-text-color-primary-on-dark: var(--sems-text-inverse);
 
   /* ---------- 描边 ---------- */
@@ -108,7 +108,7 @@
   --el-font-size-medium: var(--sems-font-size-lg);
   --el-font-size-large: var(--sems-font-size-lg);
 
-  /* ---------- 阴影：仅两档（设计书 10.5） ---------- */
+  /* ---------- 阴影：卡片、浮层与按钮语义分层（设计书 10.5） ---------- */
   --el-box-shadow: var(--sems-shadow-popup);
   --el-box-shadow-light: var(--sems-shadow-card);
   --el-box-shadow-lighter: var(--sems-shadow-card);
@@ -120,7 +120,7 @@
  * 原则是「组件自身样式能用变量解决的就不用这里」，此处只放变量解决不了的。
  * ============================================================ */
 
-/* 表格行高统一 48px（设计书 10.5 站点端/平台端），并用令牌的表格字号 13px。
+/* 表格行高统一使用 --sems-row-height（设计书 10.5 站点端/平台端），并用令牌的表格字号 13px。
  * 注意：Element Plus **没有** --el-table-row-height 这个变量（写过也不生效），
  * 行高由单元格的 padding 撑出来，所以这里直接给单元格设 height（表格布局下等价于最小行高）。 */
 .el-table {
@@ -146,9 +146,27 @@
 
 /* 按钮圆角与字重统一 */
 .el-button {
+  min-height: 38px;
   border-radius: var(--sems-radius-base);
   font-weight: var(--sems-font-weight-medium);
+  transition: transform var(--sems-duration-fast), box-shadow var(--sems-duration-fast), border-color var(--sems-duration-fast);
 }
+.el-button:not(.is-text):not(.is-link):not(.is-disabled):active { transform: translateY(1px); }
+.el-button--primary:not(.is-link):not(.is-text):not(.is-plain) {
+  border: none;
+  background: var(--sems-bg-button);
+  box-shadow: var(--sems-shadow-button);
+}
+.el-button--primary:not(.is-link):not(.is-text):not(.is-plain):hover {
+  background: var(--sems-color-primary-deep);
+}
+.el-button--large { min-height: var(--sems-btn-height-touch); }
+.el-input__wrapper, .el-select__wrapper { border-radius: var(--sems-radius-base); }
+.el-table .el-table__cell { border-bottom-color: var(--sems-border-soft); }
+.el-table .el-table__row:hover > td.el-table__cell { background-color: var(--sems-bg-hover); }
+.el-dialog__title, .el-drawer__title { color: var(--sems-text-primary); font-weight: var(--sems-font-weight-bold); }
+.el-message, .el-message-box { border-color: var(--sems-border); border-radius: var(--sems-radius-card); }
+.el-pagination { --el-pagination-button-bg-color: var(--sems-bg-card); }
 
 /* 数字类展示统一等宽数字，避免表格与看板数字跳动（设计书 10.5「数字用 tabular-nums 对齐」） */
 .sems-num,

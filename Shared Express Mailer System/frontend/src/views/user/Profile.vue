@@ -30,6 +30,7 @@ const loadError = ref('')
 const stationName = ref('')
 
 const roleText = computed(() => ROLE_LABEL[userStore.role] || '—')
+const avatarText = computed(() => String(user.value?.nickname || '同学').trim().slice(0, 1) || '同')
 
 /** 站点管理员的绑定站点：优先展示站点名，取不到时回退站点编号 */
 const stationText = computed(() => {
@@ -161,13 +162,28 @@ onMounted(() => {
     </EmptyState>
 
     <template v-else>
-      <PageCard title="账号信息">
-        <div class="info-row">
-          <span class="info-label">手机号</span>
-          <span class="info-value sems-mono">{{ user?.phone || '—' }}</span>
+      <section class="profile-hero">
+        <div class="profile-hero__top">
+          <span class="profile-hero__avatar" aria-hidden="true">{{ avatarText }}</span>
+          <div class="profile-hero__identity">
+            <p class="profile-hero__eyebrow">绿色生活，与你同行</p>
+            <h2 class="profile-hero__name">{{ user?.nickname || '同学' }}</h2>
+            <span class="profile-hero__role">
+              <el-icon><UserFilled /></el-icon>
+              {{ roleText }}
+            </span>
+          </div>
         </div>
-        <p class="field-hint sems-text-muted">手机号为账号唯一标识，不支持自助修改。</p>
+        <div class="profile-hero__meta">
+          <div>
+            <span class="profile-hero__label">登录手机号</span>
+            <strong class="sems-mono">{{ user?.phone || '—' }}</strong>
+          </div>
+          <el-icon class="profile-hero__leaf" :size="30"><Promotion /></el-icon>
+        </div>
+      </section>
 
+      <PageCard title="账号信息" subtitle="管理你的昵称与账号资料">
         <el-form
           ref="nicknameFormRef"
           :model="form"
@@ -179,16 +195,20 @@ onMounted(() => {
           <el-form-item label="昵称" prop="nickname" :error="nicknameError">
             <el-input v-model="form.nickname" maxlength="16" placeholder="请输入昵称" clearable />
           </el-form-item>
-          <el-button type="primary" :loading="savingNickname" @click="saveNickname">
-            保存昵称
+          <el-button class="profile-save" type="primary" :loading="savingNickname" @click="saveNickname">
+            <el-icon><Check /></el-icon>
+            <span>保存昵称</span>
           </el-button>
         </el-form>
 
         <div class="info-row">
+          <span class="info-label">手机号</span>
+          <span class="info-value sems-mono">{{ user?.phone || '—' }}</span>
+        </div>
+        <p class="field-hint sems-text-muted">手机号为账号唯一标识，不支持自助修改。</p>
+        <div class="info-row">
           <span class="info-label">角色</span>
-          <span class="info-value">
-            <el-tag effect="plain" type="info">{{ roleText }}</el-tag>
-          </span>
+          <span class="info-value">{{ roleText }}</span>
         </div>
         <div v-if="userStore.isStationAdmin" class="info-row">
           <span class="info-label">绑定站点</span>
@@ -197,9 +217,23 @@ onMounted(() => {
       </PageCard>
 
       <PageCard title="安全设置">
-        <div class="action-row">
-          <el-button @click="router.push('/change-password')">修改密码</el-button>
-          <el-button type="danger" plain @click="confirmLogout">退出登录</el-button>
+        <div class="security-actions">
+          <button class="security-action" type="button" @click="router.push('/change-password')">
+            <span class="security-action__icon"><el-icon><Lock /></el-icon></span>
+            <span class="security-action__copy">
+              <strong>修改密码</strong>
+              <small>定期更新密码，保护账号安全</small>
+            </span>
+            <el-icon><ArrowRight /></el-icon>
+          </button>
+          <button class="security-action is-danger" type="button" @click="confirmLogout">
+            <span class="security-action__icon"><el-icon><SwitchButton /></el-icon></span>
+            <span class="security-action__copy">
+              <strong>退出登录</strong>
+              <small>退出后需重新验证身份</small>
+            </span>
+            <el-icon><ArrowRight /></el-icon>
+          </button>
         </div>
         <p class="field-hint sems-text-muted">修改密码后所有登录凭证立即失效，需要重新登录。</p>
       </PageCard>
@@ -207,10 +241,16 @@ onMounted(() => {
       <PageCard title="实时推送">
         <div class="action-row">
           <span class="ws-status">
-            <span class="ws-dot" :class="{ 'is-on': wsStore.connected && wsStore.authed }" />
+            <el-icon :class="{ 'is-on': wsStore.connected && wsStore.authed }">
+              <CircleCheckFilled v-if="wsStore.connected && wsStore.authed" />
+              <Connection v-else />
+            </el-icon>
             {{ wsStore.statusText }}
           </span>
-          <el-button size="small" :loading="reconnecting" @click="reconnect">重新连接</el-button>
+          <el-button :loading="reconnecting" @click="reconnect">
+            <el-icon><RefreshRight /></el-icon>
+            <span>重新连接</span>
+          </el-button>
         </div>
         <p class="field-hint sems-text-muted">
           实时推送用于库存与订单状态刷新，断开不影响页面手动刷新数据。
@@ -225,6 +265,99 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: var(--sems-space-4);
+  padding-top: var(--sems-space-1);
+}
+
+.profile :deep(.page-card) {
+  border: 1px solid var(--sems-border-soft);
+}
+
+.profile-hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sems-space-5);
+  padding: var(--sems-space-5);
+  overflow: hidden;
+  border-radius: var(--sems-radius-card);
+  background: var(--sems-bg-hero);
+  box-shadow: var(--sems-shadow-button);
+  color: var(--sems-text-inverse);
+}
+
+.profile-hero__top {
+  display: flex;
+  align-items: center;
+  gap: var(--sems-space-4);
+}
+
+.profile-hero__avatar {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border: 1px solid color-mix(in srgb, var(--sems-text-inverse) 24%, transparent);
+  border-radius: 50%;
+  background-color: color-mix(in srgb, var(--sems-text-inverse) 12%, transparent);
+  color: var(--sems-text-inverse);
+  font-size: var(--sems-font-size-kpi);
+  font-weight: var(--sems-font-weight-bold);
+}
+
+.profile-hero__identity {
+  min-width: 0;
+}
+
+.profile-hero__eyebrow {
+  margin: 0 0 var(--sems-space-1);
+  color: var(--sems-text-on-brand-soft);
+  font-size: var(--sems-font-size-xs);
+}
+
+.profile-hero__name {
+  margin: 0 0 var(--sems-space-2);
+  overflow: hidden;
+  color: var(--sems-text-inverse);
+  font-size: var(--sems-font-size-xl);
+  font-weight: var(--sems-font-weight-bold);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-hero__role {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sems-space-1);
+  padding: var(--sems-space-1) var(--sems-space-2);
+  border-radius: var(--sems-radius-tag);
+  background-color: color-mix(in srgb, var(--sems-text-inverse) 10%, transparent);
+  color: var(--sems-text-on-brand-soft);
+  font-size: var(--sems-font-size-xs);
+}
+
+.profile-hero__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sems-space-3);
+  padding-top: var(--sems-space-4);
+  border-top: 1px solid color-mix(in srgb, var(--sems-text-inverse) 14%, transparent);
+}
+
+.profile-hero__meta > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sems-space-1);
+}
+
+.profile-hero__label {
+  color: var(--sems-text-on-brand-soft);
+  font-size: var(--sems-font-size-xs);
+}
+
+.profile-hero__leaf {
+  color: var(--sems-text-on-brand-soft);
 }
 
 .info-row {
@@ -256,11 +389,90 @@ onMounted(() => {
   line-height: 1.5;
 }
 
+.profile-save {
+  min-height: var(--sems-touch-target);
+  margin-bottom: var(--sems-space-2);
+}
+
+.security-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sems-space-2);
+  margin-bottom: var(--sems-space-3);
+}
+
+.security-action {
+  display: flex;
+  align-items: center;
+  gap: var(--sems-space-3);
+  width: 100%;
+  min-height: 64px;
+  padding: var(--sems-space-3);
+  border: 1px solid var(--sems-border-soft);
+  border-radius: var(--sems-radius-base);
+  background-color: var(--sems-bg-soft);
+  color: var(--sems-text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--sems-duration-fast), background-color var(--sems-duration-fast);
+}
+
+.security-action:active {
+  border-color: var(--sems-border-strong);
+  background-color: var(--sems-bg-hover);
+}
+
+.security-action > .el-icon {
+  color: var(--sems-color-primary);
+}
+
+.security-action__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--sems-touch-target);
+  height: var(--sems-touch-target);
+  border-radius: var(--sems-radius-base);
+  background-color: var(--sems-color-primary-bg);
+  color: var(--sems-color-primary);
+}
+
+.security-action__copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--sems-space-1);
+  min-width: 0;
+}
+
+.security-action__copy strong {
+  font-size: var(--sems-font-size-base);
+  font-weight: var(--sems-font-weight-medium);
+}
+
+.security-action__copy small {
+  color: var(--sems-text-secondary);
+  font-size: var(--sems-font-size-xs);
+}
+
+.security-action.is-danger .security-action__icon,
+.security-action.is-danger > .el-icon {
+  background-color: var(--sems-color-danger-bg);
+  color: var(--sems-color-danger);
+}
+
+.security-action.is-danger > .el-icon {
+  background-color: transparent;
+}
+
 .action-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--sems-space-2);
+  justify-content: space-between;
+  gap: var(--sems-space-3);
+  margin-bottom: var(--sems-space-3);
 }
 
 .ws-status {
@@ -271,14 +483,12 @@ onMounted(() => {
   font-size: var(--sems-font-size-base);
 }
 
-.ws-dot {
-  width: var(--sems-space-2);
-  height: var(--sems-space-2);
-  border-radius: 50%;
-  background-color: var(--sems-color-info);
+.ws-status .el-icon {
+  color: var(--sems-color-info);
+  font-size: var(--sems-font-size-lg);
 }
 
-.ws-dot.is-on {
-  background-color: var(--sems-color-success);
+.ws-status .el-icon.is-on {
+  color: var(--sems-color-success);
 }
 </style>

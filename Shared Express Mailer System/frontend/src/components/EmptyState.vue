@@ -37,7 +37,12 @@ defineProps({
 }
 
 .empty-state__icon {
-  color: var(--sems-text-secondary);
+  width: 72px;
+  height: 72px;
+  color: var(--sems-color-primary);
+  background: var(--sems-color-primary-bg);
+  border: 1px solid color-mix(in srgb, var(--sems-color-primary) 10%, transparent);
+  border-radius: 50%;
 }
 
 .empty-state__desc {

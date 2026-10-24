@@ -9,8 +9,8 @@ package com.sems.common;
  */
 public final class SemsVersion {
 
-    /** 当前版本号（v0.1.1，对应《系统设计说明书》2.4 版本基线）。 */
-    public static final String VERSION = "0.1.1";
+    /** 当前版本号（v0.1.2，对应《系统设计说明书》2.4 版本基线）。 */
+    public static final String VERSION = "0.1.2";
 
     private SemsVersion() {
     }
